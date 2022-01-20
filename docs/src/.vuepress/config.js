@@ -16,7 +16,7 @@ module.exports = {
    * ref：https://v1.vuepress.vuejs.org/config/#head
    */
   head: [
-    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+    ['meta', { name: 'theme-color', content: '#2492f3' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }]
   ],
@@ -42,35 +42,10 @@ module.exports = {
         link: 'https://us.fixstars.com/'
       }
     ],
-    // sidebar: {
-    //   '/opencl-book/': [
-    //     {
-    //       title: 'Foreword2',
-    //       collapsable: false,
-    //     }
-    //   ],
-    //   '/opencl-book/test/': [
-    //     {
-    //       title: 'Intro',
-    //       collapsable: false,
-    //     }
-    //   ],
-    //   // '/opencl-book/': [
-    //   //   {
-    //   //     title: 'test2',
-    //   //     collapsable: false,
-    //   //     // children: [
-    //   //     //   '',
-    //   //     //   'using-vue',
-    //   //     // ]
-    //   //   }
-    //   // ],
-    // }
     sidebar: [
       '/opencl-book/',
       '/opencl-book/who-should-read-this-book',
       '/opencl-book/about-the-authors',
-
       {
           title: 'Introduction to Parallelization',
           collapsable: false,
@@ -81,6 +56,35 @@ module.exports = {
           ['/opencl-book/introduction-to-parallelization/conclusion','Conclusion'],
           ]
       },
+      {
+        title: 'OpenCL',
+        collapsable: false,
+        children: [ 
+        ['/opencl-book/opencl/what-is-opencl','What is OpenCL?'],
+        ['/opencl-book/opencl/historical-background','Historical Background'],
+        ['/opencl-book/opencl/an-overview-of-opencl','An Overview of OpenCL'],
+        ['/opencl-book/opencl/why-opencl','Why OpenCL?'],
+        ['/opencl-book/opencl/applicable-platforms','Applicable Platforms'],
+        ]
+    },
+    {
+      title: 'OpenCL Setup',
+      collapsable: false,
+      children: [ 
+      ['/opencl-book/opencl-setup/available-opencl-environments','Available OpenCL Environments'],
+      ['/opencl-book/opencl-setup/development-environment-setup','Development Environment Setup'],
+      ['/opencl-book/opencl-setup/first-opencl-program','First OpenCL Program'],
+      ]
+    },
+    {
+      title: 'Basic OpenCL',
+      collapsable: false,
+      children: [ 
+      ['/opencl-book/basic-opencl/basic-program-flow.md','Basic Program Flow'],
+      ['/opencl-book/basic-opencl/online-offline-compilation','Online/Offline Compilation'],
+      ['/opencl-book/basic-opencl/calling-the-kernel','Calling the Kernel'],
+      ]
+    },
     ]
   },
 

@@ -8,11 +8,11 @@ description: >-
 
 Since we have not yet gone over the OpenCL grammar, you should concentrate on the general flow of OpenCL programming.
 
-_Hello World_&#x20;
+_Hello World_
 
-**List 3.3** and **3.4** shows the familiar "Hello, World!" program written in OpenCL. Since standard in/out cannot be used within the kernel, we will use the kernel only to set the char array. Note that printf() will be available starting in OpenCL 1.2 to perform the same action. In this program, the string set on the kernel will be copied over to the host side, which can then be outputted. (The code can be downloaded from http://www.fixstars.com/books/opencl)&#x20;
+**List 3.3** and **3.4** shows the familiar "Hello, World!" program written in OpenCL. Since standard in/out cannot be used within the kernel, we will use the kernel only to set the char array. Note that printf() will be available starting in OpenCL 1.2 to perform the same action. In this program, the string set on the kernel will be copied over to the host side, which can then be outputted. (The code can be downloaded from [http://www.fixstars.com/books/opencl](http://www.fixstars.com/books/opencl))
 
-**List 3.3: Hello World - kernel (hello.cl)**&#x20;
+**List 3.3: Hello World - kernel (hello.cl)**
 
 ```
 __kernel void hello(__global char *string)
@@ -34,7 +34,7 @@ __kernel void hello(__global char *string)
 }
 ```
 
-**List 3.4: Hello World - host (hello.c)**&#x20;
+**List 3.4: Hello World - host (hello.c)**
 
 ```
 #include <stdio.h>
@@ -131,9 +131,9 @@ int main()
 }
 ```
 
-The include header is located in a different directory depending on the environment (**Table 3.6**). Make sure to specify the correct location.&#x20;
+The include header is located in a different directory depending on the environment (**Table 3.6**). Make sure to specify the correct location.
 
-**Table 3.6: Difference between include header names (as of March 2011)**&#x20;
+**Table 3.6: Difference between include header names (as of March 2011)**
 
 | OpenCL implementation  | Include Header   |
 | ---------------------- | ---------------- |
@@ -142,23 +142,23 @@ The include header is located in a different directory depending on the environm
 | FOXC                   | CL/cl.h          |
 | NVIDIA                 | CL/cl.h          |
 
-> \#ifdef \_\_APPLE\_\_&#x20;
+> \#ifdef \_\_APPLE\_\_
 >
-> \#include \<OpenCL/opencl.h>&#x20;
+> \#include \<OpenCL/opencl.h>
 >
-> \#else&#x20;
+> \#else
 >
-> \#include \<CL/cl.h>&#x20;
+> \#include \<CL/cl.h>
 >
-> \#endif&#x20;
+> \#endif
 
-### _Building in Linux/Mac OS X_&#x20;
+## _Building in Linux/Mac OS X_
 
-Once the program is written, we are now ready to build and run the program. This section will describe the procedure under Linux/Mac OS X. The kernel and host code are assumed to exist within the same directory.&#x20;
+Once the program is written, we are now ready to build and run the program. This section will describe the procedure under Linux/Mac OS X. The kernel and host code are assumed to exist within the same directory.
 
-The procedures for building vary depending on the OpenCL implementation. "path-to-..." should be replaced with the corresponding OpenCL SDK path. The default SDK path is as shown in **Figure 3.7** and **Figure 3.8**.&#x20;
+The procedures for building vary depending on the OpenCL implementation. "path-to-..." should be replaced with the corresponding OpenCL SDK path. The default SDK path is as shown in **Figure 3.7** and **Figure 3.8**.
 
-**Table 3.7: Location of the OpenCL include header files (cl.h)**&#x20;
+**Table 3.7: Location of the OpenCL include header files (cl.h)**
 
 | Environment           | Default location             | Notes                        |
 | --------------------- | ---------------------------- | ---------------------------- |
@@ -167,7 +167,7 @@ The procedures for building vary depending on the OpenCL implementation. "path-t
 | NVIDIA CUDA 4.x       | /usr/local/cuda/include/CL/  |                              |
 | AMD APP SDK v2.6      | /opt/AMDAPP/include/CL/      |                              |
 
-**Table 3.8: Location of the OpenCL library files (libOpenCL.so)**&#x20;
+**Table 3.8: Location of the OpenCL library files (libOpenCL.so)**
 
 | Environment           | Default location  | Notes                        |
 | --------------------- | ----------------- | ---------------------------- |
@@ -178,106 +178,106 @@ The procedures for building vary depending on the OpenCL implementation. "path-t
 | AMD APP SDK v2.6      | /usr/lib/         | 32-bit                       |
 | /usr/lib64/           | 64-bit            |                              |
 
-If you changed the SDK location during the installation, you will have to make changes accordingly. Also, installing from a package provided by the distribution may place the SDK elsewhere.&#x20;
+If you changed the SDK location during the installation, you will have to make changes accordingly. Also, installing from a package provided by the distribution may place the SDK elsewhere.
 
-The build commands on Linux/Max OS X are as follows:&#x20;
+The build commands on Linux/Max OS X are as follows:
 
-**Intel**&#x20;
+**Intel**
 
-For Intel OpenCL SDK, the headers and libraries are placed such that the build tools will be able to find them. Use the command below for building.&#x20;
+For Intel OpenCL SDK, the headers and libraries are placed such that the build tools will be able to find them. Use the command below for building.
 
 > gcc -o hello hello.c -lOpenCL
 
-**Apple**&#x20;
+**Apple**
 
-When using Apple OpenCL, specify "-framework opencl" as a build argument. You are not required to explicitly specify the location of headers and libraries, as this will be taken care of.&#x20;
+When using Apple OpenCL, specify "-framework opencl" as a build argument. You are not required to explicitly specify the location of headers and libraries, as this will be taken care of.
 
-> gcc -o hello hello.c -framework opencl&#x20;
+> gcc -o hello hello.c -framework opencl
 
-**AMD**&#x20;
+**AMD**
 
-For AMD, since the headers are located under /opt, you will have to specify the header location in the compile option. However, since the libraries are located in the default search path, this does not have to be passed in.&#x20;
+For AMD, since the headers are located under /opt, you will have to specify the header location in the compile option. However, since the libraries are located in the default search path, this does not have to be passed in.
 
-> gcc -I/opt/AMDAPP/include -o hello hello.c -lOpenCL&#x20;
+> gcc -I/opt/AMDAPP/include -o hello hello.c -lOpenCL
 
-**NVIDIA**&#x20;
+**NVIDIA**
 
-For NVIDIA, the exact same rule applies as for AMD.&#x20;
+For NVIDIA, the exact same rule applies as for AMD.
 
-> gcc -I/usr/local/cuda/include -o hello hello.c -lOpenCL&#x20;
+> gcc -I/usr/local/cuda/include -o hello hello.c -lOpenCL
 
-The sample provided includes a Makefile that can be used on Linux and Mac OS X. A build for each platform can be performed as follows:&#x20;
+The sample provided includes a Makefile that can be used on Linux and Mac OS X. A build for each platform can be performed as follows:
 
-> \> make intel (For Linux)&#x20;
+> \> make intel (For Linux)
 >
-> \> make apple (For Mac OS X)&#x20;
+> \> make apple (For Mac OS X)
 >
-> \> make nvidia (For Linux)&#x20;
+> \> make nvidia (For Linux)
 >
-> \> make amd (For Linux)&#x20;
+> \> make amd (For Linux)
 
 This should create an executable with the name "hello" in working directory. Run the executable as follows. If successful, you should get "Hello World!" on the screen.
 
-> \> ./hello&#x20;
+> \> ./hello
 >
-> Hello World!&#x20;
+> Hello World!
 
-As a known restriction exist for the AMD APP SDK, access rights to the X server is required to use the GPU as an OpenCL device. To use an AMD GPU remotely, follow the procedures contained in this PDF released by AMD:&#x20;
+As a known restriction exist for the AMD APP SDK, access rights to the X server is required to use the GPU as an OpenCL device. To use an AMD GPU remotely, follow the procedures contained in this PDF released by AMD:
 
-http://developer.amd.com/sdks/AMDAPPSDK/assets/App_Note-Running_AMD_APP_Apps_Remotely.pdf
+[http://developer.amd.com/sdks/AMDAPPSDK/assets/App_Note-Running_AMD_APP_Apps_Remotely.pdf](http://developer.amd.com/sdks/AMDAPPSDK/assets/App_Note-Running_AMD_APP_Apps_Remotely.pdf)
 
-### _Building on Visual Studio_&#x20;
+## _Building on Visual Studio_
 
-This section will walk through the building and execution process using Visual C++ 2010 Express under 32-bit Windows 7 environment. The OpenCL header file and library can be included to be used on a project using the following steps.&#x20;
+This section will walk through the building and execution process using Visual C++ 2010 Express under 32-bit Windows 7 environment. The OpenCL header file and library can be included to be used on a project using the following steps.
 
-1\. From the project page, go to “C/C++” -> “General”, then add the following in the box for “Additional include directories”:&#x20;
+1\. From the project page, go to “C/C++” -> “General”, then add the following in the box for “Additional include directories”:
 
-**Intel**&#x20;
+**Intel**
 
-Intel OpenCL declares an environmental variable INTELOCLSDKROOT whose value is the root path of the SDK.&#x20;
+Intel OpenCL declares an environmental variable INTELOCLSDKROOT whose value is the root path of the SDK.
 
-> $(INTELOCLSDKROOT)include&#x20;
+> $(INTELOCLSDKROOT)include
 
-**NVIDIA**&#x20;
+**NVIDIA**
 
-The include path is specified in the environmental variable CUDA\_INC\_PATH.&#x20;
+The include path is specified in the environmental variable CUDA\_INC\_PATH.
 
-> $(CUDA\_INC\_PATH)&#x20;
+> $(CUDA\_INC\_PATH)
 
-**AMD**&#x20;
+**AMD**
 
-AMD APP SDK declares an environmental variable AMDAPPSDKROOT whose value is the root path of the SDK.&#x20;
+AMD APP SDK declares an environmental variable AMDAPPSDKROOT whose value is the root path of the SDK.
 
-> $(AMDAPPSDKROOT)include&#x20;
+> $(AMDAPPSDKROOT)include
 
-2\. From the project page, go to “Linker” -> “Input”, and in the box for “Additional library path”, type the following.&#x20;
+2\. From the project page, go to “Linker” -> “Input”, and in the box for “Additional library path”, type the following.
 
-**Intel**&#x20;
+**Intel**
 
-> $(INTELOCLSDKROOT)lib¥x86 (32bit, for Visual C++ 2010 Express)&#x20;
+> $(INTELOCLSDKROOT)lib¥x86 (32bit, for Visual C++ 2010 Express)
 
-> $(INTELOCLSDKROOT)lib¥x64 (64bit)&#x20;
+> $(INTELOCLSDKROOT)lib¥x64 (64bit)
 
-**NVIDIA**&#x20;
+**NVIDIA**
 
-> $(CUDA\_PATH)lib¥Win32 (32bit, for Visual C++ 2010 Express)&#x20;
+> $(CUDA\_PATH)lib¥Win32 (32bit, for Visual C++ 2010 Express)
 
-> $(CUDA\_PATH)lib¥x64 (64bit)&#x20;
+> $(CUDA\_PATH)lib¥x64 (64bit)
 
-**AMD**&#x20;
+**AMD**
 
-> $(AMDAPPSDKROT)lib¥x86 (32bit, for Visual C++ 2010 Express)&#x20;
+> $(AMDAPPSDKROT)lib¥x86 (32bit, for Visual C++ 2010 Express)
 
-> $(AMDAPPSDKROT)lib¥x86\_64 (64bit)&#x20;
+> $(AMDAPPSDKROT)lib¥x86\_64 (64bit)
 
-3\. From the project page, go to "Linker" -> "Input", and in the box for "Additional Dependencies", type the following.&#x20;
+3\. From the project page, go to "Linker" -> "Input", and in the box for "Additional Dependencies", type the following.
 
-**Intel, NVIDIA and AMD**&#x20;
+**Intel, NVIDIA and AMD**
 
-OpenCL.lib&#x20;
+OpenCL.lib
 
-These should apply to All Configurations, which can be selected on the pull-down menu located on the top left corner.&#x20;
+These should apply to All Configurations, which can be selected on the pull-down menu located on the top left corner.
 
-The environment should now be setup to allow an OpenCL code to be built on. Build and run the sample code, and make sure you get the correct output.&#x20;
+The environment should now be setup to allow an OpenCL code to be built on. Build and run the sample code, and make sure you get the correct output.
 
-![](<../.gitbook/assets/Screen Shot 2022-01-03 at 9.14.21 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-03_at_9.14.21_PM.png>)

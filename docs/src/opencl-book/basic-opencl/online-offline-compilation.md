@@ -1,26 +1,26 @@
 # Online/Offline Compilation
 
-In OpenCL, a kernel can be compiled either online or offline (**Figure 4.1**).&#x20;
+In OpenCL, a kernel can be compiled either online or offline (**Figure 4.1**).
 
-**Figure 4.1: Offline and Online Compilation**&#x20;
+**Figure 4.1: Offline and Online Compilation**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-04 at 5.23.59 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-04_at_5.23.59_PM.png>)
 
-The basic difference between the 2 methods is as follows:&#x20;
+The basic difference between the 2 methods is as follows:
 
-• Offline: Kernel binary is read in by the host code&#x20;
+• Offline: Kernel binary is read in by the host code
 
-• Online: Kernel source file is read in by the host code&#x20;
+• Online: Kernel source file is read in by the host code
 
-In "offline-compilation", the kernel is pre-built using an OpenCL compiler, and the generated binary is what gets loaded using the OpenCL API. Since the kernel binary is already built, the time lag between starting the host code and the kernel getting executed is negligible. The problem with this method is that in order to execute the program on various platforms, multiple kernel binaries must be included, thus increasing the size of the executable file.&#x20;
+In "offline-compilation", the kernel is pre-built using an OpenCL compiler, and the generated binary is what gets loaded using the OpenCL API. Since the kernel binary is already built, the time lag between starting the host code and the kernel getting executed is negligible. The problem with this method is that in order to execute the program on various platforms, multiple kernel binaries must be included, thus increasing the size of the executable file.
 
-In "online-compilation", the kernel is built from source during runtime using the OpenCL runtime library. This method is commonly known as JIT (Just in time) compilation. The advantage of this method is that the host-side binary can be distributed in a form that's not device-dependent, and that adaptive compiling of the kernel is possible. It also makes the testing of the kernel easier during development, since it gets rid of the need to compile the kernel each time. However, this is not suited for embedded systems that require real-time processing. Also, since the kernel code is in readable form, this method may not be suited for commercial applications.&#x20;
+In "online-compilation", the kernel is built from source during runtime using the OpenCL runtime library. This method is commonly known as JIT (Just in time) compilation. The advantage of this method is that the host-side binary can be distributed in a form that's not device-dependent, and that adaptive compiling of the kernel is possible. It also makes the testing of the kernel easier during development, since it gets rid of the need to compile the kernel each time. However, this is not suited for embedded systems that require real-time processing. Also, since the kernel code is in readable form, this method may not be suited for commercial applications.
 
-The OpenCL runtime library contains the set of APIs that performs the above operations. In a way, since OpenCL is a programming framework for heterogeneous environments, the online compilation support should not come as a shock. In fact, a stand-alone OpenCL compiler is not available for the OpenCL environment by NVIDIA, AMD, and Apple. Hence, in order to create a kernel binary in these environments, the built kernels has to be written to a file during runtime by the host program. FOXC on the other hand includes a stand-alone OpenCL kernel compiler, which makes the process of making a kernel binary intuitive.&#x20;
+The OpenCL runtime library contains the set of APIs that performs the above operations. In a way, since OpenCL is a programming framework for heterogeneous environments, the online compilation support should not come as a shock. In fact, a stand-alone OpenCL compiler is not available for the OpenCL environment by NVIDIA, AMD, and Apple. Hence, in order to create a kernel binary in these environments, the built kernels has to be written to a file during runtime by the host program. FOXC on the other hand includes a stand-alone OpenCL kernel compiler, which makes the process of making a kernel binary intuitive.
 
-We will now look at sample programs that show the two compilation methods. The first code shows the online compilation version (**List 4.2**).&#x20;
+We will now look at sample programs that show the two compilation methods. The first code shows the online compilation version (**List 4.2**).
 
-**List 4.2: Online Compilation version**&#x20;
+**List 4.2: Online Compilation version**
 
 ```
 #include <stdio.h>
@@ -131,9 +131,9 @@ int main()
 }
 ```
 
-The following code shows the offline compilation version (**List 4.3**).&#x20;
+The following code shows the offline compilation version (**List 4.3**).
 
-**List 4.3 Offline compilation version**&#x20;
+**List 4.3 Offline compilation version**
 
 ```
 #include <stdio.h>
@@ -244,9 +244,9 @@ int main()
 }
 ```
 
-The kernel program performs vector addition. It is shown below in **List 4.4**.&#x20;
+The kernel program performs vector addition. It is shown below in **List 4.4**.
 
-**List 4.4: Kernel program**&#x20;
+**List 4.4: Kernel program**
 
 ```
 __kernel void vecAdd(__global float *a)
@@ -257,88 +257,88 @@ __kernel void vecAdd(__global float *a)
 }
 ```
 
-We will take a look at the host programs shown in **List 4.2** and **List 4.3**. The two programs are almost identical, so we will focus on their differences.&#x20;
+We will take a look at the host programs shown in **List 4.2** and **List 4.3**. The two programs are almost identical, so we will focus on their differences.
 
-The first major difference is the fact that the kernel source code is read in the online compile version (**List 4.5**).&#x20;
+The first major difference is the fact that the kernel source code is read in the online compile version (**List 4.5**).
 
-**List 4.5: Online compilation version - Reading the kernel source code**&#x20;
+**List 4.5: Online compilation version - Reading the kernel source code**
 
-> 035: fp = fopen(fileName, "r");&#x20;
+> 035: fp = fopen(fileName, "r");
 >
-> 036: if (!fp) {&#x20;
+> 036: if (!fp) {
 >
-> 037: fprintf(stderr, "Failed to load kernel.¥n");&#x20;
+> 037: fprintf(stderr, "Failed to load kernel.¥n");
 >
-> 038: exit(1);&#x20;
+> 038: exit(1);
 >
-> 039: }&#x20;
+> 039: }
 >
-> 040: source\_str = (char \*)malloc(MAX\_SOURCE\_SIZE);&#x20;
+> 040: source\_str = (char \*)malloc(MAX\_SOURCE\_SIZE);
 >
-> 041: source\_size = fread(source\_str, 1, MAX\_SOURCE\_SIZE, fp);&#x20;
+> 041: source\_size = fread(source\_str, 1, MAX\_SOURCE\_SIZE, fp);
 >
-> 042: fclose(fp);&#x20;
+> 042: fclose(fp);
 
-The source\_str variable is a character array that merely contains the content of the source file. In order to execute this code on the kernel, it must be built using the runtime compiler. This is done by the code segment shown below in **List 4.6**.&#x20;
+The source\_str variable is a character array that merely contains the content of the source file. In order to execute this code on the kernel, it must be built using the runtime compiler. This is done by the code segment shown below in **List 4.6**.
 
-**List 4.6: Online compilation version - Create kernel program**&#x20;
+**List 4.6: Online compilation version - Create kernel program**
 
-> 065: /\* Create kernel program from the source \*/&#x20;
+> 065: /\* Create kernel program from the source \*/
 >
-> 066: program = clCreateProgramWithSource(context, 1, (const char \*\*)\&source\_str, (const size\_t \*)\&source\_size, \&ret);&#x20;
+> 066: program = clCreateProgramWithSource(context, 1, (const char \*\*)\&source\_str, (const size\_t \*)\&source\_size, \&ret);
 >
-> 067:&#x20;
+> 067:
 >
-> 068: /\* Build kernel program \*/&#x20;
+> 068: /\* Build kernel program \*/
 >
-> 069: ret = clBuildProgram(program, 1, \&device\_id, NULL, NULL, NULL);&#x20;
+> 069: ret = clBuildProgram(program, 1, \&device\_id, NULL, NULL, NULL);
 
-The program is first created from source, and then built.&#x20;
+The program is first created from source, and then built.
 
-Next, we will look at the source code for the offline compilation version (**List 4.7**).&#x20;
+Next, we will look at the source code for the offline compilation version (**List 4.7**).
 
-**List 4.7: Offline compilation - Reading the kernel binary**&#x20;
+**List 4.7: Offline compilation - Reading the kernel binary**
 
-> 036: fp = fopen(fileName, "r");&#x20;
+> 036: fp = fopen(fileName, "r");
 >
-> 037: if (!fp) {&#x20;
+> 037: if (!fp) {
 >
-> 038: fprintf(stderr, "Failed to load kernel.¥n");&#x20;
+> 038: fprintf(stderr, "Failed to load kernel.¥n");
 >
-> 039: exit(1);&#x20;
+> 039: exit(1);
 >
-> 040: }&#x20;
+> 040: }
 >
-> 041: binary\_buf = (char \*)malloc(MAX\_BINARY\_SIZE);&#x20;
+> 041: binary\_buf = (char \*)malloc(MAX\_BINARY\_SIZE);
 >
-> 042: binary\_size = fread(binary\_buf, 1, MAX\_BINARY\_SIZE, fp);&#x20;
+> 042: binary\_size = fread(binary\_buf, 1, MAX\_BINARY\_SIZE, fp);
 >
-> 043: fclose(fp);&#x20;
+> 043: fclose(fp);
 
 The code looks very similar to the online version, since the data is being read into a buffer of type char.
 
-The difference is that the data on the buffer can be directly executed. This means that the kernel source code must be compiled beforehand using an OpenCL compiler. The Intel OpenCL Offline Compiler contained Intel OpenCL SDK 1.5 can be used to create a binary of the kernel (**Figure 4.2**).&#x20;
+The difference is that the data on the buffer can be directly executed. This means that the kernel source code must be compiled beforehand using an OpenCL compiler. The Intel OpenCL Offline Compiler contained Intel OpenCL SDK 1.5 can be used to create a binary of the kernel (**Figure 4.2**).
 
-**Figure 4.2: Intel OpenCL Offline Compiler**&#x20;
+**Figure 4.2: Intel OpenCL Offline Compiler**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-04 at 6.16.28 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-04_at_6.16.28_PM.png>)
 
 > /path-to-foxc/bin/foxc -o kernel.clbin kernel.cl
 
 The online compilation version required 2 steps to build the kernel program. With offline compilation, the clCreateProgramWithSource() is replaced with clCreateProgramWithBinary.
 
-> 067: program = clCreateProgramWithBinary(context, 1, \&device\_id, (const size\_t \*)\&binary\_size,&#x20;
+> 067: program = clCreateProgramWithBinary(context, 1, \&device\_id, (const size\_t \*)\&binary\_size,
 >
-> 068: (const unsigned char \*\*)\&binary\_buf, \&binary\_status, \&ret);&#x20;
+> 068: (const unsigned char \*\*)\&binary\_buf, \&binary\_status, \&ret);
 
-Since the kernel is already built, there is no reason for another build step as in the online compilation version.&#x20;
+Since the kernel is already built, there is no reason for another build step as in the online compilation version.
 
-To summarize, in order to change the method of compilation from online to offline, the following steps are followed:&#x20;
+To summarize, in order to change the method of compilation from online to offline, the following steps are followed:
 
-1\. Read the kernel as a binary&#x20;
+1\. Read the kernel as a binary
 
-2\. Change clCreateProgramWithSource() to clCreateProgramWithBinary()&#x20;
+2\. Change clCreateProgramWithSource() to clCreateProgramWithBinary()
 
-3\. Get rid of clBuildProgram()&#x20;
+3\. Get rid of clBuildProgram()
 
-This concludes the differences between the two methods. See Chapter 8 for the details on the APIs used inside the sample codes.&#x20;
+This concludes the differences between the two methods. See Chapter 8 for the details on the APIs used inside the sample codes.

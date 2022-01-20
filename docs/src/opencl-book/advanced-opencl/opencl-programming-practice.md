@@ -6,27 +6,27 @@ description: >-
 
 # OpenCL Programming Practice
 
-We will use a sample application that analyzes stock price data to walk through porting of standard C code to OpenCL C in order to utilize a device. The analysis done in this application is to compute the moving average of the stock price for different stocks.&#x20;
+We will use a sample application that analyzes stock price data to walk through porting of standard C code to OpenCL C in order to utilize a device. The analysis done in this application is to compute the moving average of the stock price for different stocks.
 
-We will start from a normal C code, and gradually convert sections of the code to be processed in parallel. This should aid you in gaining intuition on how to parallelize your code.&#x20;
+We will start from a normal C code, and gradually convert sections of the code to be processed in parallel. This should aid you in gaining intuition on how to parallelize your code.
 
-A moving average filter is used commonly in image processing and signal processing as a low-pass filter.&#x20;
+A moving average filter is used commonly in image processing and signal processing as a low-pass filter.
 
-Note that the sample code shown in this section is meant to be pedagogical in order to show how OpenCL is used. You may not experience any speed-up depending on the type of hardware you have.&#x20;
+Note that the sample code shown in this section is meant to be pedagogical in order to show how OpenCL is used. You may not experience any speed-up depending on the type of hardware you have.
 
-### _Standard Single-Thread Programming_&#x20;
+## _Standard Single-Thread Programming_
 
-We will first walk through a standard C code of the moving average function. The function has the following properties.&#x20;
+We will first walk through a standard C code of the moving average function. The function has the following properties.
 
-• Stock price data in passed in as an int-array named "value". The result of the moving average is returned as an array of floats with the name "average".&#x20;
+• Stock price data in passed in as an int-array named "value". The result of the moving average is returned as an array of floats with the name "average".
 
-• The array length is passed in as "length" of type int&#x20;
+• The array length is passed in as "length" of type int
 
-• The width of the data to compute the average for is passed in as "width" of type int&#x20;
+• The width of the data to compute the average for is passed in as "width" of type int
 
-To make the code more intuitive, the code on List 5.21 gets rid of all error checks that would normally be performed. This function is what we want to process on the device, so this is the code will eventually be ported into kernel code.&#x20;
+To make the code more intuitive, the code on List 5.21 gets rid of all error checks that would normally be performed. This function is what we want to process on the device, so this is the code will eventually be ported into kernel code.
 
-**List 5.21: Moving average of integers implemented in standard C**&#x20;
+**List 5.21: Moving average of integers implemented in standard C**
 
 ```
 void moving_average(int *values,
@@ -66,11 +66,11 @@ void moving_average(int *values,
 }
 ```
 
-In this example, each indices of the average array contain the average of the previous width-1 values and the value of that index. Zeros are placed for average\[0] \~ average\[width-2] in lines 22\~25, since this computation will require values not contained in the input array. In other words, if the width is 3, average\[3] contain the average of value\[1], value\[2] and value\[3]. The value of average\[0] \~ average\[width-2] = average\[1] are zeros, since it would require value\[-2] and value\[-1].&#x20;
+In this example, each indices of the average array contain the average of the previous width-1 values and the value of that index. Zeros are placed for average\[0] \~ average\[width-2] in lines 22\~25, since this computation will require values not contained in the input array. In other words, if the width is 3, average\[3] contain the average of value\[1], value\[2] and value\[3]. The value of average\[0] \~ average\[width-2] = average\[1] are zeros, since it would require value\[-2] and value\[-1].
 
-The average itself is computed by first summing up the "width" number of values and storing it into the average array (lines 9-20). Lines 9-14 computes the sum of the first "width" elements, and stores it in average\[width-1]. Lines 16-20 computes the sum for the remaining indices. This is done by starting from the previously computed sum, subtracting the oldest value and adding the newest value, which is more efficient than computing the sum of "width" elements each time. This works since the input data is an integer type, but if the input is of type float, this method may result in rounding errors, which can become significant over time. In this case, a method shown in **List 5.22** should be used.&#x20;
+The average itself is computed by first summing up the "width" number of values and storing it into the average array (lines 9-20). Lines 9-14 computes the sum of the first "width" elements, and stores it in average\[width-1]. Lines 16-20 computes the sum for the remaining indices. This is done by starting from the previously computed sum, subtracting the oldest value and adding the newest value, which is more efficient than computing the sum of "width" elements each time. This works since the input data is an integer type, but if the input is of type float, this method may result in rounding errors, which can become significant over time. In this case, a method shown in **List 5.22** should be used.
 
-**List 5.22: Moving average of floats implemented in standard C**&#x20;
+**List 5.22: Moving average of floats implemented in standard C**
 
 ```
 void moving_average_float(float *values,
@@ -100,25 +100,25 @@ void moving_average_float(float *values,
 }
 ```
 
-We will now show a main() function that will call the function in **List 5.21** to perform the computation (**List 5.24**). The input data is placed in a file called "stock\_array1.txt", whose content is shown in **List 5.23**.&#x20;
+We will now show a main() function that will call the function in **List 5.21** to perform the computation (**List 5.24**). The input data is placed in a file called "stock\_array1.txt", whose content is shown in **List 5.23**.
 
-**List 5.23: Input data (stock\_array1.txt)**&#x20;
+**List 5.23: Input data (stock\_array1.txt)**
 
-> 100,&#x20;
+> 100,
 >
-> 109,&#x20;
+> 109,
 >
-> 98,&#x20;
+> 98,
 >
-> 104,&#x20;
+> 104,
 >
-> 107,&#x20;
+> 107,
 >
-> ...&#x20;
+> ...
 >
-> 50&#x20;
+> 50
 
-**List 5.24: Standard C main() function to all the moving average function**&#x20;
+**List 5.24: Standard C main() function to all the moving average function**
 
 ```
 #include <stdio.h>
@@ -164,13 +164,13 @@ int main(int argc, char *argv[])
 
 The above code will be eventually transformed into a host code that will call the moving average kernel.
 
-We have now finished writing a single threaded program to compute the moving average. This will now be converted to OpenCL code to use the device. Our journey has just begun.&#x20;
+We have now finished writing a single threaded program to compute the moving average. This will now be converted to OpenCL code to use the device. Our journey has just begun.
 
-### _Porting to OpenCL_&#x20;
+## _Porting to OpenCL_
 
-The first step is to convert the moving\_average() function to kernel code, or OpenCL C. This code will be executed on the device. The code in **List 5.21** becomes as shown in **List 5.25** after porting.&#x20;
+The first step is to convert the moving\_average() function to kernel code, or OpenCL C. This code will be executed on the device. The code in **List 5.21** becomes as shown in **List 5.25** after porting.
 
-**List 5.25: Moving average kernel (moving\_average.cl)**&#x20;
+**List 5.25: Moving average kernel (moving\_average.cl)**
 
 ```
 __kernel void moving_average(__global int *values,
@@ -210,11 +210,11 @@ __kernel void moving_average(__global int *values,
 }
 ```
 
-Note that we have only changed lines 1 and 2, which adds the \_\_kernel qualifier to the function, and the address qualifier \_\_global specifying the location of the input data and where the result will be placed.&#x20;
+Note that we have only changed lines 1 and 2, which adds the \_\_kernel qualifier to the function, and the address qualifier \_\_global specifying the location of the input data and where the result will be placed.
 
-The host code is shown in **List 5.26**.&#x20;
+The host code is shown in **List 5.26**.
 
-**List 5.26: Host code to execute the moving\_average() kernel**&#x20;
+**List 5.26: Host code to execute the moving\_average() kernel**
 
 ```
 #include <stdlib.h>
@@ -339,51 +339,51 @@ int main(void)
 }
 ```
 
-This host is based on the code in **List 5.24**, adding the OpenCL runtime API commands required for the kernel execution. Note the code utilizes the online compile method, as the kernel source code is read in (Lines 60-69).&#x20;
+This host is based on the code in **List 5.24**, adding the OpenCL runtime API commands required for the kernel execution. Note the code utilizes the online compile method, as the kernel source code is read in (Lines 60-69).
 
-However, although the code is executable, it is not written to run anything in parallel. The next section will show how this can be done.&#x20;
+However, although the code is executable, it is not written to run anything in parallel. The next section will show how this can be done.
 
-### _Vector Operations_&#x20;
+## _Vector Operations_
 
-First step to see whether vector-types can be used for the processing. For vector types, we can expect the OpenCL implementation to perform operations using the SIMD units on the processor to speed up the computation. We will start looking at multiple stocks from this section, as this is more practical. The processing will be vector-ized such that the moving average computation for each stock will be executed in parallel. We will assume that the processor will have a 128-bit SIMD unit, to operate on four 32-bit data in parallel. In OpenCL, types such as int4 and float4 can be used.&#x20;
+First step to see whether vector-types can be used for the processing. For vector types, we can expect the OpenCL implementation to perform operations using the SIMD units on the processor to speed up the computation. We will start looking at multiple stocks from this section, as this is more practical. The processing will be vector-ized such that the moving average computation for each stock will be executed in parallel. We will assume that the processor will have a 128-bit SIMD unit, to operate on four 32-bit data in parallel. In OpenCL, types such as int4 and float4 can be used.
 
-**List 5.27** shows the price data for multiple stocks, where each row contains the price of multiple stocks at one instance in time. For simplicity's sake, we will process the data for 4 stocks in this section (**List 5.28**).&#x20;
+**List 5.27** shows the price data for multiple stocks, where each row contains the price of multiple stocks at one instance in time. For simplicity's sake, we will process the data for 4 stocks in this section (**List 5.28**).
 
-**List 5.27: Price data for multiple stocks (stock\_array\_many.txt)**&#x20;
+**List 5.27: Price data for multiple stocks (stock\_array\_many.txt)**
 
-> 100, 212, 315, 1098, 763, 995, ..., 12&#x20;
+> 100, 212, 315, 1098, 763, 995, ..., 12
 >
-> 109, 210, 313, 1100, 783, 983, ..., 15&#x20;
+> 109, 210, 313, 1100, 783, 983, ..., 15
 >
-> 98, 209, 310, 1089, 790, 990, ..., 18&#x20;
+> 98, 209, 310, 1089, 790, 990, ..., 18
 >
-> 104, 200, 319, 1098, 792, 985, ..., 21&#x20;
+> 104, 200, 319, 1098, 792, 985, ..., 21
 >
-> 107, 100, 321, 1105, 788, 971, ..., 18&#x20;
+> 107, 100, 321, 1105, 788, 971, ..., 18
 >
-> …&#x20;
+> …
 >
-> 50, 33, 259, 980, 687, 950, ..., 9&#x20;
+> 50, 33, 259, 980, 687, 950, ..., 9
 
-**List 5.28: Price data for 4 stocks (stock\_array\_4.txt)**&#x20;
+**List 5.28: Price data for 4 stocks (stock\_array\_4.txt)**
 
-> 100, 212, 315, 1098,&#x20;
+> 100, 212, 315, 1098,
 >
-> 109, 210, 313, 1100,&#x20;
+> 109, 210, 313, 1100,
 >
-> 98, 209, 310, 1089,&#x20;
+> 98, 209, 310, 1089,
 >
-> 104, 200, 319, 1098,&#x20;
+> 104, 200, 319, 1098,
 >
-> 107, 100, 321, 1105,&#x20;
+> 107, 100, 321, 1105,
 >
-> …&#x20;
+> …
 >
-> 50, 33, 259, 980&#x20;
+> 50, 33, 259, 980
 
-For processing 4 values at a time, we can just replace int and float with int4 and float4, respectively. The new kernel code will look like **List 5.29**.&#x20;
+For processing 4 values at a time, we can just replace int and float with int4 and float4, respectively. The new kernel code will look like **List 5.29**.
 
-**List 5.29: Vector-ized moving average kernel (moving\_average\_vec4.cl)**&#x20;
+**List 5.29: Vector-ized moving average kernel (moving\_average\_vec4.cl)**
 
 ```
 __kernel void moving_average_vec4(__global int4 *values,
@@ -423,11 +423,11 @@ __kernel void moving_average_vec4(__global int4 *values,
 }
 ```
 
-The only differences from **List 5.25** is the conversion of scalar to vector type (Lines 1,7,10 for int and Lines 2,24,29 for float), and the use of convert\_float4() function. Note that the operators (+, -, \*, /) are overloaded to be used on vector-types, so these do not need to be changed (Lines 12, 18, 29).&#x20;
+The only differences from **List 5.25** is the conversion of scalar to vector type (Lines 1,7,10 for int and Lines 2,24,29 for float), and the use of convert\_float4() function. Note that the operators (+, -, \*, /) are overloaded to be used on vector-types, so these do not need to be changed (Lines 12, 18, 29).
 
-The host code for executing the kernel is shown in **List 5.30**.&#x20;
+The host code for executing the kernel is shown in **List 5.30**.
 
-**List 5.30: Host code to run the vector-ized moving average kernel**&#x20;
+**List 5.30: Host code to run the vector-ized moving average kernel**
 
 ```
 #include <stdlib.h>
@@ -563,15 +563,15 @@ int main(void)
 }
 ```
 
-The only difference from **List 5.26** is that the data to process is increased by a factor of 4, and that the data length parameter is hard coded. In addition, the kernel code that gets read is changed to moving\_average\_vec4.cl (line 66), and the kernel name is changed to moving\_average\_vec4 (line 78).&#x20;
+The only difference from **List 5.26** is that the data to process is increased by a factor of 4, and that the data length parameter is hard coded. In addition, the kernel code that gets read is changed to moving\_average\_vec4.cl (line 66), and the kernel name is changed to moving\_average\_vec4 (line 78).
 
-We will now change the program to allow processing of more than 4 stocks, as in the data in **List 5.27**. For simplicity, we will assume the number of stocks to process is a multiple of 4. We could just call the kernel on **List 5.29** and vector-ize the input data on the host side, but we will instead allow the kernel to take care of this.&#x20;
+We will now change the program to allow processing of more than 4 stocks, as in the data in **List 5.27**. For simplicity, we will assume the number of stocks to process is a multiple of 4. We could just call the kernel on **List 5.29** and vector-ize the input data on the host side, but we will instead allow the kernel to take care of this.
 
-Since we will be processing 4 stocks at a time, the kernel code will just have to loop the computation so that more than 4 stocks can be computed within the kernel. The kernel will take in a parameter "name\_num", which is the number of stocks to process. This will be used to calculate the number of loops required to process all stocks.&#x20;
+Since we will be processing 4 stocks at a time, the kernel code will just have to loop the computation so that more than 4 stocks can be computed within the kernel. The kernel will take in a parameter "name\_num", which is the number of stocks to process. This will be used to calculate the number of loops required to process all stocks.
 
-The new kernel code is shown in **List 5.31** below.&#x20;
+The new kernel code is shown in **List 5.31** below.
 
-**List 5.31: Moving average kernel of (multiple of 4) stocks (moving\_average\_many.cl)**&#x20;
+**List 5.31: Moving average kernel of (multiple of 4) stocks (moving\_average\_many.cl)**
 
 ```
 __kernel void moving_average_many(__global int4 *values,
@@ -616,9 +616,9 @@ __kernel void moving_average_many(__global int4 *values,
 }
 ```
 
-The host code is shown in **List 5.32**.&#x20;
+The host code is shown in **List 5.32**.
 
-**List 5.32: Host code for calling the kernel in List 5.31**&#x20;
+**List 5.32: Host code for calling the kernel in List 5.31**
 
 ```
 #include <stdlib.h>
@@ -756,19 +756,19 @@ int main(void)
 }
 ```
 
-The only difference from List 5.30 is that the number of stocks to process has been increased to 8, which get passed in as an argument to the kernel (line 98). In addition, the kernel code that gets read is changed to moving\_average\_many.cl (line 67), and the kernel name is changed to moving\_average\_many (line 79).&#x20;
+The only difference from List 5.30 is that the number of stocks to process has been increased to 8, which get passed in as an argument to the kernel (line 98). In addition, the kernel code that gets read is changed to moving\_average\_many.cl (line 67), and the kernel name is changed to moving\_average\_many (line 79).
 
-This section concentrated on using SIMD units to perform the same process on multiple data sets in parallel. This is the most basic method of parallelization, which is done simply by replacing scalar-types with vector-types. The next step is expanding this to use multiple compute units capable of performing SIMD operations.&#x20;
+This section concentrated on using SIMD units to perform the same process on multiple data sets in parallel. This is the most basic method of parallelization, which is done simply by replacing scalar-types with vector-types. The next step is expanding this to use multiple compute units capable of performing SIMD operations.
 
-### _Data Parallel Processing_&#x20;
+## _Data Parallel Processing_
 
-This section will focus on using multiple compute units to perform moving average for multiple stocks. Up until this point, only one instance of the kernel was executed, which processed all the data. To use multiple compute units simultaneously, multiple kernel instances must be executed in parallel. They can either be the same kernel running in parallel (data parallel), or different kernels in parallel (task parallel). We will use the data parallel model, as this method is more suited for this process.&#x20;
+This section will focus on using multiple compute units to perform moving average for multiple stocks. Up until this point, only one instance of the kernel was executed, which processed all the data. To use multiple compute units simultaneously, multiple kernel instances must be executed in parallel. They can either be the same kernel running in parallel (data parallel), or different kernels in parallel (task parallel). We will use the data parallel model, as this method is more suited for this process.
 
-We will use the kernel in **List 5.31** as the basis to perform the averaging on 8 stocks. Since this code operates on 4 data sets at once, we can use 2 compute units to perform operations on 8 data sets at once. This is achieved by setting the work group size to 2 when submitting the task.&#x20;
+We will use the kernel in **List 5.31** as the basis to perform the averaging on 8 stocks. Since this code operates on 4 data sets at once, we can use 2 compute units to perform operations on 8 data sets at once. This is achieved by setting the work group size to 2 when submitting the task.
 
-In order to use the data parallel mode, each instance of the kernel must know where it is being executed within the index space. If this is not done, the same kernel will run on the same data sets. The get\_global\_id() function can be used to get the kernel instance's global ID, which happens to be the same value as the value of the iterator "j". Therefore, the code in **List 5.31** can be rewritten to the following code in **List 5.33**.&#x20;
+In order to use the data parallel mode, each instance of the kernel must know where it is being executed within the index space. If this is not done, the same kernel will run on the same data sets. The get\_global\_id() function can be used to get the kernel instance's global ID, which happens to be the same value as the value of the iterator "j". Therefore, the code in **List 5.31** can be rewritten to the following code in **List 5.33**.
 
-**List 5.33: Moving average kernel for 4 stocks (moving\_average\_vec4\_para.cl)**&#x20;
+**List 5.33: Moving average kernel for 4 stocks (moving\_average\_vec4\_para.cl)**
 
 ```
 __kernel void moving_average_vec4_para(__global int4 *values,
@@ -812,9 +812,9 @@ __kernel void moving_average_vec4_para(__global int4 *values,
 }
 ```
 
-Since each compute unit is executing an instance of the kernel, which performs operations on 4 data sets, 8 data sets are processed over 2 compute units. In line 11, the value of "j" is either 0 or 1, which specifies the instance of the kernel as well as the data set to process. To take the change in the kernel into account, the host code must be changed as shown below in **List 5.34**.&#x20;
+Since each compute unit is executing an instance of the kernel, which performs operations on 4 data sets, 8 data sets are processed over 2 compute units. In line 11, the value of "j" is either 0 or 1, which specifies the instance of the kernel as well as the data set to process. To take the change in the kernel into account, the host code must be changed as shown below in **List 5.34**.
 
-**List 5.34: Host code for calling the kernel in List 5.33**&#x20;
+**List 5.34: Host code for calling the kernel in List 5.33**
 
 ```
 #include <stdlib.h>
@@ -965,31 +965,31 @@ int main(void)
 
 The data parallel processing is performed in lines 112 - 114, but notice the number of work groups are not explicitly specified. This is implied from the number of global work items (line 107) and the number of work items to process using one compute unite (line 108). It is also possible to execute multiple work items on 1 compute unit. This number should be equal to the number of processing elements within the compute unit for efficient data parallel execution.
 
-### _Task Parallel Processing_&#x20;
+## _Task Parallel Processing_
 
-We will now look at a different processing commonly performed in stock price analysis, known as the Golden Cross. The Golden Cross is a threshold point between a short-term moving average and a long-term moving average over time, which indicates a bull market on the horizon. This will be implemented in a task parallel manner.&#x20;
+We will now look at a different processing commonly performed in stock price analysis, known as the Golden Cross. The Golden Cross is a threshold point between a short-term moving average and a long-term moving average over time, which indicates a bull market on the horizon. This will be implemented in a task parallel manner.
 
-Unlike data parallel programming, OpenCL does not have an API to explicitly specify the index space for batch processing. Each process need to be queued explicitly using the API function clEnqueueTask().&#x20;
+Unlike data parallel programming, OpenCL does not have an API to explicitly specify the index space for batch processing. Each process need to be queued explicitly using the API function clEnqueueTask().
 
-As mentioned in Chapter 4, the command queue only allows one task to be executed at a time unless explicitly specified to do otherwise. The host side must do one of the following:&#x20;
+As mentioned in Chapter 4, the command queue only allows one task to be executed at a time unless explicitly specified to do otherwise. The host side must do one of the following:
 
-• Allow out-of-order execution of the queued commands&#x20;
+• Allow out-of-order execution of the queued commands
 
-• Create multiple command queues&#x20;
+• Create multiple command queues
 
-Creating multiple command queues will allow for explicit scheduling of the tasks by the programmer. In this section, we will use the out-of-order method and allow the API to take care of the scheduling.&#x20;
+Creating multiple command queues will allow for explicit scheduling of the tasks by the programmer. In this section, we will use the out-of-order method and allow the API to take care of the scheduling.
 
-Allowing out-of-order execution in the command queue sends the next element in queue to an available compute unit. The out-of-order mode can be set as follows.&#x20;
+Allowing out-of-order execution in the command queue sends the next element in queue to an available compute unit. The out-of-order mode can be set as follows.
 
-> Command\_queue = clCreateCommandQueue(context, device\_id,&#x20;
+> Command\_queue = clCreateCommandQueue(context, device\_id,
 >
-> CL\_QUEUE\_OUT\_OF\_ORDER\_EXEC\_MODE\_ENABLE, \&ret);&#x20;
+> CL\_QUEUE\_OUT\_OF\_ORDER\_EXEC\_MODE\_ENABLE, \&ret);
 
-The 3rd argument CL\_QUEUE\_OUT\_OF\_ORDER\_EXEC\_MODE\_ENABLE allows the command queue to send the next queued task to an available compute unit. This ends up in a scheduling of task parallel processing.&#x20;
+The 3rd argument CL\_QUEUE\_OUT\_OF\_ORDER\_EXEC\_MODE\_ENABLE allows the command queue to send the next queued task to an available compute unit. This ends up in a scheduling of task parallel processing.
 
-We will now perform task parallel processing to find the Golden Cross between a moving average over 13 weeks, and a moving average over 26 weeks. The two moving averages will be performed in a task parallel manner. We will use the code in **List 5.29** (moving\_average\_vec4.cl), varying the 4th argument to 13 and 26 for each of the moving average to be performed. The host code becomes as shown in **List 5.35**.&#x20;
+We will now perform task parallel processing to find the Golden Cross between a moving average over 13 weeks, and a moving average over 26 weeks. The two moving averages will be performed in a task parallel manner. We will use the code in **List 5.29** (moving\_average\_vec4.cl), varying the 4th argument to 13 and 26 for each of the moving average to be performed. The host code becomes as shown in **List 5.35**.
 
-**List 5.35: Host code for task parallel processing of 2 moving averages**&#x20;
+**List 5.35: Host code for task parallel processing of 2 moving averages**
 
 ```
 #include <stdlib.h>
@@ -1155,16 +1155,16 @@ int main(void)
 }
 ```
 
-The Golden Cross Point can be determined by seeing where the displayed result changes from 0 to 1.&#x20;
+The Golden Cross Point can be determined by seeing where the displayed result changes from 0 to 1.
 
-One thing to note in this example code is that the copying of the result from device to host should not occur until the processing is finished. Otherwise, the memory copy (clEnqueueReadBuffer) can occur during the processing, which would contain garbage.&#x20;
+One thing to note in this example code is that the copying of the result from device to host should not occur until the processing is finished. Otherwise, the memory copy (clEnqueueReadBuffer) can occur during the processing, which would contain garbage.
 
-Note in line 114 that "\&event13" is passed back from the clEnqueueTask() command. This is known as an event object, which specifies whether this task has finished or not. This event object is seen again in line 128 to the clEnqueueReadBuffer() command, which specifies that the read command does not start execution until the computation of the moving average over 13 weeks is finished. This is done similarly for the moving average over 26 weeks, which is submitted in line 123 and written back in line 131.&#x20;
+Note in line 114 that "\&event13" is passed back from the clEnqueueTask() command. This is known as an event object, which specifies whether this task has finished or not. This event object is seen again in line 128 to the clEnqueueReadBuffer() command, which specifies that the read command does not start execution until the computation of the moving average over 13 weeks is finished. This is done similarly for the moving average over 26 weeks, which is submitted in line 123 and written back in line 131.
 
-In summary, the Enqueue API functions in general:&#x20;
+In summary, the Enqueue API functions in general:
 
-• Inputs event object(s) that specify what it must wait for until it can be executed&#x20;
+• Inputs event object(s) that specify what it must wait for until it can be executed
 
-• Ouputs an event object that can be used to tell another task in queue to wait&#x20;
+• Ouputs an event object that can be used to tell another task in queue to wait
 
-The above two should be used to schedule the tasks in an efficient manner.&#x20;
+The above two should be used to schedule the tasks in an efficient manner.
