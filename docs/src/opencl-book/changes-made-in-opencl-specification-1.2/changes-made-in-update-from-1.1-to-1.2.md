@@ -21,14 +21,14 @@ A built-in kernel is a non-programmable kernel provided in the OpenCL implementa
 
 A few changes were made to the runtime APIs to take into account for the addition of custom devices and built-in kernels described above.
 
- The following can now be passed in as the 2nd argument to clGetDeviceInfo():
+* The following can now be passed in as the 2nd argument to clGetDeviceInfo():
 
 | cl\_device\_info                | Return Type                   | Description                                                                                                                                |
 | ------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | CL\_DEVICE\_BUILT\_IN\_KERNELS  | char\[]                       | Returns a semi-colon separated list of built-in kernels. An empty string is returned if the device does not support any built-in kernels.  |
 | CL\_DEVICE\_LOCAL\_MEM\_TYPE    | cl\_device, local\_mem\_type  | <p>Returns the type of local memory supported. CL_NONE may be returned for custom devices with no local memory support. <br></p>           |
 
- clCreateProgramWithBuiltInKernels
+* clCreateProgramWithBuiltInKernels
 
 This function is used to create an OpenCL program object from built-in kernels.
 
@@ -47,7 +47,7 @@ This function is used to create an OpenCL program object from built-in kernels.
 Upon successful execution, a non-NULL program object will be returned, with errcode\_ret set to CL\_SUCCESS. If an error occurs, NULL will be returned, with errcode\_ret set to the appropriate error code. The 4th parameter takes a semi-colon separated list of built-in kernels from which to create the program object from.\
 
 
- The following can now be passed as the 3rd argument to clCreateProgramWithBuiltInKernels()
+* The following can now be passed as the 3rd argument to clCreateProgramWithBuiltInKernels()
 
 | cl\_kernel\_work\_group\_info   | Return Type  | Description                                                            |
 | ------------------------------- | ------------ | ---------------------------------------------------------------------- |
@@ -59,7 +59,7 @@ Starting with OpenCL 1.2, an OpenCL device may be partitioned into multiple sub-
 
 **Figure7.1: Overview of device partitioning**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-12 at 11.07.44 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-12_at_11.07.44_PM.png>)
 
 A sub-device is created using the following API.
 
@@ -175,13 +175,11 @@ Similarly, the following function is used to fill an image object on the device 
 
 Note that fill\_color corresponds to the channel data type of the image object.
 
- signed RGBA if channel data is un-normalized, signed integer
+* signed RGBA if channel data is un-normalized, signed integer
 
- unsigned RGBA if channel data is un-normalize, unsigned integer
+* unsigned RGBA if channel data is un-normalize, unsigned integer
 
- float RGBA otherwise
-
-\
+* float RGBA otherwise
 
 
 The origin is a 3-element vector, each corresponding to x, y, z dimension, respectively. If image is a 2D image object, origin\[2] should be 0. If image is 1D image or 1D image buffer object, both origin\[1] and origin\[2] should be 0. If image is a 1D image array object, origin\[1] is the image index in the 1D image array. If image is a 2D image array object, origin\[2] is the image index in the 2D image array. (See 7.2.2 for new image data formats)
@@ -264,36 +262,36 @@ image\_type is set to one of the following, whose description will be discussed 
 
 image\_width is the number of pixels contained in the horizontal direction of the image. Its value must meet the following criteria.
 
- 2D image, 2D image array: image\_width < CL\_DEVICE\_IMAGE2D\_MAX\_WIDTH
+* 2D image, 2D image array: image\_width < CL\_DEVICE\_IMAGE2D\_MAX\_WIDTH
 
- 3D image: image\_width < CL\_DEVICE\_IMAGE3D\_MAX\_WIDTH
+* 3D image: image\_width < CL\_DEVICE\_IMAGE3D\_MAX\_WIDTH
 
- 1D image buffer: image\_width < CL\_DEVICE\_IMAGE\_MAX\_BUFFER\_SIZE
+* 1D image buffer: image\_width < CL\_DEVICE\_IMAGE\_MAX\_BUFFER\_SIZE
 
- 1D image, 1D image array: image\_width <= CL\_DEVICE\_IMAGE2D\_MAX\_WIDTH
+* 1D image, 1D image array: image\_width <= CL\_DEVICE\_IMAGE2D\_MAX\_WIDTH
 
 \
 
 
 image\_height is the number of pixels contained in the vertical direction of the image. This parameter is used only for 2D image, 3D image, and 2D image array. Its value must meet the following criteria.
 
- 2D image, 2D image array: image\_height <= CL\_DEVICE\_IMAGE\_2D\_MAX\_HEIGHT
+* 2D image, 2D image array: image\_height <= CL\_DEVICE\_IMAGE\_2D\_MAX\_HEIGHT
 
 \
 
 
- 3D image: image\_height <= CL\_DEVICE\_IMAGE3D\_MAX\_HEIGHT
+* 3D image: image\_height <= CL\_DEVICE\_IMAGE3D\_MAX\_HEIGHT
 
 image\_depth is the number of pixels in the image depth. This parameter is used only for a 3D image. Its value must meet the following criteria:
 
- 1 <= image\_depth && image\_depth <= CL\_DEVICE\_IMAGE3D\_MAX\_DEPTH
+* 1 <= image\_depth && image\_depth <= CL\_DEVICE\_IMAGE3D\_MAX\_DEPTH
 
 \
 
 
 image\_array\_size is the number of images in the image array. This parameter is used for 1D image array and 2D image array. Its value must meet the following criteria.
 
- 1 <= image\_array\_size && image\_array\_size <= CL\_DEVICE\_IMAGE\_MAX\_ARRAY\_SIZE
+* 1 <= image\_array\_size && image\_array\_size <= CL\_DEVICE\_IMAGE\_MAX\_ARRAY\_SIZE
 
 \
 
@@ -308,7 +306,7 @@ buffer is specified when creating a 1D image buffer object from an existing buff
 
 **Figure 7.2: Image object parameters**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-12 at 11.16.05 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-12_at_11.16.05_PM.png>)
 
 By setting the parameters as described, clCreateImage allows creation of all types of images.
 
@@ -344,10 +342,10 @@ This provides a mechanism for explicit control over the location of memory objec
 
 Up until OpenCL 1.1, compilation and linking of programs could only be done together using clBuildProgram. Starting with OpenCL 1.2, this process can be done separately. In addition, the following can now be performed.
 
- Embedded Header: Allows header sources to come from program objects instead of just head files, instead of having to include the search path of the header in the build option. \
+* Embedded Header: Allows header sources to come from program objects instead of just head files, instead of having to include the search path of the header in the build option. \
 
 
- Libraries: The linker allows for linking of compiled objects and libraries into a program executable or library. \
+* Libraries: The linker allows for linking of compiled objects and libraries into a program executable or library. \
 
 
 The following function is used for compiling a program.
@@ -531,13 +529,13 @@ The difference between this and clEnqueueMarkerWithWaitLIist is that this functi
 
 Up until OpenCL 1.1, the available built-in data types for images were image2d\_t for 2D image object, and image3d\_t for 3D image object. OpenCL 1.2 introduced the following new image data types.
 
- image1d\_t: 1D image data
+* image1d\_t: 1D image data
 
- image1d\_buffer\_t: image data created from buffer object
+* image1d\_buffer\_t: image data created from buffer object
 
- image1d\_array: array of 1D image data
+* image1d\_array: array of 1D image data
 
- image2d\_array\_t: array of 2D image data
+* image2d\_array\_t: array of 2D image data
 
 
 
@@ -549,31 +547,31 @@ The image data types are used only as a parameter to kernel functions, since it 
 
 The following new built-in functions were introduced in OpenCL 1.2.
 
- gentype popcount(gentype x)
+* gentype popcount(gentype x)
 
 
 
 Returns the number of non-zero bits in x. The gentype here corresponds to char, char{2|3|4|8|16}, uchar, uchar{2,3,4,8,16}, short, short{2,3,4,8,16}, ushort, ushort{2|3|4|8|16}, int, int{2|3|4|8|16}, int, int{2|3|4|8|16}, uint, uint{2|3|4|8|16}, long, long|2|3|4|8|16}, ulong, ulong{2|3|4|8|16}.
 
- int printf(constant char \*restrict format, ...)
+* int printf(constant char \*restrict format, ...)
 
- Performs the same operation as the printf in C (C99), with the following differences.
+* Performs the same operation as the printf in C (C99), with the following differences.
 
- The length modifier **l** is not supported for format placeholders **c** and **s**
+* The length modifier **l** is not supported for format placeholders **c** and **s**
 
- Length modifier ll, j, z, t, L are reserved, but not supported
+* Length modifier ll, j, z, t, L are reserved, but not supported
 
- Conversion specifier **n** is reserved, but not supported
+* Conversion specifier **n** is reserved, but not supported
 
- Vector specifier **vn** is supported for the printing of vector types
+* Vector specifier **vn** is supported for the printing of vector types
 
- A float argument is converted to double for conversion specifiers **f**, **F**, **e**, **E**, **g**, **G**, **a**, **A** only when the double data type is supported.
+* A float argument is converted to double for conversion specifiers **f**, **F**, **e**, **E**, **g**, **G**, **a**, **A** only when the double data type is supported.
 
- For the embedded profile, the length modifier **l** is supported only when 64-bit integers are supported
+* For the embedded profile, the length modifier **l** is supported only when 64-bit integers are supported
 
- Returns 0 is success, and -1 when error occurs during a call to printf
+* Returns 0 is success, and -1 when error occurs during a call to printf
 
- The conversion specifier **s** can be used only for arguments that are literal strings
+* The conversion specifier **s** can be used only for arguments that are literal strings
 
 **Changes in Extensions**
 
@@ -593,11 +591,11 @@ The \_\_OPENCL\_C\_VERSION\_\_ was added, which corresponds to the OpenCL C vers
 
 In addition to what has already been discussed in the previous sections, the following functions have become deprecated.
 
- clUnloadCompiler, clGetExtensionFunctionAddress
+* clUnloadCompiler, clGetExtensionFunctionAddress
 
- clCreateFromGLTexture2D, clCreateFromGLTexture3D
+* clCreateFromGLTexture2D, clCreateFromGLTexture3D
 
- CL\_DEVICE\_MIN\_DATA\_TYPE\_ALIGN\_SIZE enum to be passed into clGetDeviceInfo
+* CL\_DEVICE\_MIN\_DATA\_TYPE\_ALIGN\_SIZE enum to be passed into clGetDeviceInfo
 
 **Sample Program using the new features**
 

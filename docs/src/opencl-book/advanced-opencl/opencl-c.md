@@ -127,7 +127,7 @@ OpenCL defines vector data-types, which is basically a struct consisting of many
 
 **Figure 5.1: Vector data-type examples**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-05 at 9.09.54 AM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-05_at_9.09.54_AM.png>)
 
 Each component in the vector is referred to as a scalar-type. A group of these scalar-type values defines a vector data-type.
 
@@ -217,7 +217,7 @@ Some operators are overloaded to support arithmetic operation on vector types. F
 
 **Figure 5.2: Addition of 2 vector-types**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-05 at 9.16.31 AM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-05_at_9.16.31_AM.png>)
 
 In general, the vector operation would be the same for each component, with the exception to comparison and ternary selection operations. The results of comparison and selection operations are shown in the sections to follow.
 

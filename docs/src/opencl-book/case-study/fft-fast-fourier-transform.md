@@ -14,7 +14,7 @@ _Fourier Transform_
 
 **Figure 6.1: Fourier Transform**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.17.05 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.17.05_PM.png>)
 
 The output of the Fourier Transform contains all of its input. A process known as the Inverse Fourier Transform can be used to retrieve the original signal.
 
@@ -22,13 +22,13 @@ The Fourier Transform is a process commonly used in many fields. Many programs u
 
 The mathematical formula for the Fourier Transform process is shown below
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.20.55 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.20.55_PM.png>)
 
 The "i" is an imaginary number, and ω is the frequency in radians.
 
 As you can see from its definition, the Fourier Transform operates on continuous data. However, continuous data means it contains infinite number of points with infinite precision. For this processing to be practical, it must be able to process a data set that contains a finite number of elements. Therefore, a process known as the Discrete Fourier Transform (DFT) was developed to estimate the Fourier Transform, which operates on a finite data set. The mathematical formula is shown below.
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.21.38 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.21.38_PM.png>)
 
 This formula now allows processing of digital data with a finite number of samples. The problem with this method, however, is that its O(N^2). As the number of points is increased, the processing time grows by a power of 2.
 
@@ -44,11 +44,11 @@ The core computation in this FFT algorithm is what is known as the "Butterfly Op
 
 **Figure 6.2: Butterfly Operation**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.22.25 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.22.25_PM.png>)
 
 The "W" seen in the signal flow graph is defined as below.
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.23.03 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.23.03_PM.png>)
 
 Looking at **Figure 6.2**, you may notice the indices of the input are in a seemingly random order. We will not get into details on why this is done in this text except that it is an optimization method, but note that what is known as "bit-reversal" is performed on the indices of the input. The input order in binary is (000, 100, 010, 110, 001, 101, 011, 111). Notice that if you reverse the bit ordering of (100), you get (001). So the new input indices are in numerical order, except that the bits are reversed.
 
@@ -62,17 +62,17 @@ When 2-D FFT is performed, the FFT is first taken for each row, transposed, and 
 
 **Figure 6.3: 2-D FFT**
 
-![Bandpass Filtering and Inverse Fourier Transform ](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.25.14 PM.png>)
+![Bandpass_Filtering_and_Inverse_Fourier_Transform_](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.25.14_PM.png>)
 
 As stated earlier, the signal that has been transformed to the frequency domain via Fourier Transform can be transformed back using the Inverse Fourier Transform. Using this characteristic, it is possible to perform frequency-based filtering while in the frequency domain and transform back to the original domain. For example, the low-frequency components can be cut, which leaves the part of the image where a sudden change occurs. This is known as an "Edge Filter", and its result is shown in **Figure 6.4**a. If the high-frequency components are cut instead, the edges will be blurred, resulting in an image shown in **Figure 6.4**b. This is known as a "low-pass filter".
 
 **Figure 6.4: Edge Filter and Low-pass Filter**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.26.16 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.26.16_PM.png>)
 
 The mathematical formula for Inverse Discrete Fourier Transform is shown below.
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.26.46 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.26.46_PM.png>)
 
 Note its similarity with the DFT formula. The only differences are:
 
@@ -88,7 +88,7 @@ The overall program flow-chart is shown in **Figure 6.5** below.
 
 **Figure 6.5: Program flow-chart**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.34.50 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.34.50_PM.png>)
 
 Each process is dependent on the previous process, so each of the steps must be followed in sequence. A kernel will be written for each of the processes in **Figure 6.5**.
 
@@ -537,7 +537,7 @@ The code in **List 6.3** is used to pre-compute the value of the spin factor "w"
 
 **Figure 6.6: Spin factor for n=8**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.40.41 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.40.41_PM.png>)
 
 The pre-computing of the values for "w" creates what is known as a "lookup table", which stores values to be used repeatedly on the memory. On some devices, such as the GPU, it may prove to be faster if the same operation is performed each time, as it may be more expensive to access the memory.
 
@@ -1086,7 +1086,7 @@ When all the sources are compiled and executed on an image, the picture shown in
 
 **Figure 6.7: Edge Detection**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.47.53 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.47.53_PM.png>)
 
 ## _Measuring Execution Time_
 

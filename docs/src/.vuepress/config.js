@@ -80,11 +80,29 @@ module.exports = {
       title: 'Basic OpenCL',
       collapsable: false,
       children: [ 
-      ['/opencl-book/basic-opencl/basic-program-flow.md','Basic Program Flow'],
+      ['/opencl-book/basic-opencl/basic-program-flow','Basic Program Flow'],
       ['/opencl-book/basic-opencl/online-offline-compilation','Online/Offline Compilation'],
       ['/opencl-book/basic-opencl/calling-the-kernel','Calling the Kernel'],
       ]
     },
+    {
+      title: 'Advanced OpenCL',
+      collapsable: false,
+      children: [ 
+      ['/opencl-book/advanced-opencl/opencl-c','OpenCL C'],
+      ['/opencl-book/advanced-opencl/opencl-programming-practice','OpenCL Programming Practice'],
+      ]
+    },
+    {
+      title: 'Changes made in OpenCL Specification 1.2',
+      collapsable: false,
+      children: [ 
+      ['/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.0-to-1.1','Changes made in update from 1.0 to 1.1'],
+      ['/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.1-to-1.2','Changes made in update from 1.1 to 1.2'],
+      ]
+    },
+    '/opencl-book/references',
+    '/opencl-book/notes',
     ]
   },
 

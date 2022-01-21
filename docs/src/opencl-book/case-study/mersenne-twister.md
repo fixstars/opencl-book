@@ -20,7 +20,7 @@ MT starts out with an initial state made up of an array of bits. By going throug
 
 **Figure 6.8: MT processing**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 10.59.26 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_10.59.26_PM.png>)
 
 Studying the diagram in **Figure 6.8**, we see a dependency of the states, which gets in the way of parallel processing. To get around this problem, the following 2 methods come to mind.
 
@@ -70,9 +70,9 @@ The Monte Carlo method can be used as follows. Assume that a quarter of a circle
 
 **Figure 6.9: Computing PI using Monte Carlo**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 11.01.35 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_11.01.35_PM.png>)
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 11.02.16 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_11.02.16_PM.png>)
 
 **List 6.16** shows the kernel code and **List 6.17** shows the host code for this program. The host program includes the commands required to measure the execution time, which we will use when we get to the optimization phase.
 
@@ -671,7 +671,7 @@ The code in the previous section performed all the operation on one compute unit
 
 **Figure 6.10: OpenCL work-item and its hardware correspondences**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-11 at 11.19.05 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-11_at_11.19.05_PM.png>)
 
 Please refer to the "CUDA ™ Programming Guide" contained in the NVIDIA SDK for more details on the NVIDIA processor architecture \[8].
 
@@ -907,7 +907,7 @@ First, we will tackle the computation of PI. In the original code, each work-ite
 
 **Figure 6.11: Grouping of work-items**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-12 at 9.39.48 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-12_at_9.39.48_PM.png>)
 
 The changes in the code are shown below.
 
@@ -1027,7 +1027,7 @@ We will use one warp to perform the update of the state, as well as the temperin
 
 **Figure 6.12: Distribution of work-items for MT**
 
-![](<../.gitbook/assets/Screen Shot 2022-01-12 at 9.42.16 PM.png>)
+![](<../.gitbook/assets/Screen_Shot_2022-01-12_at_9.42.16_PM.png>)
 
 Note that this optimization is done by using the property of NVIDIA GPUs, so making this change may not allow for proper operation on other devices.
 

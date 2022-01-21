@@ -222,27 +222,27 @@ OpenCL 1.0 supported 2, 4, 8, and 16 as the number of elements. OpenCL 1.1 now a
 
 The following built-in functions are now available:
 
- size\_t get\_global\_offset(uint dimindx)
+* size\_t get\_global\_offset(uint dimindx)
 
 
 
 Retrieves the offset value which is set as the 4th argument to clEnqueueNDRangeKernel(). dimindx is the dimension from which to retrieve the offset from.
 
- gentype maxmag(gentype x, gentype y)
+* gentype maxmag(gentype x, gentype y)
 
 
 
 Returns gentype with a higher magnitude. Returns x if |x| > |y|, y if |y| > |x|, otherwise fmax(x,y). The gentype that is referred to correspond to one of: float, float2, float3, float4, float8, and float16. In OpenCL 1.2, double, double2, double3, double4, double8, and double16 are supported.
 
- getntype minmag(gentype x, gentype y)
+* getntype minmag(gentype x, gentype y)
 
 
 
 Returns gentype with a lower magnitude. Returns x if |x| C |y|, y if |y| < |x|, otherwise fmin(x,y). The gentype corresponds to one of: float, float2, float3, float4, float8, and float16. In OpenCL 1.2, double, double2, double3, double4, double8, and double16 are supported.
 
- gentype clamp(gentype x, gentype minval, genotype maxval)
+* gentype clamp(gentype x, gentype minval, genotype maxval)
 
- genotype clamp(gentype x, sgentype minval, sgentype maxval)
+* genotype clamp(gentype x, sgentype minval, sgentype maxval)
 
 
 
@@ -252,17 +252,17 @@ Clamps the value of _x_ to minval and maxval. The gentype corresponds to one of:
 
 The following features that were available as extensions in OpenCL 1.0 are now supported as core features:
 
- cl\_khr\_byte\_addressable\_store
+* cl\_khr\_byte\_addressable\_store
 
 In OpenCL 1.0, writing to memory using data types with size less than 32-bits to access the address, which includes char, uchar, uchar2, short, ushort, and half, were offered as extensions. OpenCL 1.1 now supports these by default.
 
- cl\_khr\_global\_int32\_base\_atomics
+* cl\_khr\_global\_int32\_base\_atomics
 
- cl\_khr\_global\_int32\_extended\_atomics
+* cl\_khr\_global\_int32\_extended\_atomics
 
- cl\_khr\_local\_int32\_base\_atomics
+* cl\_khr\_local\_int32\_base\_atomics
 
- cl\_khr\_local\_int32\_extended\_atomics
+* cl\_khr\_local\_int32\_extended\_atomics
 
 
 
@@ -272,15 +272,15 @@ In OpenCL 1.0, atomic operations of int, uint, and float data in \_\_global or \
 
 The following macros are defined, which can be used to switch kernel code depending on the OpenCL version.
 
- CL\_VERSION\_1\_0: substitutes the integer 100 reflecting the OpenCL 1.0 version
+* CL\_VERSION\_1\_0: substitutes the integer 100 reflecting the OpenCL 1.0 version
 
- CL\_VERSION\_1\_1: substitutes the integer 110 reflecting the OpenCL 1.1 version.
+* CL\_VERSION\_1\_1: substitutes the integer 110 reflecting the OpenCL 1.1 version.
 
 
 
 In OpenCL 1.2 the following will be defined:
 
- CL\_VERSION\_1\_2: substitutes the integer 120 reflecting the OpenCL 1.2 version.
+* CL\_VERSION\_1\_2: substitutes the integer 120 reflecting the OpenCL 1.2 version.
 
 
 
@@ -290,23 +290,23 @@ The above value can be compared with \_\_OPENCL\_VERSION\_\_ to switch between O
 
 The following features were deprecated in OpenCL 1.1:
 
- clSetCommandQueueProperty()
+* clSetCommandQueueProperty()
 
- \_\_ROUNDING\_MODE\_\_ macro
+* \_\_ROUNDING\_MODE\_\_ macro
 
- "-cl-strict-aliasing" as an option to clBuildProgram()
+* "-cl-strict-aliasing" as an option to clBuildProgram()
 
 **Changes in Extensions**
 
 The following extensions became available in OpenCL 1.1:
 
- cl\_khr\_gl\_event
+* cl\_khr\_gl\_event
 
 
 
 While there are other extensions that allows memory objects to be shared between OpenGL and OpenCL, this extension allows creating OpenCL event objects linked to OpenGL fence sync objects, potentially improving efficiency of sharing images and buffers between the two APIs.
 
- cl\_khr\_d3d10\_sharing \
+* cl\_khr\_d3d10\_sharing \
 
 
 This extension provides interoperability between OpenCL and Direct3D 10. This is designed to function analogously to the OpenGL interoperability, providing functions for sharing memory objects, as well as other utility functions.
