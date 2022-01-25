@@ -2,7 +2,7 @@
 home: true
 heroImage: https://us.fixstars.com/images/demo/openclprogrammingbook.jpg
 tagline: 
-actionText: Explore →
+actionText: Explore Live Change →
 actionLink: /opencl-book/
 footer: Copyright © Fixstars Solutions 2022
 ---

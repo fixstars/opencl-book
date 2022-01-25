@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Calling the Kernel | OpenCL Book</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="">
+    <meta name="theme-color" content="#2492f3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/test-book/assets/css/0.styles.79946ec9.css" as="style"><link rel="preload" href="/test-book/assets/js/app.b513c2d8.js" as="script"><link rel="preload" href="/test-book/assets/js/2.8dbd29eb.js" as="script"><link rel="preload" href="/test-book/assets/js/6.f687cbd5.js" as="script"><link rel="prefetch" href="/test-book/assets/js/10.b635290b.js"><link rel="prefetch" href="/test-book/assets/js/11.c0ed33a0.js"><link rel="prefetch" href="/test-book/assets/js/12.7e83236b.js"><link rel="prefetch" href="/test-book/assets/js/13.5fb1d917.js"><link rel="prefetch" href="/test-book/assets/js/14.90f24845.js"><link rel="prefetch" href="/test-book/assets/js/15.db0c382e.js"><link rel="prefetch" href="/test-book/assets/js/16.e7b0bbcf.js"><link rel="prefetch" href="/test-book/assets/js/17.e1d44dc5.js"><link rel="prefetch" href="/test-book/assets/js/18.b358550b.js"><link rel="prefetch" href="/test-book/assets/js/19.b36a0ae6.js"><link rel="prefetch" href="/test-book/assets/js/20.7c7e8734.js"><link rel="prefetch" href="/test-book/assets/js/21.4aa9dac7.js"><link rel="prefetch" href="/test-book/assets/js/22.b98ab071.js"><link rel="prefetch" href="/test-book/assets/js/23.6529153b.js"><link rel="prefetch" href="/test-book/assets/js/24.7db70101.js"><link rel="prefetch" href="/test-book/assets/js/25.4e203b3a.js"><link rel="prefetch" href="/test-book/assets/js/26.ae7fe068.js"><link rel="prefetch" href="/test-book/assets/js/27.8a49061d.js"><link rel="prefetch" href="/test-book/assets/js/28.c467ee16.js"><link rel="prefetch" href="/test-book/assets/js/29.51098aba.js"><link rel="prefetch" href="/test-book/assets/js/3.87c07e7d.js"><link rel="prefetch" href="/test-book/assets/js/30.72f82acf.js"><link rel="prefetch" href="/test-book/assets/js/31.6c8aaa12.js"><link rel="prefetch" href="/test-book/assets/js/32.8f1dcdbc.js"><link rel="prefetch" href="/test-book/assets/js/33.4017c4ea.js"><link rel="prefetch" href="/test-book/assets/js/34.e63ef5ea.js"><link rel="prefetch" href="/test-book/assets/js/35.b29ee815.js"><link rel="prefetch" href="/test-book/assets/js/4.36850638.js"><link rel="prefetch" href="/test-book/assets/js/5.042bebf2.js"><link rel="prefetch" href="/test-book/assets/js/7.eea66bef.js"><link rel="prefetch" href="/test-book/assets/js/8.1076ef6a.js"><link rel="prefetch" href="/test-book/assets/js/9.ce0ca980.js">
+    <link rel="stylesheet" href="/test-book/assets/css/0.styles.79946ec9.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/test-book/" class="home-link router-link-active"><!----> <span class="site-name">OpenCL Book</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/test-book/opencl-book/" class="nav-link router-link-active">
+  OpenCL Book
+</a></div><div class="nav-item"><a href="https://us.fixstars.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Fixstars Solutions
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/test-book/opencl-book/" class="nav-link router-link-active">
+  OpenCL Book
+</a></div><div class="nav-item"><a href="https://us.fixstars.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Fixstars Solutions
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/test-book/opencl-book/" aria-current="page" class="sidebar-link">Foreword</a></li><li><a href="/test-book/opencl-book/who-should-read-this-book.html" class="sidebar-link">Who Should Read this Book?</a></li><li><a href="/test-book/opencl-book/about-the-authors.html" class="sidebar-link">About the Authors</a></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Introduction to Parallelization</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/introduction-to-parallelization/why-parallelization.html" class="sidebar-link">Why Parallelization</a></li><li><a href="/test-book/opencl-book/introduction-to-parallelization/parallel-computing-hardware.html" class="sidebar-link">Parallel Computing Hardware</a></li><li><a href="/test-book/opencl-book/introduction-to-parallelization/parallel-computing-software.html" class="sidebar-link">Parallel Computing Software</a></li><li><a href="/test-book/opencl-book/introduction-to-parallelization/conclusion.html" class="sidebar-link">Conclusion</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/opencl/what-is-opencl.html" class="sidebar-link">What is OpenCL?</a></li><li><a href="/test-book/opencl-book/opencl/historical-background.html" class="sidebar-link">Historical Background</a></li><li><a href="/test-book/opencl-book/opencl/an-overview-of-opencl.html" class="sidebar-link">An Overview of OpenCL</a></li><li><a href="/test-book/opencl-book/opencl/why-opencl.html" class="sidebar-link">Why OpenCL?</a></li><li><a href="/test-book/opencl-book/opencl/applicable-platforms.html" class="sidebar-link">Applicable Platforms</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>OpenCL Setup</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/opencl-setup/available-opencl-environments.html" class="sidebar-link">Available OpenCL Environments</a></li><li><a href="/test-book/opencl-book/opencl-setup/development-environment-setup.html" class="sidebar-link">Development Environment Setup</a></li><li><a href="/test-book/opencl-book/opencl-setup/first-opencl-program.html" class="sidebar-link">First OpenCL Program</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Basic OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/basic-opencl/basic-program-flow.html" class="sidebar-link">Basic Program Flow</a></li><li><a href="/test-book/opencl-book/basic-opencl/online-offline-compilation.html" class="sidebar-link">Online/Offline Compilation</a></li><li><a href="/test-book/opencl-book/basic-opencl/calling-the-kernel.html" aria-current="page" class="active sidebar-link">Calling the Kernel</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/test-book/opencl-book/basic-opencl/calling-the-kernel.html#work-group" class="sidebar-link">Work Group</a></li><li class="sidebar-sub-header"><a href="/test-book/opencl-book/basic-opencl/calling-the-kernel.html#task-parallelism-and-event-object" class="sidebar-link">Task Parallelism and Event Object</a></li></ul></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Advanced OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/advanced-opencl/opencl-c.html" class="sidebar-link">OpenCL C</a></li><li><a href="/test-book/opencl-book/advanced-opencl/opencl-programming-practice.html" class="sidebar-link">OpenCL Programming Practice</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Changes made in OpenCL Specification 1.2</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.0-to-1.1.html" class="sidebar-link">Changes made in update from 1.0 to 1.1</a></li><li><a href="/test-book/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.1-to-1.2.html" class="sidebar-link">Changes made in update from 1.1 to 1.2</a></li></ul></section></li><li><a href="/test-book/opencl-book/references.html" class="sidebar-link">References</a></li><li><a href="/test-book/opencl-book/notes.html" class="sidebar-link">Notes</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="calling-the-kernel"><a href="#calling-the-kernel" class="header-anchor">#</a> Calling the Kernel</h1> <p><em>Data Parallelism and Task Parallelism</em></p> <p>As stated in the &quot;1-3-3 Types of Parallelism&quot; section, parallelizable code is either &quot;Data Parallel&quot; or &quot;Task Parallel&quot;. In OpenCL, the difference between the two is whether the same kernel or different kernels are executed in parallel. The difference becomes obvious in terms of execution time when executed on the GPU.</p> <p>At present, most GPUs contain multiple processors, but hardware such as instruction fetch and program counters are shared across the processors. For this reason, the GPUs are incapable of running different tasks in parallel.</p> <p>As shown in <strong>Figure 4.3</strong>, when multiple processors perform the same task, the number of tasks equal to the number of processors can be performed at once. <strong>Figure 4.4</strong> shows the case when multiple tasks are scheduled to be performed in parallel on the GPU. Since the processors can only process the same set of instructions across the cores, the processors scheduled to process Task B must be in idle mode until Task A is finished.</p> <p><strong>Figure 4.3: Efficient use of the GPU</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-05_at_7.58.32_AM.a6758b61.png" alt=""></p> <p>For data parallel tasks suited for a device like the GPU, OpenCL provides an API to run the same kernel across multiple processors, called clEnqueueNDRangeKernel(). When developing an application, the task type and the hardware need to be considered wisely, and use the appropriate API function.</p> <p>This section will use vector-ized arithmetic operation to explain the basic method of implementations for data parallel and task parallel commands. The provided sample code is meant to illustrate the parallelization concepts.</p> <p>The sample code performs the basic arithmetic operations, which are addition, subtraction, multiplication and division, between float values. The overview is shown in <strong>Figure 4.5</strong>.</p> <p><strong>Figure 4.5: Basic arithmetic operations between floats</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-05_at_7.59.59_AM.8a122a48.png" alt=""></p> <p>As the figure shows, the input data consists of 2 sets of 4x4 matrices A and B. The output data is a 4x4 matrix C.</p> <p>We will first show the data-parallel implementation (<strong>List 4.8</strong>, <strong>List 4.9</strong>). This program treats each row of data as one group in order to perform the computation.</p> <p><strong>List 4.8: Data parallel model - kernel dataParallel.cl</strong></p> <div class="language- extra-class"><pre class="language-text"><code>__kernel void dataParallel(__global float *A, __global float *B, __global float *C)
+{
+    int base = 4 * get_global_id(0);
+
+    C[base + 0] = A[base + 0] + B[base + 0];
+    C[base + 1] = A[base + 1] - B[base + 1];
+    C[base + 2] = A[base + 2] * B[base + 2];
+    C[base + 3] = A[base + 3] / B[base + 3];
+}
+</code></pre></div><p><strong>List 4.9: Data parallel model - host dataParallel.c</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#ifdef __APPLE__
+#include &lt;OpenCL/opencl.h&gt;
+#else
+#include &lt;CL/cl.h&gt;
+#endif
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main()
+{
+    cl_platform_id platform_id = NULL;
+    cl_device_id device_id = NULL;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_mem Amobj = NULL;
+    cl_mem Bmobj = NULL;
+    cl_mem Cmobj = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel = NULL;
+    cl_uint ret_num_devices;
+    cl_uint ret_num_platforms;
+    cl_int ret;
+
+    int i, j;
+    float *A;
+    float *B;
+    float *C;
+
+    A = (float *)malloc(4 * 4 * sizeof(float));
+    B = (float *)malloc(4 * 4 * sizeof(float));
+    C = (float *)malloc(4 * 4 * sizeof(float));
+
+    FILE *fp;
+    const char fileName[] = &quot;./dataParallel.cl&quot;;
+    size_t source_size;
+    char *source_str;
+
+    /* Load kernel source file */
+    fp = fopen(fileName, &quot;r&quot;);
+    if (!fp)
+    {
+        fprintf(stderr, &quot;Failed to load kernel.¥n&quot;);
+        exit(1);
+    }
+    source_str = (char *)malloc(MAX_SOURCE_SIZE);
+    source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Initialize input data */
+    for (i = 0; i &lt; 4; i++)
+    {
+        for (j = 0; j &lt; 4; j++)
+        {
+            A[i * 4 + j] = i * 4 + j + 1;
+            B[i * 4 + j] = j * 4 + i + 1;
+        }
+    }
+
+    /* Get Platform/Device Information 
+ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms); 
+ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id, &amp;ret_num_devices); 
+
+/* Create OpenCL Context */
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    *Create command queue * /
+        command_queue = clCreateCommandQueue(context, device_id, 0, &amp;ret);
+
+    *Create Buffer Object * /
+        Amobj = clCreateBuffer(context, CL_MEM_READ_WRITE, 4 * 4 * sizeof(float), NULL, &amp;ret);
+    Bmobj = clCreateBuffer(context, CL_MEM_READ_WRITE, 4 * 4 * sizeof(float), NULL, &amp;ret);
+    Cmobj = clCreateBuffer(context, CL_MEM_READ_WRITE, 4 * 4 * sizeof(float), NULL, &amp;ret);
+
+    /* Copy input data to the memory buffer */
+    ret = clEnqueueWriteBuffer(command_queue, Amobj, CL_TRUE, 0, 4 * 4 * sizeof(float), A, 0, NULL, NULL);
+    ret = clEnqueueWriteBuffer(command_queue, Bmobj, CL_TRUE, 0, 4 * 4 * sizeof(float), B, 0, NULL, NULL);
+
+    /* Create kernel program from source file*/
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;source_str, (const size_t *)&amp;source_size, &amp;ret);
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    /* Create data parallel OpenCL kernel */
+    kernel = clCreateKernel(program, &quot;dataParallel&quot;, &amp;ret);
+
+    /* Set OpenCL kernel arguments */
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&amp;Amobj);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&amp;Bmobj);
+    ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&amp;Cmobj);
+
+    size_t global_item_size = 4;
+    size_t local_item_size = 1;
+
+    /* Execute OpenCL kernel as data parallel */
+    ret = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL,
+                                 &amp;global_item_size, &amp;local_item_size, 0, NULL, NULL);
+
+    /* Transfer result to host */
+    ret = clEnqueueReadBuffer(command_queue, Cmobj, CL_TRUE, 0, 4 * 4 * sizeof(float), C, 0, NULL, NULL);
+
+    /* Display Results */
+    for (i = 0; i &lt; 4; i++)
+    {
+        for (j = 0; j &lt; 4; j++)
+        {
+            printf(&quot;%7.2f &quot;, C[i * 4 + j]);
+        }
+        printf(&quot;¥n&quot;);
+    }
+
+    /* Finalization */
+    ret = clFlush(command_queue);
+    ret = clFinish(command_queue);
+    ret = clReleaseKernel(kernel);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(Amobj);
+    ret = clReleaseMemObject(Bmobj);
+    ret = clReleaseMemObject(Cmobj);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+
+    free(source_str);
+
+    free(A);
+    free(B);
+    free(C);
+
+    return 0;
+}
+</code></pre></div><p>Next, we will show the task parallel version of the same thing (<strong>List 4.10</strong>, <strong>List 4.11</strong>). In this sample, the tasks are grouped according to the type of arithmetic operation being performed.</p> <p><strong>List 4.10: Task parallel model - kernel taskParallel.cl</strong></p> <div class="language- extra-class"><pre class="language-text"><code>__kernel void taskParallelAdd(__global float *A, __global float *B, __global float *C)
+{
+    int base = 0;
+
+    C[base + 0] = A[base + 0] + B[base + 0];
+    C[base + 4] = A[base + 4] + B[base + 4];
+    C[base + 8] = A[base + 8] + B[base + 8];
+    C[base + 12] = A[base + 12] + B[base + 12];
+}
+
+__kernel void taskParallelSub(__global float *A, __global float *B, __global float *C)
+{
+    int base = 1;
+
+    C[base + 0] = A[base + 0] - B[base + 0];
+    C[base + 4] = A[base + 4] - B[base + 4];
+    C[base + 8] = A[base + 8] - B[base + 8];
+    C[base + 12] = A[base + 12] - B[base + 12];
+}
+
+__kernel void taskParallelMul(__global float *A, __global float *B, __global float *C)
+{
+    int base = 2;
+
+    C[base + 0] = A[base + 0] * B[base + 0];
+    C[base + 4] = A[base + 4] * B[base + 4];
+    C[base + 8] = A[base + 8] * B[base + 8];
+    C[base + 12] = A[base + 12] * B[base + 12];
+}
+
+__kernel void taskParallelDiv(__global float *A, __global float *B, __global float *C)
+{
+    int base = 3;
+
+    C[base + 0] = A[base + 0] / B[base + 0];
+    C[base + 4] = A[base + 4] / B[base + 4];
+    C[base + 8] = A[base + 8] / B[base + 8];
+    C[base + 12] = A[base + 12] / B[base + 12];
+}
+</code></pre></div><p><strong>List 4.11: Task parallel model - host taskParallel.c</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#ifdef __APPLE__
+#include &lt;OpenCL/opencl.h&gt;
+#else
+#include &lt;CL/cl.h&gt;
+#endif
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main()
+{
+    cl_platform_id platform_id = NULL;
+    cl_device_id device_id = NULL;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_mem Amobj = NULL;
+    cl_mem Bmobj = NULL;
+    cl_mem Cmobj = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel[4] = {NULL, NULL, NULL, NULL};
+    cl_uint ret_num_devices;
+    cl_uint ret_num_platforms;
+    cl_int ret;
+
+    int i, j;
+    float *A;
+    float *B;
+    float *C;
+
+    A = (float *)malloc(4 * 4 * sizeof(float));
+    B = (float *)malloc(4 * 4 * sizeof(float));
+    C = (float *)malloc(4 * 4 * sizeof(float));
+
+    FILE *fp;
+    const char fileName[] = &quot;./taskParallel.cl&quot;;
+    size_t source_size;
+    char *source_str;
+
+    /* Load kernel source file */
+    fp = fopen(fileName, &quot;rb&quot;);
+    if (!fp)
+    {
+        fprintf(stderr, &quot;Failed to load kernel.¥n&quot;);
+        exit(1);
+    }
+    source_str = (char *)malloc(MAX_SOURCE_SIZE);
+    source_size = fread(source_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Initialize input data */
+    for (i = 0; i &lt; 4; i++)
+    {
+        for (j = 0; j &lt; 4; j++)
+        {
+            A[i * 4 + j] = i * 4 + j + 1;
+            B[i * 4 + j] = j * 4 + i + 1;
+        }
+    }
+
+    /* Get platform/device information */
+    ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+    ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id, &amp;ret_num_devices);
+
+    /* Create OpenCL Context */
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    /* Create command queue */
+    command_queue = clCreateCommandQueue(context, device_id, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &amp;ret);
+
+    /* Create buffer object */
+    Amobj = clCreateBuffer(context, CL_MEM_READ_WRITE, 4 * 4 * sizeof(float), NULL, &amp;ret);
+    Bmobj = clCreateBuffer(context, CL_MEM_READ_WRITE, 4 * 4 * sizeof(float), NULL, &amp;ret);
+    Cmobj = clCreateBuffer(context, CL_MEM_READ_WRITE, 4 * 4 * sizeof(float), NULL, &amp;ret);
+
+    /* Copy input data to memory buffer */
+    ret = clEnqueueWriteBuffer(command_queue, Amobj, CL_TRUE, 0, 4 * 4 * sizeof(float), A, 0, NULL, NULL);
+    ret = clEnqueueWriteBuffer(command_queue, Bmobj, CL_TRUE, 0, 4 * 4 * sizeof(float), B, 0, NULL, NULL);
+
+    /* Create kernel from source */
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;source_str, (const size_t *)&amp;source_size, &amp;ret);
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    /* Create task parallel OpenCL kernel */
+    kernel[0] = clCreateKernel(program, &quot;taskParallelAdd&quot;, &amp;ret);
+    kernel[1] = clCreateKernel(program, &quot;taskParallelSub&quot;, &amp;ret);
+    kernel[2] = clCreateKernel(program, &quot;taskParallelMul&quot;, &amp;ret);
+    kernel[3] = clCreateKernel(program, &quot;taskParallelDiv&quot;, &amp;ret);
+
+    /* Set OpenCL kernel arguments */
+    for (i = 0; i &lt; 4; i++)
+    {
+        ret = clSetKernelArg(kernel[i], 0, sizeof(cl_mem), (void *)&amp;Amobj);
+        ret = clSetKernelArg(kernel[i], 1, sizeof(cl_mem), (void *)&amp;Bmobj);
+        ret = clSetKernelArg(kernel[i], 2, sizeof(cl_mem), (void *)&amp;Cmobj);
+    }
+
+    /* Execute OpenCL kernel as task parallel */
+    for (i = 0; i &lt; 4; i++)
+    {
+        ret = clEnqueueTask(command_queue, kernel[i], 0, NULL, NULL);
+    }
+
+    /* Copy result to host */
+    ret = clEnqueueReadBuffer(command_queue, Cmobj, CL_TRUE, 0, 4 * 4 * sizeof(float), C, 0, NULL, NULL);
+
+    /* Display result */
+    for (i = 0; i &lt; 4; i++)
+    {
+        for (j = 0; j &lt; 4; j++)
+        {
+            printf(&quot;%7.2f &quot;, C[i * 4 + j]);
+        }
+        printf(&quot;¥n&quot;);
+    }
+
+    /* Finalization */
+    ret = clFlush(command_queue);
+    ret = clFinish(command_queue);
+    ret = clReleaseKernel(kernel[0]);
+    ret = clReleaseKernel(kernel[1]);
+    ret = clReleaseKernel(kernel[2]);
+    ret = clReleaseKernel(kernel[3]);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(Amobj);
+    ret = clReleaseMemObject(Bmobj);
+    ret = clReleaseMemObject(Cmobj);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+
+    free(source_str);
+
+    free(A);
+    free(B);
+    free(C);
+
+    return 0;
+}
+</code></pre></div><p>As you can see, the source codes are very similar. The only differences are in the kernels themselves, and the way to execute these kernels. In the data parallel model, the 4 arithmetic operations are grouped as one set of commands in a kernel, while in the task parallel model, 4 different kernels are implemented for each type of arithmetic operation.</p> <p>At a glance, it may seem that since the task parallel model requires more code, that it also must perform more operations. However, regardless of which model is used for this problem, the number of operations being performed by the device is actually the same. Despite this fact, some problems are easier, and performance can vary by choosing one over the other, so the parallelization model must be considered wisely in the planning stage of the application.</p> <p>We will now walkthrough the source code for the data parallel model.</p> <blockquote><p>001: __kernel void dataParallel(__global float * A, __global float * B, __global float * C)</p></blockquote> <p>When the data parallel task is queued, work-items are created. Each of these work-items executes the same kernel in parallel.</p> <blockquote><p>003: int base = 4*get_global_id(0);</p></blockquote> <p>The get_global_id(0) gets the global work-item ID, which is used to decide the data to process, so that each work-items can process different sets of data in parallel. In general, data parallel processing is done using the following steps.</p> <p>1. Get work-item ID</p> <p>2. Process the subset of data corresponding to the work-item ID</p> <p>A block diagram of the process is shown in <strong>Figure 4.6</strong>.</p> <p><strong>Figure 4.6: Block diagram of the data-parallel model in relation to work-items</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-05_at_8.20.51_AM.596eb487.png" alt=""></p> <p>In this example, the global work-item is multiplied by 4 and stored in the variable &quot;base&quot;. This value is used to decide which element of the array A and B gets processed.</p> <blockquote><p>005: C[base+0] = A[base+0] + B[base+0];</p> <p>006: C[base+1] = A[base+1] - B[base+1];</p> <p>007: C[base+2] = A[base+2] * B[base+2];</p> <p>008: C[base+3] = A[base+3] / B[base+3];</p></blockquote> <p>Since each work-item have different IDs, the variable &quot;base&quot; also have a different value for each work-item, which keeps the work-items from processing the same data. In this way, large amount of data can be processed concurrently.</p> <p>We have discussed that numerous work items get created, but we have not touched upon how to decide the number of work-items to create. This is done in the following code segment from the host code.</p> <blockquote><p>090: size_t global_item_size = 4;</p> <p>091: size_t local_item_size = 1;</p> <p>092:</p> <p>093: /* Execute OpenCL kernel as data parallel */</p> <p>094: ret = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL,</p> <p>095: &amp;global_item_size, &amp;local_item_size, 0, NULL, NULL); 090: size_t global_item_size = 4;</p> <p>091: size_t local_item_size = 1;</p> <p>092:</p> <p>093: /* Execute OpenCL kernel as data parallel */</p> <p>094: ret = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL,</p> <p>095: &amp;global_item_size, &amp;local_item_size, 0, NULL, NULL);</p></blockquote> <p>The clEnqueueNDRangeKernel() is an OpenCL API command used to queue data parallel tasks. The 5th and 6th arguments determine the work-item size. In this case, the global_item_size is set to 4, and the local_item_size is set to 1. The overall steps are summarized as follows.</p> <p>1. Create work-items on the host</p> <p>2. Process data corresponding to the global work item ID on the kernel</p> <p>We will now walkthrough the source code for the task parallel model. In this model, different kernels are allowed to be executed in parallel. Note that different kernels are implemented for each of the 4 arithmetic operations.</p> <blockquote><p>096: /* Execute OpenCL kernel as task parallel */</p> <p>097: for (i=0; i &lt; 4; i++) {</p> <p>098: ret = clEnqueueTask(command_queue, kernel[i], 0, NULL, NULL);</p> <p>099: }</p></blockquote> <p>The above code segment queues the 4 kernels.</p> <p>In OpenCL, in order to execute a task parallel process, the out-of-order mode must be enabled when the command queue is created. Using this mode, the queued task does not wait until the previous task is finished if there are idle compute units available that can be executing that task.</p> <blockquote><p>067: /* Create command queue */</p> <p>068: command_queue = clCreateCommandQueue(context, device_id, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &amp;ret);</p></blockquote> <p>The block diagram of the nature of command queues and parallel execution are shown in <strong>Figure 4.7</strong>.</p> <p><strong>Figure 4.7: Command queues and parallel execution</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-05_at_8.26.20_AM.75f194ee.png" alt=""></p> <p>The clEnqueueTask() is used as an example in the above figure, but a similar parallel processing could take place for other combinations of enqueue-functions, such as clEnqueueNDRangeKernel(), clEnqueueReadBuffer(), and clEnqueueWriteBuffer(). For example, since PCI Express supports simultaneous bi-directional memory transfers, queuing the clEnqueueReadBuffer() and clEnqueueWriteBuffer() can execute read and write commands simultaneously, provided that the commands are being performed by different processors. In the above diagram, we can expect the 4 tasks to be executed in parallel, since they are being queued in a command queue that has out-of-execution enabled.</p> <h2 id="work-group"><a href="#work-group" class="header-anchor">#</a> <em>Work Group</em></h2> <p>The last section discussed the concept of work-items. This section will introduce the concept of work-groups.</p> <p>Work-items are grouped together into work-groups. A work-group must consist of at least 1 work-item, and the maximum is dependent on the platform. The work-items within a work-group can synchronize, as well as share local memory with each other.</p> <p>In order to implement a data parallel kernel, the number of work-groups must be specified in addition to the number of work-items. This is why 2 different parameters had to be sent to the clEnqueueNDRangeKernel() function.</p> <blockquote><p>090: size_t global_item_size = 4;</p> <p>091: size_t local_item_size = 1;</p></blockquote> <p>The above code means that each work-group is made up of 1 work-item, and that there are 4 work-groups to be processed.</p> <p>The number of work-items per work-group is consistent throughout every work-group. If the number of work-items cannot be divided evenly among the work-groups, clEnqueueNDRangeKernel() fails, returning the error value CL_INVALID_WORK_GROUP_SIZE.</p> <p>The code <strong>List 4.9</strong> only used the global work-item ID to process the kernel, but it is also possible to retrieve the local work-item ID corresponding to the work-group ID. The relationship between the global work-item ID, local work-item ID, and the work-group ID are shown below in <strong>Figure 4.8</strong>. The function used to retrieve these ID's from within the kernel are shown in <strong>Table 4.1</strong>.</p> <p><strong>Figure 4.8: Work-group ID and Work-item ID</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-05_at_8.30.01_AM.d4e42b2e.png" alt=""></p> <p>Since 2-D images or 3-D spaces are commonly processed, the work-items and work-groups can be specified in 2 or 3 dimensions. <strong>Figure 4.9</strong> shows an example where the work-group and the work-item are defined in 2-D.</p> <p><strong>Figure 4.9: Work-group and work-item defined in 2-D</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-05_at_8.30.50_AM.3b8229ff.png" alt=""></p> <p>Since the work-group and the work-items can have up to 3 dimensions, the ID's that are used to index **** them also have 3 dimensions. The get_group_id(), get_global_id(), get_local_id() can each take an argument between 0 and 2, each corresponding to the dimension. The ID's for the work-items in <strong>Figure 4.9</strong> are shown below in <strong>Table 4.2</strong>.</p> <p><strong>Table 4.2: The ID's of the work-item in Figure 4.8</strong></p> <table><thead><tr><th>Call</th> <th>Retrieved ID</th></tr></thead> <tbody><tr><td>get_group_id(0)</td> <td>1</td></tr> <tr><td>get_group_id(1)</td> <td>0</td></tr> <tr><td>get_global_id(0)</td> <td>10</td></tr> <tr><td>get_global_id(1)</td> <td>5</td></tr> <tr><td>get_local_id(0)</td> <td>2</td></tr> <tr><td>get_local_id(1)</td> <td>5</td></tr></tbody></table> <p>Note that the index space dimension and the number of work-items per work-group can vary depending on the device. The maximum index space dimension can be obtained using the clGetDeviceInfo() function to get the value of CL_DEVICE_WORK_ITEM_DIMENSIONS, and the maximum number of work-items per work-group can be obtained by getting the value of CL_DEVICE_IMAGE_SUPPORT. The data-type of CL_DEVICE_MAX_WORK_ITEM is cl_uint, and for CL_DEVICE_IMAGE_SUPPORT, it is an array of type size_t.</p> <h2 id="task-parallelism-and-event-object"><a href="#task-parallelism-and-event-object" class="header-anchor">#</a> <em>Task Parallelism and Event Object</em></h2> <p>The tasks placed in the command-queue are executed in parallel, but in cases where different tasks have data dependencies, they need to be executed sequentially. In OpenCL, the execution order can be set using an event object.</p> <p>An event object contains information about the execution status of queued commands. This object is returned on all commands that start with &quot;clEnqueue&quot;. In order to make sure task A executes before task B, the event object returned when task A is queued can be one of the inputs to task B, which keeps task B from executing until task A is completed.</p> <p>For example, the function prototype for clPEnqueueTask() is shown below.</p> <blockquote><p>cl_int clEnqueueTask (cl_command_queue command_queue,</p> <p>cl_kernel kernel,</p> <p>cl_uint num_events_in_wait_list,</p> <p>const cl_event *event_wait_list,</p> <p>cl_event *event)</p></blockquote> <p>The 4th argument is a list of events to be processed before this task can be run, and the 3rd argument is the number of events on the list. The 5th parameter is the event object returned by this task when it is placed in the queue.</p> <p><strong>List 4.12</strong> shows an example of how the event objects can be used. In this example, kernel_A, kernel_B, kernel_C, kernel_D can all be executed in any order, but these must be completed before kernel_E is executed.</p> <p><strong>List 4.12: Event object usage example</strong></p> <blockquote><p>clEnqueue events[4];</p> <p>clEnqueueTask(command_queue, kernel_A, 0, NULL, &amp;events[0]);</p> <p>clEnqueueTask(command_queue, kernel_B, 0, NULL, &amp;events[1]);</p> <p>clEnqueueTask(command_queue, kernel_C, 0, NULL, &amp;events[2]);</p> <p>clEnqueueTask(command_queue, kernel_D, 0, NULL, &amp;events[3]);</p> <p>clEnqueueTask(command_queue, kernel_E, 4, events, NULL);</p></blockquote> <table><thead><tr><th>Column - Relationship between execution order and parallel execution</th></tr></thead> <tbody><tr><td><p>In OpenCL, the tasks placed in the command queue are executed regardless of the order in which it is placed in the queue. In the specification sheet for parallel processors, there is usually a section on &quot;order&quot;. When working on parallel processing algorithms, the concept of &quot;order&quot; and &quot;parallel&quot; need to be fully understood. </p><p>First, we will discuss the concept of &quot;order&quot;. As an example, let's assume the following 4 tasks are performed sequentially in the order shown below. </p><p>(A) → (B) → (C) → (D) </p></td></tr> <tr><td><img src="/test-book/assets/img/Screen_Shot_2022-01-05_at_8.42.40_AM.7b09470c.png" alt=""></td></tr> <tr><td><p>Now, we will switch the order in which task B and C are performed. </p><p>(A) → (C) → (B) → (D) </p><p>If tasks B and C are not dependent on each other, the two sets of tasks will result in the same output. If they are not, the two sets of tasks will not yield the correct result. This problem of whether a certain set of tasks can be performed in different order is a process-dependent problem. </p><p>Parallel processing is a type of optimization that deals with changing the order of tasks. For example, let's assume tasks B and C are processed in parallel. </p><p>In this case, task B may finish before task C, but task D waits for the results of both tasks B and C. This processing is only allowed in the case where the tasks B and C do not depend on each other. Thus, if task C must be performed after task B, then the 2 tasks cannot be processed in parallel. </p><p>On the other hand, it may make more sense to implement all the tasks in a single thread. Also, if the tasks are executed on a single-core processor, all the tasks must be performed sequentially. These need to be considered when implementing an algorithm. </p><p>In essence, two problems must be solved. One is whether some tasks can be executed out of order, and the other is whether to process the tasks in parallel. </p><p>• Tasks must be executed in a specific order = Cannot be parallelized </p><p>• Tasks can be executed out of order = Can be parallelized </p><p>Specifications are written to be a general reference of the capabilities, and do not deal with the actual implementation. Decision to execute certain tasks in parallel is thus not discussed inside the specification. Instead, it contains information such as how certain tasks are guaranteed to be processed in order. </p><p>Explanations on &quot;ordering&quot; is often times difficult to follow (Example: PowerPC's Storage Access Ordering), but often times, treating &quot;order&quot; as the basis when implementing parallel algorithms can clear up existing bottlenecks in the program. </p><p>For example, OpenMP's &quot;parallel&quot; construct specifies the code segment to be executed in parallel, but placing this construct in a single-core processor will not process the code segment in parallel. In this case, one may wonder if it meets OpenMP's specification. If you think about the &quot;parallel&quot; construct as something that tells the compiler and the processors that the loops can be executed out-of-order, it clears up the definition, since it means that the ordering can be changed or the tasks can be run parallel, but that they do not have to be. </p></td></tr></tbody></table></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/test-book/opencl-book/basic-opencl/online-offline-compilation.html" class="prev">
+        Online/Offline Compilation
+      </a></span> <span class="next"><a href="/test-book/opencl-book/advanced-opencl/opencl-c.html">
+        OpenCL C
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/test-book/assets/js/app.b513c2d8.js" defer></script><script src="/test-book/assets/js/2.8dbd29eb.js" defer></script><script src="/test-book/assets/js/6.f687cbd5.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mersenne Twister | OpenCL Book</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="">
+    <meta name="theme-color" content="#2492f3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/test-book/assets/css/0.styles.79946ec9.css" as="style"><link rel="preload" href="/test-book/assets/js/app.b513c2d8.js" as="script"><link rel="preload" href="/test-book/assets/js/2.8dbd29eb.js" as="script"><link rel="preload" href="/test-book/assets/js/8.1076ef6a.js" as="script"><link rel="prefetch" href="/test-book/assets/js/10.b635290b.js"><link rel="prefetch" href="/test-book/assets/js/11.c0ed33a0.js"><link rel="prefetch" href="/test-book/assets/js/12.7e83236b.js"><link rel="prefetch" href="/test-book/assets/js/13.5fb1d917.js"><link rel="prefetch" href="/test-book/assets/js/14.90f24845.js"><link rel="prefetch" href="/test-book/assets/js/15.db0c382e.js"><link rel="prefetch" href="/test-book/assets/js/16.e7b0bbcf.js"><link rel="prefetch" href="/test-book/assets/js/17.e1d44dc5.js"><link rel="prefetch" href="/test-book/assets/js/18.b358550b.js"><link rel="prefetch" href="/test-book/assets/js/19.b36a0ae6.js"><link rel="prefetch" href="/test-book/assets/js/20.7c7e8734.js"><link rel="prefetch" href="/test-book/assets/js/21.4aa9dac7.js"><link rel="prefetch" href="/test-book/assets/js/22.b98ab071.js"><link rel="prefetch" href="/test-book/assets/js/23.6529153b.js"><link rel="prefetch" href="/test-book/assets/js/24.7db70101.js"><link rel="prefetch" href="/test-book/assets/js/25.4e203b3a.js"><link rel="prefetch" href="/test-book/assets/js/26.ae7fe068.js"><link rel="prefetch" href="/test-book/assets/js/27.8a49061d.js"><link rel="prefetch" href="/test-book/assets/js/28.c467ee16.js"><link rel="prefetch" href="/test-book/assets/js/29.51098aba.js"><link rel="prefetch" href="/test-book/assets/js/3.87c07e7d.js"><link rel="prefetch" href="/test-book/assets/js/30.72f82acf.js"><link rel="prefetch" href="/test-book/assets/js/31.6c8aaa12.js"><link rel="prefetch" href="/test-book/assets/js/32.8f1dcdbc.js"><link rel="prefetch" href="/test-book/assets/js/33.4017c4ea.js"><link rel="prefetch" href="/test-book/assets/js/34.e63ef5ea.js"><link rel="prefetch" href="/test-book/assets/js/35.b29ee815.js"><link rel="prefetch" href="/test-book/assets/js/4.36850638.js"><link rel="prefetch" href="/test-book/assets/js/5.042bebf2.js"><link rel="prefetch" href="/test-book/assets/js/6.f687cbd5.js"><link rel="prefetch" href="/test-book/assets/js/7.eea66bef.js"><link rel="prefetch" href="/test-book/assets/js/9.ce0ca980.js">
+    <link rel="stylesheet" href="/test-book/assets/css/0.styles.79946ec9.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/test-book/" class="home-link router-link-active"><!----> <span class="site-name">OpenCL Book</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/test-book/opencl-book/" class="nav-link router-link-active">
+  OpenCL Book
+</a></div><div class="nav-item"><a href="https://us.fixstars.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Fixstars Solutions
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/test-book/opencl-book/" class="nav-link router-link-active">
+  OpenCL Book
+</a></div><div class="nav-item"><a href="https://us.fixstars.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Fixstars Solutions
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/test-book/opencl-book/" aria-current="page" class="sidebar-link">Foreword</a></li><li><a href="/test-book/opencl-book/who-should-read-this-book.html" class="sidebar-link">Who Should Read this Book?</a></li><li><a href="/test-book/opencl-book/about-the-authors.html" class="sidebar-link">About the Authors</a></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Introduction to Parallelization</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/introduction-to-parallelization/why-parallelization.html" class="sidebar-link">Why Parallelization</a></li><li><a href="/test-book/opencl-book/introduction-to-parallelization/parallel-computing-hardware.html" class="sidebar-link">Parallel Computing Hardware</a></li><li><a href="/test-book/opencl-book/introduction-to-parallelization/parallel-computing-software.html" class="sidebar-link">Parallel Computing Software</a></li><li><a href="/test-book/opencl-book/introduction-to-parallelization/conclusion.html" class="sidebar-link">Conclusion</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/opencl/what-is-opencl.html" class="sidebar-link">What is OpenCL?</a></li><li><a href="/test-book/opencl-book/opencl/historical-background.html" class="sidebar-link">Historical Background</a></li><li><a href="/test-book/opencl-book/opencl/an-overview-of-opencl.html" class="sidebar-link">An Overview of OpenCL</a></li><li><a href="/test-book/opencl-book/opencl/why-opencl.html" class="sidebar-link">Why OpenCL?</a></li><li><a href="/test-book/opencl-book/opencl/applicable-platforms.html" class="sidebar-link">Applicable Platforms</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>OpenCL Setup</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/opencl-setup/available-opencl-environments.html" class="sidebar-link">Available OpenCL Environments</a></li><li><a href="/test-book/opencl-book/opencl-setup/development-environment-setup.html" class="sidebar-link">Development Environment Setup</a></li><li><a href="/test-book/opencl-book/opencl-setup/first-opencl-program.html" class="sidebar-link">First OpenCL Program</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Basic OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/basic-opencl/basic-program-flow.html" class="sidebar-link">Basic Program Flow</a></li><li><a href="/test-book/opencl-book/basic-opencl/online-offline-compilation.html" class="sidebar-link">Online/Offline Compilation</a></li><li><a href="/test-book/opencl-book/basic-opencl/calling-the-kernel.html" class="sidebar-link">Calling the Kernel</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Advanced OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/advanced-opencl/opencl-c.html" class="sidebar-link">OpenCL C</a></li><li><a href="/test-book/opencl-book/advanced-opencl/opencl-programming-practice.html" class="sidebar-link">OpenCL Programming Practice</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Changes made in OpenCL Specification 1.2</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/test-book/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.0-to-1.1.html" class="sidebar-link">Changes made in update from 1.0 to 1.1</a></li><li><a href="/test-book/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.1-to-1.2.html" class="sidebar-link">Changes made in update from 1.1 to 1.2</a></li></ul></section></li><li><a href="/test-book/opencl-book/references.html" class="sidebar-link">References</a></li><li><a href="/test-book/opencl-book/notes.html" class="sidebar-link">Notes</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="mersenne-twister"><a href="#mersenne-twister" class="header-anchor">#</a> Mersenne Twister</h1> <p>This case study will use Mersenne Twister (MT) to generate pseudorandom numbers. This algorithm was developed by a professor at the Hiroshima University in Japan. MT has the following advantages.</p> <p>• Long period</p> <p>• Efficient use of memory</p> <p>• High performance</p> <p>• Good distribution properties</p> <p>We will now implement this algorithm using OpenCL.</p> <h2 id="parallelizing-mt"><a href="#parallelizing-mt" class="header-anchor">#</a> <em>Parallelizing MT</em></h2> <p>A full understanding of the MT algorithm requires knowledge of advanced algebra, but the actual program itself is comprised of bit operations and memory accesses.</p> <p>MT starts out with an initial state made up of an array of bits. By going through a process called &quot;tempering&quot; on this state, an array of random numbers is generated. The initial state then undergoes a set of operations, which creates another state. An array of random numbers is again generated from this state. In this manner, more random numbers are generated. A block diagram of the steps is shown in <strong>Figure 6.8</strong>.</p> <p><strong>Figure 6.8: MT processing</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-11_at_10.59.26_PM.a0c61af3.png" alt=""></p> <p>Studying the diagram in <strong>Figure 6.8</strong>, we see a dependency of the states, which gets in the way of parallel processing. To get around this problem, the following 2 methods come to mind.</p> <p>• Parallelize the state change operation</p> <p>The state is made up of a series of 32-bit words. Since the next state generation is done by operating on one 32-bit word at a time, each processing of the word can be parallelized. However, since the processing on each word does not require many instructions, and depending on the cost of synchronization, performance may potentially suffer from parallelization. Also, since the number of processes that can be parallelized is dependent on the number of words that make up the state, it may not be enough to take advantage of the 100s of cores on GPUs. This type of processing would benefit more from using a SIMD unit that has low synchronization cost and designed to run few processes in parallel.</p> <p>• Create numerous initial states, and process these in parallel</p> <p>Since the dependency is between each state, generating an initial state for each processing element will allow for parallel execution of the MT algorithm. If the code is executed on Tesla C1060, for example, 240 MT can be processed in parallel. The generated random number, however, would not be the same as that generated sequentially from one state.</p> <p>We will use the latter method, in order to run OpenCL on the GPU.</p> <h2 id="dynamic-creator-dc"><a href="#dynamic-creator-dc" class="header-anchor">#</a> <em>Dynamic Creator (dc)</em></h2> <p>NVIDIA's CUDA SDK sample contains a method called the Dynamic Creator (dc) which can be used to generate random numbers over multiple devices [7]. This section will show how to generate random numbers in OpenCL using &quot;dc&quot;.</p> <p>&quot;dc&quot; is a library that dynamically creates Mersenne Twisters parameters. The sample code in <strong>List 6.15</strong> below shows how the get_mt_parameters() function in the &quot;dc&quot; library can be used. In this code, 32 sets of parameters are generated, but this can be changed by using a different value for the variable &quot;n&quot;.</p> <p><strong>List 6.15: Using &quot;dc&quot; to generate Mersenne Twisters parameters</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdio.h&gt;
+#include &quot;dc.h&quot;
+int main(int argc, char **argv)
+{
+    int i, n = 32;
+    mt_struct **mts;
+    init_dc(4172);
+    mts = get_mt_parameters(32, 521, n);
+    for (i = 0; i &lt; n; i++)
+    {
+        printf(&quot;{ %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d }\n&quot;,
+               mts[i]-&gt;aaa, mts[i]-&gt;mm, mts[i]-&gt;nn, mts[i]-&gt;rr, mts[i]-&gt;ww, mts[i]-&gt;wmask, mts[i]-&gt;umask,
+               mts[i]-&gt;lmask, mts[i]-&gt;shift0, mts[i]-&gt;shift1, mts[i]-&gt;shiftB, mts[i]-&gt;shiftC,
+               mts[i]-&gt;maskB, mts[i]-&gt;maskC);
+    }
+    return 0;
+}
+</code></pre></div><h2 id="opencl-mt"><a href="#opencl-mt" class="header-anchor">#</a> <em>OpenCL MT</em></h2> <p>We will now implement MT in OpenCL. We will use the Mersenne Twister algorithm to generate random numbers, then use these numbers to compute the value of PI using the Monte Carlo method.</p> <p>The Monte Carlo method can be used as follows. Assume that a quarter of a circle is contained in a square, such that the radius of the circle and the edge of the square are equivalent (<strong>Figure 6.9</strong>). Now points are chosen at random inside the square, which can be used to figure out if that point is within the quarter of a circle. Using the proportion of hit versus the number of points, and using the fact that the radius of the circle equals the edge of the square, the value of PI can be computed. Since the area of the quarter of a circle is PI * R^2 / 4, and the area of the square is R^2, the proportion of the area inside the circle is equal to PI / 4. When this is equated to the proportion found using the Monte Carlo method, solving for PI, we would get PI = 4 * (proportion).</p> <p><strong>Figure 6.9: Computing PI using Monte Carlo</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-11_at_11.01.35_PM.0e43be9d.png" alt=""></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-11_at_11.02.16_PM.a2fd37cd.png" alt=""></p> <p><strong>List 6.16</strong> shows the kernel code and <strong>List 6.17</strong> shows the host code for this program. The host program includes the commands required to measure the execution time, which we will use when we get to the optimization phase.</p> <p><strong>List 6.16: Kernel Code</strong></p> <div class="language- extra-class"><pre class="language-text"><code>typedef struct mt_struct_s
+{
+    uint aaa;
+    int mm, nn, rr, ww;
+    uint wmask, umask, lmask;
+    int shift0, shift1, shiftB, shiftC;
+    uint maskB, maskC;
+} mt_struct;
+
+/* Initialize state using a seed */
+static void sgenrand_mt(uint seed, __global const mt_struct *mts, uint *state)
+{
+    int i;
+    for (i = 0; i &lt; mts-&gt;nn; i++)
+    {
+        state[i] = seed;
+        seed = (1812433253 * (seed ^ (seed &gt;&gt; 30))) + i + 1;
+    }
+    for (i = 0; i &lt; mts-&gt;nn; i++)
+        state[i] &amp;= mts-&gt;wmask;
+}
+
+/* Update state */
+static void update_state(__global const mt_struct *mts, uint *st)
+{
+    int n = mts-&gt;nn, m = mts-&gt;mm;
+    uint aa = mts-&gt;aaa, x;
+    uint uuu = mts-&gt;umask, lll = mts-&gt;lmask;
+    int k, lim;
+    lim = n - m;
+    for (k = 0; k &lt; lim; k++)
+    {
+        x = (st[k] &amp; uuu) | (st[k + 1] &amp; lll);
+        st[k] = st[k + m] ^ (x &gt;&gt; 1) ^ (x &amp; 1U ? aa : 0U);
+    }
+    lim = n - 1;
+    for (; k &lt; lim; k++)
+    {
+        x = (st[k] &amp; uuu) | (st[k + 1] &amp; lll);
+        st[k] = st[k + m - n] ^ (x &gt;&gt; 1) ^ (x &amp; 1U ? aa : 0U);
+    }
+    x = (st[n - 1] &amp; uuu) | (st[0] &amp; lll);
+    st[n - 1] = st[m - 1] ^ (x &gt;&gt; 1) ^ (x &amp; 1U ? aa : 0U);
+}
+
+static inline void gen(__global uint *out, const __global mt_struct *mts, uint *state, int num_rand)
+{
+    int i, j, n, nn = mts-&gt;nn;
+    n = (num_rand + (nn - 1)) / nn;
+    for (i = 0; i &lt; n; i++)
+    {
+        int m = nn;
+        if (i == n - 1)
+            m = num_rand % nn;
+        update_state(mts, state);
+        for (j = 0; j &lt; m; j++)
+        {
+            /* Generate random numbers */
+            uint x = state[j];
+            x ^= x &gt;&gt; mts-&gt;shift0;
+            x ^= (x &lt;&lt; mts-&gt;shiftB) &amp; mts-&gt;maskB;
+            x ^= (x &lt;&lt; mts-&gt;shiftC) &amp; mts-&gt;maskC;
+            x ^= x &gt;&gt; mts-&gt;shift1;
+            out[i * nn + j] = x;
+        }
+    }
+}
+
+__kernel void genrand(__global uint *out, __global mt_struct *mts, int num_rand)
+{
+    int gid = get_global_id(0);
+    uint seed = gid * 3;
+    uint state[17];
+    mts += gid;                                    /* mts for this item */
+    out += gid * num_rand;                         /* Output buffer for this item */
+    sgenrand_mt(0x33ff * gid, mts, (uint *)state); /* Initialize random numbers */
+    gen(out, mts, (uint *)state, num_rand);        /* Generate random numbers */
+}
+
+/* Count the number of points within the circle */
+__kernel void calc_pi(__global uint *out, __global uint *rand, int num_rand)
+{
+    int gid = get_global_id(0);
+    int count = 0;
+    int i;
+
+    rand += gid * num_rand;
+
+    for (i = 0; i &lt; num_rand; i++)
+    {
+        float x, y, len;
+        x = ((float)(rand[i] &gt;&gt; 16)) / 65535.0f;    /* x coordinate */
+        y = ((float)(rand[i] &amp; 0xffff)) / 65535.0f; /* y coordinate */
+        len = (x * x + y * y);                      /* Distance from the origin */
+
+        if (len &lt; 1)
+        { /* sqrt(len) &lt; 1 = len &lt; 1 */
+            count++;
+        }
+    }
+
+    out[gid] = count;
+}
+</code></pre></div><p><strong>List 6.17: Host Code</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdlib.h&gt;
+#include &lt;CL/cl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+typedef struct mt_struct_s
+{
+    cl_uint aaa;
+    cl_int mm, nn, rr, ww;
+    cl_uint wmask, umask, lmask;
+    cl_int shift0, shift1, shiftB, shiftC;
+    cl_uint maskB, maskC;
+} mt_struct;
+
+mt_struct mts[] = {
+    /* Parameters generated by the Dynamic Creater */
+    {-822663744, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1514742400, -2785280},
+    {-189104639, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1263215232, -2785280},
+    {-1162865726, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1242112640, -2686976},
+    {-1028775805, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -688432512, -2785280},
+    {-1154537980, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1702190464, -2785280},
+    {-489740155, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 938827392, -34275328},
+    {-2145422714, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1722112896, -2818048},
+    {-1611140857, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -173220480, -2785280},
+    {-1514624952, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1970625920, -2785280},
+    {-250871863, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -605200512, -45776896},
+    {-504393846, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1535844992, -2818048},
+    {-96493045, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -608739712, -36339712},
+    {-291834292, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -151201152, -1736704},
+    {-171838771, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -411738496, -36372480},
+    {-588451954, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1494951296, -2785280},
+    {-72754417, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1727880064, -688128},
+    {-1086664688, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1230685312, -8552448},
+    {-558849839, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1946722688, -34242560},
+    {-1723207278, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 2000501632, -1114112},
+    {-1779704749, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1004886656, -2785280},
+    {-2061554476, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1958042496, -2785280},
+    {-1524638763, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 653090688, -34177024},
+    {-474740330, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -1263215232, -3833856},
+    {-1001052777, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 921000576, -196608},
+    {-1331085928, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -453715328, -2785280},
+    {-883314023, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -184755584, -2785280},
+    {-692780774, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, -638264704, -2785280},
+    {-1009388965, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1001217664, -36339712},
+    {-690295716, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 922049152, -1769472},
+    {-1787515619, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 1970625920, -688128},
+    {-1172830434, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 720452480, -2654208},
+    {-746112289, 8, 17, 23, 32, -1, -8388608, 8388607, 12, 18, 7, 15, 2000509824, -2785280},
+};
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main()
+{
+    cl_int num_rand = 4096 * 256;                                   /* The number of random numbers generated using one generator */
+    int count_all, i, num_generator = sizeof(mts) / sizeof(mts[0]); /* The number of generators */
+    double pi;
+    cl_platform_id platform_id = NULL;
+    cl_uint ret_num_platforms;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel_mt = NULL, kernel_pi = NULL;
+    size_t kernel_code_size;
+    char *kernel_src_str;
+    cl_uint *result;
+    cl_int ret;
+    FILE *fp;
+    cl_mem rand, count;
+    size_t global_item_size[3], local_item_size[3];
+    cl_mem dev_mts;
+    cl_event ev_mt_end, ev_pi_end, ev_copy_end;
+    cl_ulong prof_start, prof_mt_end, prof_pi_end, prof_copy_end;
+
+    clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+    clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,
+                   &amp;ret_num_devices);
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+    result = (cl_uint *)malloc(sizeof(cl_uint) * num_generator);
+
+    command_queue = clCreateCommandQueue(context, device_id, CL_QUEUE_PROFILING_ENABLE, &amp;ret);
+    fp = fopen(&quot;mt.cl&quot;, &quot;r&quot;);
+    kernel_src_str = (char *)malloc(MAX_SOURCE_SIZE);
+    kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Create output buffer */
+    rand = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(cl_uint) * num_rand * num_generator, NULL, &amp;ret);
+    count = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(cl_uint) * num_generator, NULL, &amp;ret);
+
+    /* Build Program*/
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,
+                                        (const size_t *)&amp;kernel_code_size, &amp;ret);
+    clBuildProgram(program, 1, &amp;device_id, &quot;&quot;, NULL, NULL);
+    kernel_mt = clCreateKernel(program, &quot;genrand&quot;, &amp;ret);
+    kernel_pi = clCreateKernel(program, &quot;calc_pi&quot;, &amp;ret);
+
+    /* Create input parameter */
+    dev_mts = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(mts), NULL, &amp;ret);
+    clEnqueueWriteBuffer(command_queue, dev_mts, CL_TRUE, 0, sizeof(mts), mts, 0, NULL, NULL);
+
+    /* Set Kernel Arguments */
+    clSetKernelArg(kernel_mt, 0, sizeof(cl_mem), (void *)&amp;rand);    /* Random numbers (output of genrand) */
+    clSetKernelArg(kernel_mt, 1, sizeof(cl_mem), (void *)&amp;dev_mts); /* MT parameter (input to genrand) */
+    clSetKernelArg(kernel_mt, 2, sizeof(num_rand), &amp;num_rand);      /* Number of random numbers to generate */
+
+    clSetKernelArg(kernel_pi, 0, sizeof(cl_mem), (void *)&amp;count); /* Counter for points within circle (output of calc_pi) */
+    clSetKernelArg(kernel_pi, 1, sizeof(cl_mem), (void *)&amp;rand);  /* Random numbers (input to calc_pi) */
+    clSetKernelArg(kernel_pi, 2, sizeof(num_rand), &amp;num_rand);    /* Number of random numbers used */
+
+    global_item_size[0] = num_generator;
+    global_item_size[1] = 1;
+    global_item_size[2] = 1;
+    local_item_size[0] = num_generator;
+    local_item_size[1] = 1;
+    local_item_size[2] = 1;
+
+    /* Create a random number array */
+    clEnqueueNDRangeKernel(command_queue, kernel_mt, 1, NULL, global_item_size, local_item_size, 0, NULL, &amp;ev_mt_end);
+
+    /* Compute PI */
+    clEnqueueNDRangeKernel(command_queue, kernel_pi, 1, NULL, global_item_size, local_item_size, 0, NULL, &amp;ev_pi_end);
+
+    /* Get result */
+    clEnqueueReadBuffer(command_queue, count, CL_TRUE, 0, sizeof(cl_uint) * num_generator, result, 0, NULL, &amp;ev_copy_end);
+
+    /* Average the values of PI */
+    count_all = 0;
+    for (i = 0; i &lt; num_generator; i++)
+    {
+        count_all += result[i];
+    }
+
+    pi = ((double)count_all) / (num_rand * num_generator) * 4;
+    printf(&quot;pi = %f¥n&quot;, pi);
+
+    /* Get execution time info */
+    clGetEventProfilingInfo(ev_mt_end, CL_PROFILING_COMMAND_QUEUED, sizeof(cl_ulong), &amp;prof_start, NULL);
+    clGetEventProfilingInfo(ev_mt_end, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &amp;prof_mt_end, NULL);
+    clGetEventProfilingInfo(ev_pi_end, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &amp;prof_pi_end, NULL);
+    clGetEventProfilingInfo(ev_copy_end, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &amp;prof_copy_end, NULL);
+
+    printf(&quot; mt: %f[ms]¥n&quot;
+           &quot; pi: %f[ms]¥n&quot;
+           &quot; copy: %f[ms]¥n&quot;,
+           (prof_mt_end - prof_start) / (1000000.0),
+           (prof_pi_end - prof_mt_end) / (1000000.0),
+           (prof_copy_end - prof_pi_end) / (1000000.0));
+
+    clReleaseEvent(ev_mt_end);
+    clReleaseEvent(ev_pi_end);
+    clReleaseEvent(ev_copy_end);
+
+    clReleaseMemObject(rand);
+    clReleaseMemObject(count);
+    clReleaseKernel(kernel_mt);
+    clReleaseKernel(kernel_pi);
+    clReleaseProgram(program);
+    clReleaseCommandQueue(command_queue);
+    clReleaseContext(context);
+    free(kernel_src_str);
+    free(result);
+    return 0;
+}
+</code></pre></div><p>We will start by looking at the kernel code</p> <blockquote><p>009: /* Initialize state using a seed */</p> <p>010: static void sgenrand_mt(uint seed, __global const mt_struct *mts, uint *state) {</p> <p>011: int i;</p> <p>012: for (i=0; i &lt; mts-&gt;nn; i++) {</p> <p>013: state[i] = seed;</p> <p>014: seed = (1812433253 * (seed ^ (seed &gt;&gt; 30))) + i + 1;</p> <p>015: }</p> <p>016: for (i=0; i &lt; mts-&gt;nn; i++)</p> <p>017: state[i] &amp;= mts-&gt;wmask;</p> <p>018: }</p></blockquote> <p>The state bit array is being initialized. The above code is actually copied from the original code used for MT.</p> <blockquote><p>020: /* Update state */</p> <p>021: static void update_state(__global const mt_struct *mts, uint *st) {</p> <p>022: int n = mts-&gt;nn, m = mts-&gt;mm;</p> <p>023: uint aa = mts-&gt;aaa, x;</p> <p>024: uint uuu = mts-&gt;umask, lll = mts-&gt;lmask;</p> <p>025: int k,lim;</p> <p>026: lim = n - m;</p> <p>027: for (k=0; k &lt; lim; k++) {</p> <p>028: x = (st[k]&amp;uuu)|(st[k+1]&amp;lll);</p> <p>029: st[k] = st[k+m] ^ (x&gt;&gt;1) ^ (x&amp;1U ? aa : 0U);</p> <p>030: }</p> <p>031: lim = n - 1;</p> <p>032: for (; k &lt; lim; k++) {</p> <p>033: x = (st[k]&amp;uuu)|(st[k+1]&amp;lll);</p> <p>034: st[k] = st[k+m-n] ^ (x&gt;&gt;1) ^ (x&amp;1U ? aa : 0U);</p> <p>035: }</p> <p>036: x = (st[n-1]&amp;uuu)|(st[0]&amp;lll);</p> <p>037: st[n-1] = st[m-1] ^ (x&gt;&gt;1) ^ (x&amp;1U ? aa : 0U);</p> <p>038: }</p></blockquote> <p>The above code updates the state bits.</p> <blockquote><p>040: static inline void gen(__global uint *out, const __global mt_struct *mts, uint *state, int num_rand) {</p> <p>041: int i, j, n, nn = mts-&gt;nn;</p> <p>042: n = (num_rand+(nn-1)) / nn;</p> <p>043: for (i=0; i &lt; n; i++) {</p> <p>044: int m = nn;</p> <p>045: if (i == n-1) m = num_rand%nn;</p> <p>046: update_state(mts, state);</p> <p>047: for (j=0; j &lt; m; j++) {</p> <p>048: /* Generate random numbers */</p> <p>049: uint x = state[j];</p> <p>050: x ^= x &gt;&gt; mts-&gt;shift0;</p> <p>051: x ^= (x &lt;&lt; mts-&gt;shiftB) &amp; mts-&gt;maskB;</p> <p>052: x ^= (x &lt;&lt; mts-&gt;shiftC) &amp; mts-&gt;maskC;</p> <p>053: x ^= x &gt;&gt; mts-&gt;shift1;</p> <p>054: out[i*nn + j] = x;</p> <p>055: }</p> <p>056: }</p> <p>057: }</p></blockquote> <p>The code above generates &quot;num_rand&quot; random numbers. The update_state() is called to update the state bits, and a random number is generated from the state bits.</p> <blockquote><p>059: __kernel void genrand(__global uint *out,__global mt_struct *mts,int num_rand){</p> <p>060: int gid = get_global_id(0);</p> <p>061: uint seed = gid*3;</p> <p>062: uint state[17];</p> <p>063: mts += gid; /* mts for this item */</p> <p>064: out += gid * num_rand; /* Output buffer for this item */</p> <p>065: sgenrand_mt(0x33ff*gid, mts, (uint*)state); /* Initialize random numbers */</p> <p>066: gen(out, mts, (uint*)state, num_rand); /* Generate random numbers */</p> <p>067: }</p></blockquote> <p>The above shows the kernel that generates random numbers by calling the above functions. The kernel takes the output address, MT parameters, and the number of random number to generate as arguments. The &quot;mts&quot; and &quot;out&quot; are pointers to the beginning of the spaces allocated to be used by all work-items. The global ID is used to calculate the addresses to be used by this kernel.</p> <blockquote><p>069: /* Count the number of points within the circle */</p> <p>070: __kernel void calc_pi(__global uint *out, __global uint *rand, int num_rand) {</p> <p>071: int gid = get_global_id(0);</p> <p>072: int count = 0;</p> <p>073: int i;</p> <p>074:</p> <p>075: rand += gid*num_rand;</p> <p>076:</p> <p>077: for (i=0; i &lt; num_rand; i++) {</p> <p>078: float x, y, len;</p> <p>079: x = ((float)(rand[i]&gt;&gt;16))/65535.0f; /* x coordinate */</p> <p>080: y = ((float)(rand[i]&amp;0xffff))/65535.0f; /* y coordinate */</p> <p>081: len = (x*x + y*y); /* Distance from the origin */</p> <p>082:</p> <p>083: if (len &lt; 1) { /* sqrt(len) &lt; 1 = len &lt; 1 */</p> <p>084: count++;</p> <p>085: }</p> <p>086: }</p> <p>087:</p> <p>088: out[gid] = count;</p> <p>089: }</p></blockquote> <p>The above code counts the number of times the randomly chosen point within the square is inside the section of the circle. Since a 32-bit random number is generated, the upper 16 bits are used for the x coordinate, and the lower 16 bits are used for the y coordinate. If the distance from the origin is less than 1, then the chosen point is inside the circle.</p> <p>Next we will take a look at the host code.</p> <blockquote><p>014: mt_struct mts[] = { /* Parameters generated by the Dynamic Creater */</p> <p>015: {-822663744,8,17,23,32,-1,-8388608,8388607,12,18,7,15,-1514742400,-2785280},</p> <p>...</p> <p>046: {-746112289,8,17,23,32,-1,-8388608,8388607,12,18,7,15,2000509824,-2785280},};</p></blockquote> <p>The above is an array of struct for the MT parameters generated using &quot;dc&quot;.</p> <blockquote><p>075: clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,</p> <p>076: &amp;ret_num_devices);</p> <p>077: context = clCreateContext( NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);</p> <p>078: result = (cl_uint*)malloc(sizeof(cl_uint)*num_generator);</p> <p>079:</p> <p>080: command_queue = clCreateCommandQueue(context, device_id, CL_QUEUE_PROFILING_ENABLE, &amp;ret);</p> <p>081: fp = fopen(&quot;mt.cl&quot;, &quot;r&quot;);</p> <p>082: kernel_src_str = (char*)malloc(MAX_SOURCE_SIZE);</p> <p>083: kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);</p> <p>084: fclose(fp);</p> <p>085:</p> <p>086: /* Create output buffer */</p> <p>087: rand = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(cl_uint)*num_rand*num_generator, NULL, &amp;ret);</p> <p>088: count = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(cl_uint)*num_generator, NULL, &amp;ret);</p> <p>089:</p> <p>090: /* Build Program*/</p> <p>091: program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,</p> <p>092: (const size_t *)&amp;kernel_code_size, &amp;ret);</p> <p>093: clBuildProgram(program, 1, &amp;device_id, &quot;&quot;, NULL, NULL);</p> <p>094: kernel_mt = clCreateKernel(program, &quot;genrand&quot;, &amp;ret);</p> <p>095: kernel_pi = clCreateKernel(program, &quot;calc_pi&quot;, &amp;ret);</p> <p>096:</p> <p>097: /* Create input parameter */</p> <p>098: dev_mts = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(mts), NULL, &amp;ret);</p> <p>099: clEnqueueWriteBuffer(command_queue, dev_mts, CL_TRUE, 0, sizeof(mts), mts, 0, NULL, NULL);</p></blockquote> <p>The code above transfers the MT parameters generated by &quot;dc&quot; to global memory.</p> <blockquote><p>101: /* Set Kernel Arguments */</p> <p>102: clSetKernelArg(kernel_mt, 0, sizeof(cl_mem), (void*)&amp;rand); /* Random numbers (output of genrand) */</p> <p>103: clSetKernelArg(kernel_mt, 1, sizeof(cl_mem), (void*)&amp;dev_mts); /* MT parameter (input to genrand) */</p> <p>104: clSetKernelArg(kernel_mt, 2, sizeof(num_rand), &amp;num_rand); /* Number of random numbers to generate */</p> <p>105:</p> <p>106: clSetKernelArg(kernel_pi, 0, sizeof(cl_mem), (void*)&amp;count); /* Counter for points within circle (output of calc_pi) */</p> <p>107: clSetKernelArg(kernel_pi, 1, sizeof(cl_mem), (void*)&amp;rand); /* Random numbers (input to calc_pi) */</p> <p>108: clSetKernelArg(kernel_pi, 2, sizeof(num_rand), &amp;num_rand); /* Number of random numbers used */</p></blockquote> <p>The code segment above sets the arguments to the kernels &quot;kernel_mt&quot;, which generates random numbers, and &quot;kernel_pi&quot;, which counts the number of points within the circle.</p> <blockquote><p>110: global_item_size[0] = num_generator; global_item_size[1] = 1; global_item_size[2] = 1;</p> <p>111: local_item_size[0] = num_generator; local_item_size[1] = 1; local_item_size[2] = 1;</p> <p>112:</p> <p>113: /* Create a random number array */</p> <p>114: clEnqueueNDRangeKernel(command_queue, kernel_mt, 1, NULL, global_item_size, local_item_size, 0, NULL, &amp;ev_mt_end);</p> <p>115:</p> <p>116: /* Compute PI */</p> <p>117: clEnqueueNDRangeKernel(command_queue, kernel_pi, 1, NULL, global_item_size, local_item_size, 0, NULL, &amp;ev_pi_end);</p></blockquote> <p>The global item size and the local item size are both set to the number of random numbers. This means that the kernels are executed such that only 1 work-group is created, which performs the processing on one compute unit.</p> <blockquote><p>122: /* Average the values of PI */</p> <p>123: count_all = 0;</p> <p>124: for (i=0; i &lt; num_generator; i++) {</p> <p>125: count_all += result[i];</p> <p>126: }</p> <p>127:</p> <p>128: pi = ((double)count_all)/(num_rand * num_generator) * 4;</p> <p>129: printf(&quot;pi = %f¥n&quot;, pi);</p></blockquote> <p>The value of PI is calculated by tallying up the number of points chosen within the circle by each thread to calculate the proportion of hits. As discussed earlier, the value of PI is this proportion multiplied by 4.</p> <h2 id="parallelization"><a href="#parallelization" class="header-anchor">#</a> <em>Parallelization</em></h2> <p>Now we will go through the code in the previous section, and use parallelization where we can. Running the code as is on Core i7-2600 + Tesla C 2050 environment, the execution time using different OpenCL implementations (Intel OpenCL SDK 1.5, NVIDIA OpenCL 4.0) for kernel executions and memory copy are shown below in <strong>Figure 6.3</strong>.</p> <p><strong>Table 6.3: Processing Times</strong></p> <table><thead><tr><th>Platform</th> <th>mt (ms)</th> <th>pi (ms)</th> <th>copy (ms)</th></tr></thead> <tbody><tr><td>Tesla C2050</td> <td>2181.4</td> <td>2562.6</td> <td>0.0</td></tr> <tr><td>Core i7-2600 (CPU)</td> <td>234.1</td> <td>234.1</td> <td>0.01</td></tr></tbody></table> <p>We will look at how these processing times change by parallelization. Since the time required for the memory transfer operation is negligible compared to the other operations, we will not concentrate on this part.</p> <p>The code in the previous section performed all the operation on one compute unit. The correspondence of the global work-item and the local work-item to the hardware (at least as of this writing) are summarized in <strong>Table 6.4</strong>.</p> <p><strong>Table 6.3: Correspondence of hardware with OpenCL work-item</strong></p> <table><thead><tr><th>OpenCL</th> <th>Global work-item</th> <th>Local work-item</th></tr></thead> <tbody><tr><td>NVIDIA</td> <td>SM</td> <td>CUDA core</td></tr> <tr><td>AMD</td> <td>OS thread</td> <td>Fiber or SIMD</td></tr></tbody></table> <p>&quot;OS threads&quot; are threads managed by the operating systems, such as pthreads and Win32 threads.</p> <p>&quot;Fibers&quot; are lightweight threads capable of performing context switching by saving the register contents. Unlike OS threads, fibers do not execute over multiple cores, but are capable of performing context switching quickly.</p> <p>&quot;SM (Streaming Multiprocessor)&quot; and &quot;CUDA Core&quot; are unit names specific to NVIDIA GPUs. A CUDA core is the smallest unit capable of performing computations. A group of CUDA cores make up the SM.</p> <p><strong>Figure 6.10</strong> shows the basic block diagram.</p> <p><strong>Figure 6.10: OpenCL work-item and its hardware correspondences</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-11_at_11.19.05_PM.2028a659.png" alt=""></p> <p>Please refer to the &quot;CUDA ™ Programming Guide&quot; contained in the NVIDIA SDK for more details on the NVIDIA processor architecture [8].</p> <p>Since the code on the previous section only uses one work-group, parallel execution via OS threads or SM is not performed. This would require multiple work-groups to be created.</p> <p>We will change the code such that the local work-item size is the number of generated parameters created using &quot;dc&quot; divided by CL_DEVICE_MAX_COMPUTE_UNITS. The number of work-groups and work-items can be set using the code shown below.</p> <blockquote><p>clGetDeviceInfo(device_id, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(cl_uint),</p> <p>&amp;num_compute_unit, NULL);</p> <p>if (num_compute_unit &gt; 32)</p> <p>num_compute_unit = 32;</p> <p>/* Number of work items */</p> <p>num_work_item = (num_generator+(num_compute_unit-1)) / num_compute_unit;</p> <p>/* Set work-group and work-item size */</p> <p>global_item_size[0] = num_work_item * num_compute_unit; global_item_size[1] = 1; global_item_size[2] = 1;</p> <p>local_item_size[0] = num_work_item; local_item_size[1] = 1; local_item_size[2] = 1;</p></blockquote> <p>We have limited the maximum number of work-groups to 32, since we have only defined 32 sets of MT parameters in <strong>List 6.17</strong>, and each work-group requires a MT parameter.</p> <blockquote><p>/* Set Kernel Arguments */</p> <p>clSetKernelArg(kernel_mt, 0, sizeof(cl_mem), (void*)&amp;rand); /* Random numbers（output of genrand） */</p> <p>clSetKernelArg(kernel_mt, 1, sizeof(cl_mem), (void*)&amp;dev_mts); /* MT parameter（input to genrand） */</p> <p>clSetKernelArg(kernel_mt, 2, sizeof(num_rand), &amp;num_rand); /* Number of random numbers to generate */</p> <p>clSetKernelArg(kernel_mt, 3, sizeof(num_generator), &amp;num_generator); /* Number of MT parameters */</p> <p>clSetKernelArg(kernel_pi, 0, sizeof(cl_mem), (void*)&amp;count); /* Counter for points withincircle（output of calc_pi） */</p> <p>clSetKernelArg(kernel_pi, 1, sizeof(cl_mem), (void*)&amp;rand); /* Random numbers（input to calc_pi） */</p> <p>clSetKernelArg(kernel_pi, 2, sizeof(num_rand), &amp;num_rand); /* Random numbers (input to calc_pi) */</p> <p>clSetKernelArg(kernel_pi, 3, sizeof(num_generator), &amp;num_generator); /* Number of MT parameters */</p></blockquote> <p>On the device side, the number of random numbers to generate is limited by the number of available MT parameters.</p> <blockquote><p>__kernel void genrand(__global uint *out,__global mt_struct *mts,int num_rand, int</p> <p>num_generator){</p> <p>int gid = get_global_id(0);</p> <p>uint seed = gid*3;</p> <p>uint state[17];</p> <p>if (gid &gt;= num_generator) return;</p> <p>…</p> <p>}</p> <p>__kernel void calc_pi(__global uint *out, __global uint *rand, int num_rand, int</p> <p>num_generator) {</p> <p>int gid = get_global_id(0);</p> <p>int count = 0;</p> <p>int i;</p> <p>if (gid &gt;= num_generator) return;</p> <p>…</p> <p>}</p></blockquote> <p>The processing times after making the changes are shown below in <strong>Table 6.5</strong>.</p> <p><strong>Table 6.5: Processing time after parallelization</strong></p> <table><thead><tr><th>OpenCL</th> <th>mt (ms)</th> <th>pi (ms)</th></tr></thead> <tbody><tr><td>Tesla C2050</td> <td>626.4</td> <td>270.0</td></tr> <tr><td>Core i7-2600</td> <td>59.5</td> <td>71.9</td></tr></tbody></table> <p>Note the processing time using FOXC and AMD are reduced by a factor of 4. This was expected, since it is executed on Core i7-2600, which has 4 cores.</p> <p>However, the processing time is only reduced by a factor of 4 on NVIDIA's OpenCL, which is not quite the expected speed-up, since there are 14 SM's. As shown in <strong>Figure 6.10</strong>, NVIDIA GPUs can perform parallel execution over multiple work-items. In the code in the previous section, all work items are performed in one compute unit, where parallelism is present over the multiple processing units. The code in this section allows one work-item to be executed on each compute-unit. So the difference is in whether the work-items were executed in parallel over the processing units, or the work-items were executed in parallel over the compute units. Thus, the processing time was not reduced significantly, and this speed up is merely from less chance of register data being stored in another memory during context switching.</p> <p>To use the GPU effectively, parallel execution should occur in both the compute units and the CUDA cores.</p> <p><strong>Table 6.5: Processing times from increasing parallelism</strong></p> <table><thead><tr><th># MT parameters</th> <th></th> <th>mt (ms)</th> <th>pi (ms)</th></tr></thead> <tbody><tr><td>128</td> <td>Tesla C2050</td> <td>243.8</td> <td>265.4</td></tr> <tr><td>Core i7-2600</td> <td>59.8</td> <td>72.0</td> <td></td></tr> <tr><td>256</td> <td>Tesla C2050</td> <td>180.8</td> <td>180.5</td></tr> <tr><td>Core i7-2600</td> <td>58.8</td> <td>72.0</td> <td></td></tr> <tr><td>512</td> <td>Tesla C2050</td> <td>141.3</td> <td>146.6</td></tr> <tr><td>Core i7-2600</td> <td>57.9</td> <td>72.0</td> <td></td></tr></tbody></table> <p>Note that the processing time does not change on the CPU, but that it reduces significantly on the GPU.</p> <h2 id="optimization-for-nvidia-gpu"><a href="#optimization-for-nvidia-gpu" class="header-anchor">#</a> <em>Optimization for NVIDIA GPU</em></h2> <p>Looking at <strong>Table 6.6</strong>, execution is slower on the NVIDIA despite increasing the parallelism. We will now look into optimizing the code to be executed on the GPU.</p> <p>The first thing to look at for efficient execution on the GPU is the memory access. Since Tesla (Fermi-architecture) contains cache hardware, frequently accessed data is written to cached memory. However, it is still faster if the local memory usage is explicitly specified by the programmer.</p> <p>Looking at the code again, the variables &quot;state&quot; and &quot;mts&quot; accesses the same memory space many times. We will change the code so that these data are written to the local memory.</p> <p>First, we will change the host-side code so the data to be local memory is passed in as an argument to the kernel.</p> <blockquote><p>/* Set kernel arguments */</p> <p>clSetKernelArg(kernel_mt, 0, sizeof(cl_mem), (void*)&amp;rand); /* Random numbers（output of genrand）*/</p> <p>clSetKernelArg(kernel_mt, 1, sizeof(cl_mem), (void*)&amp;dev_mts); /* MT parameter（input to genrand） */</p> <p>clSetKernelArg(kernel_mt, 2, sizeof(num_rand), &amp;num_rand); /* Number of random numbers to generate */</p> <p>clSetKernelArg(kernel_mt, 3, sizeof(num_generator), &amp;num_generator); /* Number of MT parameters */</p> <p>clSetKernelArg(kernel_mt, 4, sizeof(cl_uint)*17*num_work_item, NULL); /* Local Memory（state） */</p> <p>clSetKernelArg(kernel_mt, 5, sizeof(mt_struct)*num_work_item, NULL); /* Local Memory（mts） */</p></blockquote> <p>The kernel will now be changed to use the local memory, by using the __local qualifier.</p> <blockquote><p>/* Initialize state using a seed */</p> <p>static void sgenrand_mt(uint seed, __local const mt_struct *mts, __local uint *state) {</p> <p>/* … */</p> <p>}</p> <p>/* Update State */</p> <p>static void update_state(__local const mt_struct *mts, __local uint *st) {</p> <p>/* … */</p> <p>}</p> <p>static inline void gen(__global uint *out, const __local mt_struct *mts, __local uint *state, int num_rand) {</p> <p>/* … */</p> <p>}</p> <p>__kernel void genrand(__global uint *out,__global mt_struct *mts_g,int num_rand, int</p> <p>num_generator,</p> <p>__local uint *state_mem, __local mt_struct *mts){</p> <p>int lid = get_local_id(0);</p> <p>int gid = get_global_id(0);</p> <p>__local uint *state = state_mem + lid*17; /* Store current state in local memory */</p> <p>if (gid &gt;= num_generator) return;</p> <p>mts += lid;</p> <p>/* Copy MT parameters to local memory */</p> <p>mts-&gt;aaa = mts_g[gid].aaa;</p> <p>mts-&gt;mm = mts_g[gid].mm;</p> <p>mts-&gt;nn = mts_g[gid].nn;</p> <p>mts-&gt;rr = mts_g[gid].rr;</p> <p>mts-&gt;ww = mts_g[gid].ww;</p> <p>mts-&gt;wmask = mts_g[gid].wmask;</p> <p>mts-&gt;umask = mts_g[gid].umask;</p> <p>mts-&gt;lmask = mts_g[gid].lmask;</p> <p>mts-&gt;shift0 = mts_g[gid].shift0;</p> <p>mts-&gt;shift1 = mts_g[gid].shift1;</p> <p>mts-&gt;shiftB = mts_g[gid].shiftB;</p> <p>mts-&gt;shiftC = mts_g[gid].shiftC;</p> <p>mts-&gt;maskB = mts_g[gid].maskB;</p> <p>mts-&gt;maskC = mts_g[gid].maskC;</p> <p>out += gid * num_rand; /* Output buffer for this item*/</p> <p>sgenrand_mt(0x33ff*gid, mts, (__local uint*)state); /* Initialize random numbers */</p> <p>gen(out, mts, (__local uint*)state, num_rand); /* Generate random numbers */</p> <p>}</p></blockquote> <p>The new execution times are shown in <strong>Table 6.7</strong>.</p> <p><strong>Table 6.7: Processing times on the Tesla using local memory</strong></p> <table><thead><tr><th># MT parameters</th> <th>mt (ms)</th> <th>pi (ms)</th></tr></thead> <tbody><tr><td>128</td> <td>185.0</td> <td>263.0</td></tr> <tr><td>256</td> <td>130.1</td> <td>177.4</td></tr> <tr><td>512</td> <td>92.1</td> <td>143.4</td></tr></tbody></table> <p>We see a definite increase in speed.</p> <p>The thing to note about the local memory is that it is rather limited. On NVIDIA GPUs, the local memory size is 16,384 bytes. For our program, each work-item requires the storage of the state, which is 17 x 4 = 68 bytes, as well as the MT parameters, which is 14 x 4 = 56. Therefore, each work-item requires 124 bytes, meaning 16384/124 ≈ 132 work-items can be processed within a work-group. For GPUs that do not have many compute units, it may not be able to process if the number of parameters is increased to 256 or 512, since the number of work-items per work-group will be increased. This would not be a problem for Tesla, since the value of CL_DEVICE_MAX_COMPUT_UNITS is 30.</p> <p>We will now further tune our program, which can be broken up into the next 3 processes:</p> <p>• Updating state</p> <p>• Tempering</p> <p>• Computing the value of PI</p> <p>First, we will tackle the computation of PI. In the original code, each work-item processes a different part of an array. One of the properties of the NVIDIA GPU is that it is capable of accessing a block of continuous memory at once to be processed within a work-group. This is known as a coalesced access. Using this knowledge, we will write the code such that each work-group accesses continuous data on the memory. This change is illustrated in <strong>Figure 6.11</strong>.</p> <p><strong>Figure 6.11: Grouping of work-items</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-12_at_9.39.48_PM.2a5e150c.png" alt=""></p> <p>The changes in the code are shown below.</p> <blockquote><p>global_item_size_pi[0] = num_compute_unit * 128; global_item_size_pi[1] = 1; global_item_size_pi[2] = 1;</p> <p>local_item_size_pi[0] = 128; local_item_size_pi[1] = 1; local_item_size_pi[2] = 1;</p> <p>/* Compute PI */</p> <p>ret = clEnqueueNDRangeKernel(command_queue, kernel_pi, 1, NULL, global_item_size_pi,</p> <p>local_item_size_pi, 0, NULL, &amp;ev_pi_end);</p></blockquote> <p>The above is the change made on the host-side. The number of work-groups is changed to CL_DEVICE_MAX_COMPUT_UNITS, and the number of work-items is set to 128.</p> <blockquote><p>/* Count the number of points within the circle */</p> <p>__kernel void calc_pi(__global uint *out, __global uint *rand, int num_rand_per_compute_unit,</p> <p>int num_compute_unit, int num_rand_all, __local uint *count_per_wi)</p> <p>{</p> <p>int gid = get_group_id(0);</p> <p>int lid = get_local_id(0);</p> <p>int count = 0;</p> <p>int i, end, begin;</p> <p>/* Indices to be processed in this work-group */</p> <p>begin = gid * num_rand_per_compute_unit;</p> <p>end = begin + num_rand_per_compute_unit;</p> <p>/* Reduce the end boundary index it is greater than the number of random numbers to generate*/</p> <p>if (end &gt; num_rand_all)</p> <p>end = num_rand_all;</p> <p>// Compute the reference address corresponding to the local ID</p> <p>rand += lid;</p> <p>/* Process 128 elements at a time */</p> <p>for (i=begin; i &lt; end-128; i+=128) {</p> <p>float x, y, len;</p> <p>x = ((float)(rand[i]&gt;&gt;16))/65535.0f; /* x coordinate */</p> <p>y = ((float)(rand[i]&amp;0xffff))/65535.0f; /* y coordinate */</p> <p>len = (x*x + y*y); /* Distance from the origin */</p> <p>if (len &lt; 1) { /* sqrt(len) &lt; 1 = len &lt; 1 */</p> <p>count++;</p> <p>}</p> <p>}</p> <p>/* Process the remaining elements */</p> <p>if ((i + lid) &lt; end) {</p> <p>float x, y, len;</p> <p>x = ((float)(rand[i]&gt;&gt;16))/65535.0f; /* x coordinate */</p> <p>y = ((float)(rand[i]&amp;0xffff))/65535.0f; /* y coordinate */</p> <p>len = (x*x + y*y); /* Distance from the origin */</p> <p>if (len &lt; 1) { /* sqrt(len) &lt; 1 = len &lt; 1 */</p> <p>count++;</p> <p>}</p> <p>}</p> <p>count_per_wi[lid] = count;</p> <p>/* Sum the counters from each work-item */</p> <p>barrier(CLK_LOCAL_MEM_FENCE); /* Wait until all work-items are finished */</p> <p>if (lid == 0) {</p> <p>int count = 0;</p> <p>for (i=0; i &lt; 128; i++) {</p> <p>count += count_per_wi[i]; /* Sum the counters */</p> <p>}</p> <p>out[gid] = count;</p> <p>}</p> <p>}</p></blockquote> <p>The above code shows the changes made on the device side. Note that each work-group processes the input data such that all the work-items within the work-group access continuous address space. The code includes the case when the number of data to process is not a multiple of 128. The processing time using this code is 3.8 ms, which is a 40-fold improvement over the previous code.</p> <p>Next, we will optimize the tempering algorithm. As stated earlier, this process has a parallel nature. For the parameters in our example program, 9 state update and 17 tempering can be performed in parallel. However, since the processing on each word does not require many instructions, and depending on the cost of synchronization, performance may potentially suffer from parallelization. We had concluded previously that a use of SIMD units would be optimal for this process, to reduce the cost of synchronization.</p> <p>NVIDIA GPUs performs its processes in &quot;warps&quot;. A warp is made up of 32 work-items, and all work-items within a warp are executed synchronously. Taking advantage of this property, some operations can be performed in parallel without the need to synchronize.</p> <p>We will use one warp to perform the update of the state, as well as the tempering process. This would enable these processes to be performed without increasing the synchronization cost. A new block diagram of the distribution of work-items and work-groups are shown in <strong>Figure 6.12</strong> below.</p> <p><strong>Figure 6.12: Distribution of work-items for MT</strong></p> <p><img src="/test-book/assets/img/Screen_Shot_2022-01-12_at_9.42.16_PM.d8b70371.png" alt=""></p> <p>Note that this optimization is done by using the property of NVIDIA GPUs, so making this change may not allow for proper operation on other devices.</p> <p>The changes to the program are shown below.</p> <blockquote><p>/* Each compute unit process 4 warps */</p> <p>warp_per_compute_unit = 4;</p> <p>/* Total number of warps */</p> <p>num_warp = warp_per_compute_unit * num_compute_unit ;</p> <p>/* Number of MT parameters per warp (rounded up) */</p> <p>num_param_per_warp = (num_generator + (num_warp-1)) / num_warp;</p> <p>/* Number of work-items per group (warp = 32work items) */</p> <p>num_work_item = 32 * warp_per_compute_unit;</p> <p>/* Number of random numbers per group */</p> <p>num_rand_per_compute_unit = (num_rand_all + (num_compute_unit-1)) / num_compute_unit;</p> <p>/* Set Kernel Arguments */</p> <p>clSetKernelArg(kernel_mt, 0, sizeof(cl_mem), (void*)&amp;rand); /* Random numbers (output of genrand) */</p> <p>clSetKernelArg(kernel_mt, 1, sizeof(cl_mem), (void*)&amp;dev_mts); /* MT parameter (input to genrand) */</p> <p>clSetKernelArg(kernel_mt, 2, sizeof(num_rand_per_generator), &amp;num_rand_per_generator); /* Number of random numbers to generate for each MT parameter */</p> <p>clSetKernelArg(kernel_mt, 3, sizeof(num_generator), &amp;num_generator); /* Number of random numbers to generate */</p> <p>clSetKernelArg(kernel_mt, 4, sizeof(num_param_per_warp), &amp;num_param_per_warp); /* Number of parameters to process per work-group */</p> <p>clSetKernelArg(kernel_mt, 5, sizeof(cl_uint)*17*num_work_item, NULL); /* Local Memory (state) */</p> <p>clSetKernelArg(kernel_mt, 6, sizeof(mt_struct)*num_work_item, NULL); /* Local Memory (mts) */</p> <p>/* Set the number of work-groups and work-items per work-group */</p> <p>global_item_size_mt[0] = num_work_item * num_compute_unit; global_item_size_mt[1] = 1; global_item_size_mt[2] = 1;</p> <p>local_item_size_mt[0] = num_work_item; local_item_size_mt[1] = 1; local_item_size_mt[2] = 1;</p></blockquote> <p>The above shows the changes made on the host-side. The number of random numbers to be generated by each work-group is first computed, and this is sent in as an argument. The number of work-items in each work-group is set to 128, which is 4 warps.</p> <blockquote><p>/* Update state */</p> <p>void update_state(__local const mt_struct *mts, __local uint *st, int wlid) {</p> <p>int n = 17, m = 8;</p> <p>uint aa = mts-&gt;aaa, x;</p> <p>uint uuu = mts-&gt;umask, lll = mts-&gt;lmask;</p> <p>int k,lim;</p> <p>if (wlid &lt; 9) {</p> <p>/* Accessing indices k+1 and k+m would normally have dependency issues,</p> <p>* but since the operations within a warp is synchronized, the write to</p> <p>* st[k] by each work-item occurs after read from st[k+1] and st[k+m] */</p> <p>k = wlid;</p> <p>x = (st[k]&amp;uuu)|(st[k+1]&amp;lll);</p> <p>st[k] = st[k+m] ^ (x&gt;&gt;1) ^ (x&amp;1U ? aa : 0U);</p> <p>}</p> <p>if (wlid &lt; 7) {</p> <p>/* Same reasoning as above. No problem as long as the read operation</p> <p>* for each work-item within a work-group is finished before writing */</p> <p>k = wlid + 9;</p> <p>x = (st[k]&amp;uuu)|(st[k+1]&amp;lll);</p> <p>st[k] = st[k+m-n] ^ (x&gt;&gt;1) ^ (x&amp;1U ? aa : 0U);</p> <p>}</p> <p>if (wlid == 0) {</p> <p>x = (st[n-1]&amp;uuu)|(st[0]&amp;lll);</p> <p>st[n-1] = st[m-1] ^ (x&gt;&gt;1) ^ (x&amp;1U ? aa : 0U);</p> <p>}</p> <p>}</p> <p>static inline void gen(__global uint *out, const __local mt_struct *mts, __local uint</p> <p>*state, int num_rand, int wlid) {</p> <p>int i, j, n, nn = mts-&gt;nn;</p> <p>n = (num_rand+(nn-1)) / nn;</p> <p>for (i=0; i &lt; n; i++) {</p> <p>int m = nn;</p> <p>if (i == n-1) m = num_rand%nn;</p> <p>update_state(mts, state, wlid);</p> <p>if (wlid &lt; m) { /* tempering performed within 1 warp */</p> <p>int j = wlid;</p> <p>uint x = state[j];</p> <p>x ^= x &gt;&gt; mts-&gt;shift0;</p> <p>x ^= (x &lt;&lt; mts-&gt;shiftB) &amp; mts-&gt;maskB;</p> <p>x ^= (x &lt;&lt; mts-&gt;shiftC) &amp; mts-&gt;maskC;</p> <p>x ^= x &gt;&gt; mts-&gt;shift1;</p> <p>out[i*nn + j] = x;</p> <p>}</p> <p>}</p> <p>}</p> <p>__kernel void genrand(__global uint *out,__global mt_struct *mts_g,int num_rand, int</p> <p>num_generator, uint num_param_per_warp, __local uint *state_mem,</p> <p>__local mt_struct *mts){</p> <p>int warp_per_compute_unit = 4;</p> <p>int workitem_per_warp = 32;</p> <p>int wid = get_group_id(0);</p> <p>int lid = get_local_id(0);</p> <p>int warp_id = wid * warp_per_compute_unit + lid / workitem_per_warp;</p> <p>int generator_id, end;</p> <p>int wlid = lid % workitem_per_warp; /* Local ID within the warp */</p> <p>__local uint *state = state_mem + warp_id*17; /* Store state in local memory */</p> <p>end = num_param_per_warp*warp_id + num_param_per_warp;</p> <p>if (end &gt; num_generator)</p> <p>end = num_generator;</p> <p>mts = mts + warp_id;</p> <p>/* Loop for each MT parameter within this work-group */</p> <p>for (generator_id = num_param_per_warp*warp_id;</p> <p>generator_id &lt; end;</p> <p>generator_id ++)</p> <p>{</p> <p>if (wlid == 0) {</p> <p>/* Copy MT parameters to local memory */</p> <p>mts-&gt;aaa = mts_g[generator_id].aaa;</p> <p>mts-&gt;mm = mts_g[generator_id].mm;</p> <p>mts-&gt;nn = mts_g[generator_id].nn;</p> <p>mts-&gt;rr = mts_g[generator_id].rr;</p> <p>mts-&gt;ww = mts_g[generator_id].ww;</p> <p>mts-&gt;wmask = mts_g[generator_id].wmask;</p> <p>mts-&gt;umask = mts_g[generator_id].umask;</p> <p>mts-&gt;lmask = mts_g[generator_id].lmask;</p> <p>mts-&gt;shift0 = mts_g[generator_id].shift0;</p> <p>mts-&gt;shift1 = mts_g[generator_id].shift1;</p> <p>mts-&gt;shiftB = mts_g[generator_id].shiftB;</p> <p>mts-&gt;shiftC = mts_g[generator_id].shiftC;</p> <p>mts-&gt;maskB = mts_g[generator_id].maskB;</p> <p>mts-&gt;maskC = mts_g[generator_id].maskC;</p> <p>sgenrand_mt(0x33ff*generator_id, mts, (__local uint*)state); /* Initialize random numbers */</p> <p>}</p> <p>gen(out + generator_id*num_rand, mts, (__local uint*)state, num_rand, wlid); /* Generate random numbers */</p> <p>}</p> <p>}</p></blockquote> <p>The above code shows the changes made on the device-side. It is changed such that one DC parameter is processed on each warp, and parallel processing is performed within the warp, reducing the need for synchronization. The processing times after making these changes are shown in <strong>Table 6.8</strong> below.</p> <p><strong>Table 6.8: Processing times after optimization</strong></p> <table><thead><tr><th># MT parameters</th> <th>mt (ms)</th></tr></thead> <tbody><tr><td>128</td> <td>47.8</td></tr> <tr><td>256</td> <td>42.2</td></tr> <tr><td>512</td> <td>42.2</td></tr></tbody></table> <p>Note the processing times are reduced significantly.</p> <p>The final code for the program with all the changes discussed is shown in <strong>List 6.18</strong> (host) and <strong>List 6.19</strong> (device). Running this code on Tesla, there is a 90-fold improvement since the original program15.</p> <p><strong>List 6.18: Host-side optimized for NVIDIA GPU</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdlib.h&gt;
+#include &lt;CL/cl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+typedef struct mt_struct_s
+{
+    cl_uint aaa;
+    cl_int mm, nn, rr, ww;
+    cl_uint wmask, umask, lmask;
+    cl_int shift0, shift1, shiftB, shiftC;
+    cl_uint maskB, maskC;
+} mt_struct;
+
+#include &quot;mts.h&quot;
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main(int argc, char **argv)
+{
+    cl_int num_rand_all = 4096 * 256 * 32; /* The number of random numbers to generate */
+    cl_int num_rand_per_compute_unit, num_rand_per_generator;
+    int count_all, i;
+    cl_uint num_generator;
+    unsigned int num_work_item;
+    double pi;
+    cl_platform_id platform_id = NULL;
+    cl_uint ret_num_platforms;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel_mt = NULL, kernel_pi = NULL;
+    size_t kernel_code_size;
+    char *kernel_src_str;
+    cl_uint *result;
+    cl_int ret;
+    FILE *fp;
+    cl_mem rand, count;
+
+    size_t global_item_size_mt[3], local_item_size_mt[3];
+    size_t global_item_size_pi[3], local_item_size_pi[3];
+
+    cl_mem dev_mts;
+    cl_event ev_mt_end, ev_pi_end, ev_copy_end;
+    cl_ulong prof_start, prof_mt_end, prof_pi_end, prof_copy_end;
+    cl_uint num_compute_unit, warp_per_compute_unit, num_warp, num_param_per_warp;
+    int mts_size;
+    mt_struct *mts = NULL;
+
+    if (argc &gt;= 2)
+    {
+        int n = atoi(argv[1]);
+        if (n == 128)
+        {
+            mts = mts128;
+            mts_size = sizeof(mts128);
+            num_generator = 128;
+            num_rand_per_generator = num_rand_all / 128;
+        }
+        if (n == 256)
+        {
+            mts = mts256;
+            mts_size = sizeof(mts256);
+            num_generator = 256;
+            num_rand_per_generator = num_rand_all / 256;
+        }
+    }
+
+    if (mts == NULL)
+    {
+        mts = mts512;
+        mts_size = sizeof(mts512);
+        num_generator = 512;
+        num_rand_per_generator = num_rand_all / 512;
+    }
+
+    clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+    clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,
+                   &amp;ret_num_devices);
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+    result = (cl_uint *)malloc(sizeof(cl_uint) * num_generator);
+
+    command_queue = clCreateCommandQueue(context, device_id, CL_QUEUE_PROFILING_ENABLE, &amp;ret);
+
+    fp = fopen(&quot;mt.cl&quot;, &quot;r&quot;);
+    kernel_src_str = (char *)malloc(MAX_SOURCE_SIZE);
+    kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Create output buffer */
+    rand = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(cl_uint) * num_rand_all, NULL, &amp;ret);
+    count = clCreateBuffer(context, CL_MEM_READ_WRITE, sizeof(cl_uint) * num_generator, NULL, &amp;ret);
+
+    /* Build Program*/
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,
+                                        (const size_t *)&amp;kernel_code_size, &amp;ret);
+    clBuildProgram(program, 1, &amp;device_id, &quot;&quot;, NULL, NULL);
+
+    kernel_mt = clCreateKernel(program, &quot;genrand&quot;, &amp;ret);
+    kernel_pi = clCreateKernel(program, &quot;calc_pi&quot;, &amp;ret);
+
+    /* Create input parameter */
+    dev_mts = clCreateBuffer(context, CL_MEM_READ_WRITE, mts_size, NULL, &amp;ret);
+    clEnqueueWriteBuffer(command_queue, dev_mts, CL_TRUE, 0, mts_size, mts, 0, NULL, NULL);
+
+    clGetDeviceInfo(device_id, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(cl_uint), &amp;num_compute_unit, NULL);
+
+    /* Each compute unit process 4 warps */
+    warp_per_compute_unit = 4;
+    /* Total number of warps */
+    num_warp = warp_per_compute_unit * num_compute_unit;
+    /* Number of MT parameters per warp (rounded up) */
+    num_param_per_warp = (num_generator + (num_warp - 1)) / num_warp;
+    /* Number of work-items per group (warp = 32work items) */
+    num_work_item = 32 * warp_per_compute_unit;
+    /* Number of random numbers per group */
+    num_rand_per_compute_unit = (num_rand_all + (num_compute_unit - 1)) / num_compute_unit;
+
+    /* Set Kernel Arguments */
+    clSetKernelArg(kernel_mt, 0, sizeof(cl_mem), (void *)&amp;rand);                           /* Random numbers (output of genrand) */
+    clSetKernelArg(kernel_mt, 1, sizeof(cl_mem), (void *)&amp;dev_mts);                        /* MT parameter (input to genrand) */
+    clSetKernelArg(kernel_mt, 2, sizeof(num_rand_per_generator), &amp;num_rand_per_generator); /* Number of random numbers to generate for each MT parameter */
+    clSetKernelArg(kernel_mt, 3, sizeof(num_generator), &amp;num_generator);                   /* Number of random numbers to generate */
+    clSetKernelArg(kernel_mt, 4, sizeof(num_param_per_warp), &amp;num_param_per_warp);         /* Number of parameters to process per work-group */
+    clSetKernelArg(kernel_mt, 5, sizeof(cl_uint) * 17 * num_work_item, NULL);              /* Local Memory (state) */
+    clSetKernelArg(kernel_mt, 6, sizeof(mt_struct) * num_work_item, NULL);                 /* Local Memory (mts) */
+
+    clSetKernelArg(kernel_pi, 0, sizeof(cl_mem), (void *)&amp;count);                                /* Counter for points within circle (output of calc_pi) */
+    clSetKernelArg(kernel_pi, 1, sizeof(cl_mem), (void *)&amp;rand);                                 /* Random numbers (input to calc_pi) */
+    clSetKernelArg(kernel_pi, 2, sizeof(num_rand_per_compute_unit), &amp;num_rand_per_compute_unit); /* Number of random numbers to process per work-group */
+    clSetKernelArg(kernel_pi, 3, sizeof(num_compute_unit), &amp;num_compute_unit);                   /* Number of MT parameters */
+    clSetKernelArg(kernel_pi, 4, sizeof(num_rand_all), &amp;num_rand_all);                           /* Number of random numbers used */
+    clSetKernelArg(kernel_pi, 5, sizeof(cl_uint) * 128, NULL);                                   /* Memory used for counter */
+
+    /* Set the number of work-groups and work-items per work-group */
+    global_item_size_mt[0] = num_work_item * num_compute_unit;
+    global_item_size_mt[1] =
+        lobal_item_size_mt[2] = 1;
+    local_item_size_mt[0] = num_work_item;
+    local_item_size_mt[1] = 1;
+    local_item_size_mt[2] = 1;
+
+    /* Create a random number array */
+    clEnqueueNDRangeKernel(command_queue, kernel_mt, 1, NULL, global_item_size_mt, local_item_size_mt, 0, NULL, &amp;ev_mt_end);
+
+    global_item_size_pi[0] = num_compute_unit * 128;
+    global_item_size_pi[1] = 1;
+    global_item_size_pi[2] = 1;
+    local_item_size_pi[0] = 128;
+    local_item_size_pi[1] = 1;
+    local_item_size_pi[2] = 1;
+
+    /* Compute PI */
+    clEnqueueNDRangeKernel(command_queue, kernel_pi, 1, NULL, global_item_size_pi, local_item_size_pi, 0, NULL, &amp;ev_pi_end);
+
+    /* Get result */
+    clEnqueueReadBuffer(command_queue, count, CL_TRUE, 0, sizeof(cl_uint) * num_generator, result, 0, NULL, &amp;ev_copy_end);
+
+    /* Average the values of PI */
+    count_all = 0;
+    for (i = 0; i &lt; (int)num_compute_unit; i++)
+    {
+        count_all += result[i];
+    }
+
+    pi = ((double)count_all) / (num_rand_all)*4;
+    printf(&quot;pi = %.20f¥n&quot;, pi);
+
+    /* Get execution time info */
+    clGetEventProfilingInfo(ev_mt_end, CL_PROFILING_COMMAND_QUEUED, sizeof(cl_ulong), &amp;prof_start, NULL);
+    clGetEventProfilingInfo(ev_mt_end, CL_PROFILING_COMMAND_END, sizeof(cl_ulong),
+                            f_mt_end, NULL);
+    clGetEventProfilingInfo(ev_pi_end, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &amp;prof_pi_end, NULL);
+    clGetEventProfilingInfo(ev_copy_end, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &amp;prof_copy_end, NULL);
+
+    printf(&quot; mt: %f[ms]¥n&quot;
+           &quot; pi: %f[ms]¥n&quot;
+           &quot; copy: %f[ms]¥n&quot;,
+           (prof_mt_end - prof_start) / (1000000.0),
+           (prof_pi_end - prof_mt_end) / (1000000.0),
+           (prof_copy_end - prof_pi_end) / (1000000.0));
+
+    clReleaseEvent(ev_mt_end);
+    clReleaseEvent(ev_pi_end);
+    clReleaseEvent(ev_copy_end);
+
+    clReleaseMemObject(rand);
+    clReleaseMemObject(count);
+    clReleaseKernel(kernel_mt);
+    clReleaseKernel(kernel_pi);
+    clReleaseProgram(program);
+    clReleaseCommandQueue(command_queue);
+    clReleaseContext(context);
+    free(kernel_src_str);
+    free(result);
+    return 0;
+}
+</code></pre></div><p><strong>List 6.19: Device-side optimized for NVIDIA GPU</strong></p> <div class="language- extra-class"><pre class="language-text"><code>typedef struct mt_struct_s
+{
+    uint aaa;
+    int mm, nn, rr, ww;
+    uint wmask, umask, lmask;
+    int shift0, shift1, shiftB, shiftC;
+    uint maskB, maskC;
+} mt_struct;
+
+/* Initialize state using a seed */
+static void sgenrand_mt(uint seed, __local const mt_struct *mts, __local uint *state)
+{
+    int i;
+    for (i = 0; i &lt; mts-&gt;nn; i++)
+    {
+        state[i] = seed;
+        seed = (1812433253 * (seed ^ (seed &gt;&gt; 30))) + i + 1;
+    }
+    for (i = 0; i &lt; mts-&gt;nn; i++)
+        state[i] &amp;= mts-&gt;wmask;
+}
+
+/* Update state */
+static void update_state(__local const mt_struct *mts, __local uint *st, int wlid)
+{
+    int n = 17, m = 8;
+    uint aa = mts-&gt;aaa, x;
+    uint uuu = mts-&gt;umask, lll = mts-&gt;lmask;
+    int k, lim;
+
+    if (wlid &lt; 9)
+    {
+        /* Accessing indices k+1 and k+m would normally have dependency issues, 
+ * but since the operations within a warp is synchronized, the write to 
+ * st[k] by each work-item occurs after read from st[k+1] and st[k+m] */
+
+        k = wlid;
+        x = (st[k] &amp; uuu) | (st[k + 1] &amp; lll);
+        st[k] = st[k + m] ^ (x &gt;&gt; 1) ^ (x &amp; 1U ? aa : 0U);
+    }
+    if (wlid &lt; 7)
+    {
+        /* Same reasoning as above. No problem as long as the read operation 
+ * for each work-item within a work-group is finished before writing */
+
+        k = wlid + 9;
+        x = (st[k] &amp; uuu) | (st[k + 1] &amp; lll);
+        st[k] = st[k + m - n] ^ (x &gt;&gt; 1) ^ (x &amp; 1U ? aa : 0U);
+    }
+    if (wlid == 0)
+    {
+        x = (st[n - 1] &amp; uuu) | (st[0] &amp; lll);
+        st[n - 1] = st[m - 1] ^ (x &gt;&gt; 1) ^ (x &amp; 1U ? aa : 0U);
+    }
+}
+
+static inline void gen(__global uint *out, const __local mt_struct *mts, __local uint *state, int num_rand, int wlid)
+{
+    int i, j, n, nn = mts-&gt;nn;
+    n = (num_rand + (nn - 1)) / nn;
+
+    for (i = 0; i &lt; n; i++)
+    {
+        int m = nn;
+        if (i == n - 1)
+            m = num_rand % nn;
+
+        update_state(mts, state, wlid);
+
+        if (wlid &lt; m)
+        { /* tempering performed within 1 warp */
+            int j = wlid;
+            uint x = state[j];
+            x ^= x &gt;&gt; mts-&gt;shift0;
+            x ^= (x &lt;&lt; mts-&gt;shiftB) &amp; mts-&gt;maskB;
+            x ^= (x &lt;&lt; mts-&gt;shiftC) &amp; mts-&gt;maskC;
+            x ^= x &gt;&gt; mts-&gt;shift1;
+            out[i * nn + j] = x;
+        }
+    }
+}
+
+__kernel void genrand(__global uint *out, __global mt_struct *mts_g, int num_rand, int num_generator,
+                      uint num_param_per_warp, __local uint *state_mem, __local mt_struct *mts)
+{
+    int warp_per_compute_unit = 4;
+    int workitem_per_warp = 32;
+    int wid = get_group_id(0);
+    int lid = get_local_id(0);
+    int warp_id = wid * warp_per_compute_unit + lid / workitem_per_warp;
+    int generator_id, end;
+    int wlid = lid % workitem_per_warp; /* Local ID within the warp */
+
+    __local uint *state = state_mem + warp_id * 17; /* Store state in local memory */
+
+    end = num_param_per_warp * warp_id + num_param_per_warp;
+
+    if (end &gt; num_generator)
+        end = num_generator;
+
+    mts = mts + warp_id;
+
+    /* Loop for each MT parameter within this work-group */
+    for (generator_id = num_param_per_warp * warp_id;
+         generator_id &lt; end;
+         generator_id++)
+    {
+        if (wlid == 0)
+        {
+            /* Copy MT parameters to local memory */
+            mts-&gt;aaa = mts_g[generator_id].aaa;
+            mts-&gt;mm = mts_g[generator_id].mm;
+            mts-&gt;nn = mts_g[generator_id].nn;
+            mts-&gt;rr = mts_g[generator_id].rr;
+            mts-&gt;ww = mts_g[generator_id].ww;
+            mts-&gt;wmask = mts_g[generator_id].wmask;
+            mts-&gt;umask = mts_g[generator_id].umask;
+            mts-&gt;lmask = mts_g[generator_id].lmask;
+            mts-&gt;shift0 = mts_g[generator_id].shift0;
+            mts-&gt;shift1 = mts_g[generator_id].shift1;
+            mts-&gt;shiftB = mts_g[generator_id].shiftB;
+            mts-&gt;shiftC = mts_g[generator_id].shiftC;
+            mts-&gt;maskB = mts_g[generator_id].maskB;
+            mts-&gt;maskC = mts_g[generator_id].maskC;
+            sgenrand_mt(0x33ff * generator_id, mts, (__local uint *)state); /* Initialize random numbers */
+        }
+        gen(out + generator_id * num_rand, mts, (__local uint *)state, num_rand, wlid); /* Generate random numbers */
+    }
+}
+
+/* Count the number of points within the circle */
+__kernel void calc_pi(__global uint *out, __global uint *rand, int num_rand_per_compute_unit,
+                      int num_compute_unit, int num_rand_all, __local uint *count_per_wi)
+{
+    int gid = get_group_id(0);
+    int lid = get_local_id(0);
+
+    int count = 0;
+    int i, end, begin;
+
+    /* Indices to be processed in this work-group */
+    begin = gid * num_rand_per_compute_unit;
+    end = begin + num_rand_per_compute_unit;
+
+    /* Reduce the end boundary index it is greater than the number of random numbers to generate*/
+    if (end &gt; num_rand_all)
+        end = num_rand_all;
+    // Compute the reference address corresponding to the local ID
+    rand += lid;
+
+    /* Process 128 elements at a time */
+    for (i = begin; i &lt; end - 128; i += 128)
+    {
+        float x, y, len;
+        x = ((float)(rand[i] &gt;&gt; 16)) / 65535.0f;    /* x coordinate */
+        y = ((float)(rand[i] &amp; 0xffff)) / 65535.0f; /* y coordinate */
+        len = (x * x + y * y);                      /* Distance from the origin */
+
+        if (len &lt; 1)
+        { /* sqrt(len) &lt; 1 = len &lt; 1 */
+            count++;
+        }
+    }
+
+    /* Process the remaining elements */
+    if ((i + lid) &lt; end)
+    {
+        float x, y, len;
+        x = ((float)(rand[i] &gt;&gt; 16)) / 65535.0f;    /* x coordinate */
+        y = ((float)(rand[i] &amp; 0xffff)) / 65535.0f; /* y coordinate */
+        len = (x * x + y * y);                      /* Distance from the origin*/
+
+        if (len &lt; 1)
+        { /* sqrt(len) &lt; 1 = len &lt; 1 */
+            count++;
+        }
+    }
+
+    count_per_wi[lid] = count;
+
+    /* Sum the counters from each work-item */
+
+    barrier(CLK_LOCAL_MEM_FENCE); /* Wait until all work-items are finished */
+
+    if (lid == 0)
+    {
+        int count = 0;
+        for (i = 0; i &lt; 128; i++)
+        {
+            count += count_per_wi[i]; /* Sum the counters */
+        }
+        out[gid] = count;
+    }
+}
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
+    <script src="/test-book/assets/js/app.b513c2d8.js" defer></script><script src="/test-book/assets/js/2.8dbd29eb.js" defer></script><script src="/test-book/assets/js/8.1076ef6a.js" defer></script>
+  </body>
+</html>
