@@ -10,8 +10,8 @@ jobs:
     - name: vuepress-build
       uses: jenkey2011/vuepress-deploy@master
       env:
-        ACCESS_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN }}
-        TARGET_REPO: samywang92/test-book
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TARGET_REPO: fixstars/opencl-book
         TARGET_BRANCH: gh-pages
         BUILD_SCRIPT: yarn && yarn build
         BUILD_DIR: docs/src/.vuepress/dist
