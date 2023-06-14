@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>OpenCL Programming Practice | OpenCL Book</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="This section will go over some parallel processing methods that can be used in OpenCL.">
+    <meta name="theme-color" content="#2492f3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/opencl-book/assets/css/0.styles.ecae2773.css" as="style"><link rel="preload" href="/opencl-book/assets/js/app.044fec5c.js" as="script"><link rel="preload" href="/opencl-book/assets/js/2.e23f9d0e.js" as="script"><link rel="preload" href="/opencl-book/assets/js/28.ad339dbd.js" as="script"><link rel="prefetch" href="/opencl-book/assets/js/10.1dcb20e9.js"><link rel="prefetch" href="/opencl-book/assets/js/11.c0ed33a0.js"><link rel="prefetch" href="/opencl-book/assets/js/12.7e83236b.js"><link rel="prefetch" href="/opencl-book/assets/js/13.5fb1d917.js"><link rel="prefetch" href="/opencl-book/assets/js/14.90f24845.js"><link rel="prefetch" href="/opencl-book/assets/js/15.a1675395.js"><link rel="prefetch" href="/opencl-book/assets/js/16.e7b0bbcf.js"><link rel="prefetch" href="/opencl-book/assets/js/17.d9e4840b.js"><link rel="prefetch" href="/opencl-book/assets/js/18.2a111031.js"><link rel="prefetch" href="/opencl-book/assets/js/19.6f2b05fe.js"><link rel="prefetch" href="/opencl-book/assets/js/20.dca105f5.js"><link rel="prefetch" href="/opencl-book/assets/js/21.fffc28c0.js"><link rel="prefetch" href="/opencl-book/assets/js/22.b98ab071.js"><link rel="prefetch" href="/opencl-book/assets/js/23.6529153b.js"><link rel="prefetch" href="/opencl-book/assets/js/24.972fe0d7.js"><link rel="prefetch" href="/opencl-book/assets/js/25.ba81720e.js"><link rel="prefetch" href="/opencl-book/assets/js/26.ca0310e3.js"><link rel="prefetch" href="/opencl-book/assets/js/27.8a49061d.js"><link rel="prefetch" href="/opencl-book/assets/js/29.b5e81878.js"><link rel="prefetch" href="/opencl-book/assets/js/3.d9fe953e.js"><link rel="prefetch" href="/opencl-book/assets/js/30.72f82acf.js"><link rel="prefetch" href="/opencl-book/assets/js/31.6cfd2144.js"><link rel="prefetch" href="/opencl-book/assets/js/32.a66512ff.js"><link rel="prefetch" href="/opencl-book/assets/js/33.4017c4ea.js"><link rel="prefetch" href="/opencl-book/assets/js/34.e63ef5ea.js"><link rel="prefetch" href="/opencl-book/assets/js/35.b29ee815.js"><link rel="prefetch" href="/opencl-book/assets/js/4.36850638.js"><link rel="prefetch" href="/opencl-book/assets/js/5.778824b7.js"><link rel="prefetch" href="/opencl-book/assets/js/6.3d4589fb.js"><link rel="prefetch" href="/opencl-book/assets/js/7.61d32e36.js"><link rel="prefetch" href="/opencl-book/assets/js/8.1076ef6a.js"><link rel="prefetch" href="/opencl-book/assets/js/9.a664e9a1.js">
+    <link rel="stylesheet" href="/opencl-book/assets/css/0.styles.ecae2773.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/opencl-book/" class="home-link router-link-active"><!----> <span class="site-name">OpenCL Book</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/opencl-book/opencl-book/" class="nav-link router-link-active">
+  OpenCL Book
+</a></div><div class="nav-item"><a href="https://us.fixstars.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Fixstars Solutions
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/opencl-book/opencl-book/" class="nav-link router-link-active">
+  OpenCL Book
+</a></div><div class="nav-item"><a href="https://us.fixstars.com/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Fixstars Solutions
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/opencl-book/opencl-book/" aria-current="page" class="sidebar-link">Foreword</a></li><li><a href="/opencl-book/opencl-book/who-should-read-this-book.html" class="sidebar-link">Who Should Read this Book?</a></li><li><a href="/opencl-book/opencl-book/about-the-authors.html" class="sidebar-link">About the Authors</a></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Introduction to Parallelization</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/opencl-book/opencl-book/introduction-to-parallelization/why-parallelization.html" class="sidebar-link">Why Parallelization</a></li><li><a href="/opencl-book/opencl-book/introduction-to-parallelization/parallel-computing-hardware.html" class="sidebar-link">Parallel Computing Hardware</a></li><li><a href="/opencl-book/opencl-book/introduction-to-parallelization/parallel-computing-software.html" class="sidebar-link">Parallel Computing Software</a></li><li><a href="/opencl-book/opencl-book/introduction-to-parallelization/conclusion.html" class="sidebar-link">Conclusion</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/opencl-book/opencl-book/opencl/what-is-opencl.html" class="sidebar-link">What is OpenCL?</a></li><li><a href="/opencl-book/opencl-book/opencl/historical-background.html" class="sidebar-link">Historical Background</a></li><li><a href="/opencl-book/opencl-book/opencl/an-overview-of-opencl.html" class="sidebar-link">An Overview of OpenCL</a></li><li><a href="/opencl-book/opencl-book/opencl/why-opencl.html" class="sidebar-link">Why OpenCL?</a></li><li><a href="/opencl-book/opencl-book/opencl/applicable-platforms.html" class="sidebar-link">Applicable Platforms</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>OpenCL Setup</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/opencl-book/opencl-book/opencl-setup/available-opencl-environments.html" class="sidebar-link">Available OpenCL Environments</a></li><li><a href="/opencl-book/opencl-book/opencl-setup/development-environment-setup.html" class="sidebar-link">Development Environment Setup</a></li><li><a href="/opencl-book/opencl-book/opencl-setup/first-opencl-program.html" class="sidebar-link">First OpenCL Program</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Basic OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/opencl-book/opencl-book/basic-opencl/basic-program-flow.html" class="sidebar-link">Basic Program Flow</a></li><li><a href="/opencl-book/opencl-book/basic-opencl/online-offline-compilation.html" class="sidebar-link">Online/Offline Compilation</a></li><li><a href="/opencl-book/opencl-book/basic-opencl/calling-the-kernel.html" class="sidebar-link">Calling the Kernel</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Advanced OpenCL</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/opencl-book/opencl-book/advanced-opencl/opencl-c.html" class="sidebar-link">OpenCL C</a></li><li><a href="/opencl-book/opencl-book/advanced-opencl/opencl-programming-practice.html" aria-current="page" class="active sidebar-link">OpenCL Programming Practice</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/opencl-book/opencl-book/advanced-opencl/opencl-programming-practice.html#standard-single-thread-programming" class="sidebar-link">Standard Single-Thread Programming</a></li><li class="sidebar-sub-header"><a href="/opencl-book/opencl-book/advanced-opencl/opencl-programming-practice.html#porting-to-opencl" class="sidebar-link">Porting to OpenCL</a></li><li class="sidebar-sub-header"><a href="/opencl-book/opencl-book/advanced-opencl/opencl-programming-practice.html#vector-operations" class="sidebar-link">Vector Operations</a></li><li class="sidebar-sub-header"><a href="/opencl-book/opencl-book/advanced-opencl/opencl-programming-practice.html#data-parallel-processing" class="sidebar-link">Data Parallel Processing</a></li><li class="sidebar-sub-header"><a href="/opencl-book/opencl-book/advanced-opencl/opencl-programming-practice.html#task-parallel-processing" class="sidebar-link">Task Parallel Processing</a></li></ul></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Changes made in OpenCL Specification 1.2</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/opencl-book/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.0-to-1.1.html" class="sidebar-link">Changes made in update from 1.0 to 1.1</a></li><li><a href="/opencl-book/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.1-to-1.2.html" class="sidebar-link">Changes made in update from 1.1 to 1.2</a></li></ul></section></li><li><a href="/opencl-book/opencl-book/references.html" class="sidebar-link">References</a></li><li><a href="/opencl-book/opencl-book/notes.html" class="sidebar-link">Notes</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="opencl-programming-practice"><a href="#opencl-programming-practice" class="header-anchor">#</a> OpenCL Programming Practice</h1> <p>We will use a sample application that analyzes stock price data to walk through porting of standard C code to OpenCL C in order to utilize a device. The analysis done in this application is to compute the moving average of the stock price for different stocks.</p> <p>We will start from a normal C code, and gradually convert sections of the code to be processed in parallel. This should aid you in gaining intuition on how to parallelize your code.</p> <p>A moving average filter is used commonly in image processing and signal processing as a low-pass filter.</p> <p>Note that the sample code shown in this section is meant to be pedagogical in order to show how OpenCL is used. You may not experience any speed-up depending on the type of hardware you have.</p> <h2 id="standard-single-thread-programming"><a href="#standard-single-thread-programming" class="header-anchor">#</a> <em>Standard Single-Thread Programming</em></h2> <p>We will first walk through a standard C code of the moving average function. The function has the following properties.</p> <p>• Stock price data in passed in as an int-array named &quot;value&quot;. The result of the moving average is returned as an array of floats with the name &quot;average&quot;.</p> <p>• The array length is passed in as &quot;length&quot; of type int</p> <p>• The width of the data to compute the average for is passed in as &quot;width&quot; of type int</p> <p>To make the code more intuitive, the code on List 5.21 gets rid of all error checks that would normally be performed. This function is what we want to process on the device, so this is the code will eventually be ported into kernel code.</p> <p><strong>List 5.21: Moving average of integers implemented in standard C</strong></p> <div class="language- extra-class"><pre class="language-text"><code>void moving_average(int *values,
+                    float *average,
+                    int length,
+                    int width)
+{
+    int i;
+    int add_value;
+
+    /* Compute sum for the first &quot;width&quot; elements */
+    add_value = 0;
+    for (i = 0; i &lt; width; i++)
+    {
+        add_value += values[i];
+    }
+    average[width - 1] = (float)add_value;
+
+    /* Compute sum for the (width)th ～ (length-1)th elements */
+    for (i = width; i &lt; length; i++)
+    {
+        add_value = add_value - values[i - width] + values[i];
+        average[i] = (float)(add_value);
+    }
+
+    /* Insert zeros to 0th ～ (width-2)th element */
+    for (i = 0; i &lt; width - 1; i++)
+    {
+        average[i] = 0.0f;
+    }
+
+    /* Compute average from the sum */
+    for (i = width - 1; i &lt; length; i++)
+    {
+        average[i] /= (float)width;
+    }
+}
+</code></pre></div><p>In this example, each indices of the average array contain the average of the previous width-1 values and the value of that index. Zeros are placed for average[0] ~ average[width-2] in lines 22~25, since this computation will require values not contained in the input array. In other words, if the width is 3, average[3] contain the average of value[1], value[2] and value[3]. The value of average[0] ~ average[width-2] = average[1] are zeros, since it would require value[-2] and value[-1].</p> <p>The average itself is computed by first summing up the &quot;width&quot; number of values and storing it into the average array (lines 9-20). Lines 9-14 computes the sum of the first &quot;width&quot; elements, and stores it in average[width-1]. Lines 16-20 computes the sum for the remaining indices. This is done by starting from the previously computed sum, subtracting the oldest value and adding the newest value, which is more efficient than computing the sum of &quot;width&quot; elements each time. This works since the input data is an integer type, but if the input is of type float, this method may result in rounding errors, which can become significant over time. In this case, a method shown in <strong>List 5.22</strong> should be used.</p> <p><strong>List 5.22: Moving average of floats implemented in standard C</strong></p> <div class="language- extra-class"><pre class="language-text"><code>void moving_average_float(float *values,
+                          float *average,
+                          int length,
+                          int width)
+{
+    int i, j;
+    float add_value;
+
+    /* Insert zeros to 0th ~ (width-2)th elements */
+    for (i = 0; i &lt; width - 1; i++)
+    {
+        average[i] = 0.0f;
+    }
+
+    /* Compute average of (width-1) ~ (length-1) elements */
+    for (i = width - 1; i &lt; length; i++)
+    {
+        add_value = 0.0f;
+        for (j = 0; j &lt; width; j++)
+        {
+            add_value += values[i - j];
+        }
+        average[i] = add_value / (float)width;
+    }
+}
+</code></pre></div><p>We will now show a main() function that will call the function in <strong>List 5.21</strong> to perform the computation (<strong>List 5.24</strong>). The input data is placed in a file called &quot;stock_array1.txt&quot;, whose content is shown in <strong>List 5.23</strong>.</p> <p><strong>List 5.23: Input data (stock_array1.txt)</strong></p> <blockquote><p>100,</p> <p>109,</p> <p>98,</p> <p>104,</p> <p>107,</p> <p>...</p> <p>50</p></blockquote> <p><strong>List 5.24: Standard C main() function to all the moving average function</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/* Read Stock data */
+int stock_array1[] = {
+#include &quot;stock_array1.txt&quot;
+};
+
+/* Define width for the moving average */
+#define WINDOW_SIZE (13)
+
+int main(int argc, char *argv[])
+{
+
+    float *result;
+
+    int data_num = sizeof(stock_array1) / sizeof(stock_array1[0]);
+    int window_num = (int)WINDOW_SIZE;
+
+    int i;
+
+    /* Allocate space for the result */
+    result = (float *)malloc(data_num * sizeof(float));
+
+    /* Call the moving average function */
+    moving_average(stock_array1,
+                   result,
+                   data_num,
+                   window_num);
+
+    /* Print result */
+    for (i = 0; i &lt; data_num; i++)
+    {
+        printf(&quot;result[%d] = %f¥n&quot;, i, result[i]);
+    }
+
+    /* Deallocate memory */
+    free(result);
+}
+</code></pre></div><p>The above code will be eventually transformed into a host code that will call the moving average kernel.</p> <p>We have now finished writing a single threaded program to compute the moving average. This will now be converted to OpenCL code to use the device. Our journey has just begun.</p> <h2 id="porting-to-opencl"><a href="#porting-to-opencl" class="header-anchor">#</a> <em>Porting to OpenCL</em></h2> <p>The first step is to convert the moving_average() function to kernel code, or OpenCL C. This code will be executed on the device. The code in <strong>List 5.21</strong> becomes as shown in <strong>List 5.25</strong> after porting.</p> <p><strong>List 5.25: Moving average kernel (moving_average.cl)</strong></p> <div class="language- extra-class"><pre class="language-text"><code>__kernel void moving_average(__global int *values,
+                             __global float *average,
+                             int length,
+                             int width)
+{
+    int i;
+    int add_value;
+
+    /* Compute sum for the first &quot;width&quot; elements */
+    add_value = 0;
+    for (i = 0; i &lt; width; i++)
+    {
+        add_value += values[i];
+    }
+    average[width - 1] = (float)add_value;
+
+    /* Compute sum for the (width)th ～ (length-1)th elements */
+    for (i = width; i &lt; length; i++)
+    {
+        add_value = add_value - values[i - width] + values[i];
+        average[i] = (float)(add_value);
+    }
+
+    /* Insert zeros to 0th ~ (width-2)th elements */
+    for (i = 0; i &lt; width - 1; i++)
+    {
+        average[i] = 0.0f;
+    }
+
+    /* Compute average of (width-1) ~ (length-1) elements */
+    for (i = width - 1; i &lt; length; i++)
+    {
+        average[i] /= (float)width;
+    }
+}
+</code></pre></div><p>Note that we have only changed lines 1 and 2, which adds the __kernel qualifier to the function, and the address qualifier __global specifying the location of the input data and where the result will be placed.</p> <p>The host code is shown in <strong>List 5.26</strong>.</p> <p><strong>List 5.26: Host code to execute the moving_average() kernel</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdlib.h&gt;
+#ifdef __APPLE__
+#include &lt;OpenCL/opencl.h&gt;
+#else
+#include &lt;CL/cl.h&gt;
+#endif
+#include &lt;stdio.h&gt;
+
+/* Read Stock data */
+int stock_array1[] = {
+#include &quot;stock_array1.txt&quot;
+};
+
+/* Define width for the moving average */
+#define WINDOW_SIZE (13)
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main(void)
+{
+    cl_platform_id platform_id = NULL;
+    cl_uint ret_num_platforms;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_mem memobj_in = NULL;
+    cl_mem memobj_out = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel = NULL;
+    size_t kernel_code_size;
+    char *kernel_src_str;
+    float *result;
+    cl_int ret;
+    FILE *fp;
+
+    int data_num = sizeof(stock_array1) / sizeof(stock_array1[0]);
+    int window_num = (int)WINDOW_SIZE;
+    int i;
+
+    /* Allocate space to read in kernel code */
+    kernel_src_str = (char *)malloc(MAX_SOURCE_SIZE);
+
+    /* Allocate space for the result on the host side */
+    result = (float *)malloc(data_num * sizeof(float));
+
+    /* Get Platform */
+    ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+
+    /* Get Device */
+    ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,
+                         &amp;ret_num_devices);
+
+    /* Create Context */
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    /* Create Command Queue */
+    command_queue = clCreateCommandQueue(context, device_id, 0, &amp;ret);
+
+    /* Read Kernel Code */
+    fp = fopen(&quot;moving_average.cl&quot;, &quot;r&quot;);
+    kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Create Program Object */
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,
+                                        (const size_t *)&amp;kernel_code_size, &amp;ret);
+    /* Compile kernel */
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    /* Create Kernel */
+    kernel = clCreateKernel(program, &quot;moving_average&quot;, &amp;ret);
+
+    /* Create buffer for the input data on the device */
+    memobj_in = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                               data_num * sizeof(int), NULL, &amp;ret);
+
+    /* Create buffer for the result on the device */
+    memobj_out = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                                data_num * sizeof(float), NULL, &amp;ret);
+
+    /* Copy input data to the global memory on the device*/
+    ret = clEnqueueWriteBuffer(command_queue, memobj_in, CL_TRUE, 0,
+                               data_num * sizeof(int),
+                               stock_array1, 0, NULL, NULL);
+
+    /* Set kernel arguments */
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&amp;memobj_in);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&amp;memobj_out);
+    ret = clSetKernelArg(kernel, 2, sizeof(int), (void *)&amp;data_num);
+    ret = clSetKernelArg(kernel, 3, sizeof(int), (void *)&amp;window_num);
+
+    /* Execute the kernel */
+    ret = clEnqueueTask(command_queue, kernel, 0, NULL, NULL);
+
+    /* Copy result from device to host */
+    ret = clEnqueueReadBuffer(command_queue, memobj_out, CL_TRUE, 0,
+                              data_num * sizeof(float),
+                              result, 0, NULL, NULL);
+
+    /* OpenCL Object Finalization */
+    ret = clReleaseKernel(kernel);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(memobj_in);
+    ret = clReleaseMemObject(memobj_out);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+
+    /* Display Results */
+    for (i = 0; i &lt; data_num; i++)
+    {
+        printf(&quot;result[%d] = %f¥n&quot;, i, result[i]);
+    }
+
+    /* Deallocate memory on the host */
+    free(result);
+    free(kernel_src_str);
+
+    return 0;
+}
+</code></pre></div><p>This host is based on the code in <strong>List 5.24</strong>, adding the OpenCL runtime API commands required for the kernel execution. Note the code utilizes the online compile method, as the kernel source code is read in (Lines 60-69).</p> <p>However, although the code is executable, it is not written to run anything in parallel. The next section will show how this can be done.</p> <h2 id="vector-operations"><a href="#vector-operations" class="header-anchor">#</a> <em>Vector Operations</em></h2> <p>First step to see whether vector-types can be used for the processing. For vector types, we can expect the OpenCL implementation to perform operations using the SIMD units on the processor to speed up the computation. We will start looking at multiple stocks from this section, as this is more practical. The processing will be vector-ized such that the moving average computation for each stock will be executed in parallel. We will assume that the processor will have a 128-bit SIMD unit, to operate on four 32-bit data in parallel. In OpenCL, types such as int4 and float4 can be used.</p> <p><strong>List 5.27</strong> shows the price data for multiple stocks, where each row contains the price of multiple stocks at one instance in time. For simplicity's sake, we will process the data for 4 stocks in this section (<strong>List 5.28</strong>).</p> <p><strong>List 5.27: Price data for multiple stocks (stock_array_many.txt)</strong></p> <blockquote><p>100, 212, 315, 1098, 763, 995, ..., 12</p> <p>109, 210, 313, 1100, 783, 983, ..., 15</p> <p>98, 209, 310, 1089, 790, 990, ..., 18</p> <p>104, 200, 319, 1098, 792, 985, ..., 21</p> <p>107, 100, 321, 1105, 788, 971, ..., 18</p> <p>…</p> <p>50, 33, 259, 980, 687, 950, ..., 9</p></blockquote> <p><strong>List 5.28: Price data for 4 stocks (stock_array_4.txt)</strong></p> <blockquote><p>100, 212, 315, 1098,</p> <p>109, 210, 313, 1100,</p> <p>98, 209, 310, 1089,</p> <p>104, 200, 319, 1098,</p> <p>107, 100, 321, 1105,</p> <p>…</p> <p>50, 33, 259, 980</p></blockquote> <p>For processing 4 values at a time, we can just replace int and float with int4 and float4, respectively. The new kernel code will look like <strong>List 5.29</strong>.</p> <p><strong>List 5.29: Vector-ized moving average kernel (moving_average_vec4.cl)</strong></p> <div class="language- extra-class"><pre class="language-text"><code>__kernel void moving_average_vec4(__global int4 *values,
+                                  __global float4 *average,
+                                  int length,
+                                  int width)
+{
+    int i;
+    int4 add_value; /* A vector to hold 4 components */
+
+    /* Compute sum for the first &quot;width&quot; elements for 4 stocks */
+    add_value = (int4)0;
+    for (i = 0; i &lt; width; i++)
+    {
+        add_value += values[i];
+    }
+    average[width - 1] = convert_float4(add_value);
+
+    /* Compute sum for the (width)th ～ (length-1)th elements for 4 stocks */
+    for (i = width; i &lt; length; i++)
+    {
+        add_value = add_value - values[i - width] + values[i];
+        average[i] = convert_float4(add_value);
+    }
+
+    /* Insert zeros to 0th ～ (width-2)th element for 4 stocks*/
+    for (i = 0; i &lt; width - 1; i++)
+    {
+        average[i] = (float4)(0.0f);
+    }
+
+    /* Compute average of (width-1) ~ (length-1) elements for 4 stocks */
+    for (i = width - 1; i &lt; length; i++)
+    {
+        average[i] /= (float4)width;
+    }
+}
+</code></pre></div><p>The only differences from <strong>List 5.25</strong> is the conversion of scalar to vector type (Lines 1,7,10 for int and Lines 2,24,29 for float), and the use of convert_float4() function. Note that the operators (+, -, *, /) are overloaded to be used on vector-types, so these do not need to be changed (Lines 12, 18, 29).</p> <p>The host code for executing the kernel is shown in <strong>List 5.30</strong>.</p> <p><strong>List 5.30: Host code to run the vector-ized moving average kernel</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdlib.h&gt;
+#ifdef __APPLE__
+#include &lt;OpenCL/opencl.h&gt;
+#else
+#include &lt;CL/cl.h&gt;
+#endif
+#include &lt;stdio.h&gt;
+
+#define NAME_NUM (4)  /* Number of Stocks */
+#define DATA_NUM (21) /* Number of data to process for each stock*/
+
+/* Read Stock data */
+int stock_array_4[NAME_NUM * DATA_NUM] = {
+#include &quot;stock_array_4.txt&quot;
+};
+
+/* Moving average width */
+#define WINDOW_SIZE (13)
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main(void)
+{
+    cl_platform_id platform_id = NULL;
+    cl_uint ret_num_platforms;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_mem memobj_in = NULL;
+    cl_mem memobj_out = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel = NULL;
+    size_t kernel_code_size;
+    char *kernel_src_str;
+    float *result;
+    cl_int ret;
+    FILE *fp;
+
+    int window_num = (int)WINDOW_SIZE;
+    int point_num = NAME_NUM * DATA_NUM;
+    int data_num = (int)DATA_NUM;
+    int name_num = (int)NAME_NUM;
+    int i, j;
+
+    /* Allocate space to read in kernel code */
+    kernel_src_str = (char *)malloc(MAX_SOURCE_SIZE);
+
+    /* Allocate space for the result on the host side */
+    result = (float *)malloc(point_num * sizeof(float));
+
+    /* Get Platform */
+    ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+
+    /* Get Device */
+    ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,
+                         &amp;ret_num_devices);
+
+    /* Create Context */
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    /* Create command queue */
+    command_queue = clCreateCommandQueue(context, device_id, 0, &amp;ret);
+
+    /* Read kernel source code */
+    fp = fopen(&quot;moving_average_vec4.cl&quot;, &quot;r&quot;);
+    kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Create Program Object */
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,
+                                        (const size_t *)&amp;kernel_code_size, &amp;ret);
+
+    /* Compile kernel */
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    /* Create kernel */
+    kernel = clCreateKernel(program, &quot;moving_average_vec4&quot;, &amp;ret);
+
+    /* Create buffer for the input data on the device */
+    memobj_in = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                               point_num * sizeof(int), NULL, &amp;ret);
+
+    /* Create buffer for the result on the device */
+    memobj_out = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                                point_num * sizeof(float), NULL, &amp;ret);
+
+    /* Copy input data to the global memory on the device*/
+    ret = clEnqueueWriteBuffer(command_queue, memobj_in, CL_TRUE, 0,
+                               point_num * sizeof(int),
+                               stock_array_4, 0, NULL, NULL);
+
+    /* Set Kernel Arguments */
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&amp;memobj_in);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&amp;memobj_out);
+    ret = clSetKernelArg(kernel, 2, sizeof(int), (void *)&amp;data_num);
+    ret = clSetKernelArg(kernel, 3, sizeof(int), (void *)&amp;window_num);
+
+    /* Execute kernel */
+    ret = clEnqueueTask(command_queue, kernel, 0, NULL, NULL);
+
+    /* Copy result from device to host */
+    ret = clEnqueueReadBuffer(command_queue, memobj_out, CL_TRUE, 0,
+                              point_num * sizeof(float),
+                              result, 0, NULL, NULL);
+
+    /* OpenCL Object Finalization */
+    ret = clReleaseKernel(kernel);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(memobj_in);
+    ret = clReleaseMemObject(memobj_out);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+
+    /* Print results */
+    for (i = 0; i &lt; data_num; i++)
+    {
+        printf(&quot;result[%d]:&quot;, i);
+        for (j = 0; j &lt; name_num; j++)
+        {
+            printf(&quot;%f, &quot;, result[i * NAME_NUM + j]);
+        }
+        printf(&quot;¥n&quot;);
+    }
+
+    /* Deallocate memory on the host */
+    free(result);
+    free(kernel_src_str);
+
+    return 0;
+}
+</code></pre></div><p>The only difference from <strong>List 5.26</strong> is that the data to process is increased by a factor of 4, and that the data length parameter is hard coded. In addition, the kernel code that gets read is changed to moving_average_vec4.cl (line 66), and the kernel name is changed to moving_average_vec4 (line 78).</p> <p>We will now change the program to allow processing of more than 4 stocks, as in the data in <strong>List 5.27</strong>. For simplicity, we will assume the number of stocks to process is a multiple of 4. We could just call the kernel on <strong>List 5.29</strong> and vector-ize the input data on the host side, but we will instead allow the kernel to take care of this.</p> <p>Since we will be processing 4 stocks at a time, the kernel code will just have to loop the computation so that more than 4 stocks can be computed within the kernel. The kernel will take in a parameter &quot;name_num&quot;, which is the number of stocks to process. This will be used to calculate the number of loops required to process all stocks.</p> <p>The new kernel code is shown in <strong>List 5.31</strong> below.</p> <p><strong>List 5.31: Moving average kernel of (multiple of 4) stocks (moving_average_many.cl)</strong></p> <div class="language- extra-class"><pre class="language-text"><code>__kernel void moving_average_many(__global int4 *values,
+                                  __global float4 *average,
+                                  int length,
+                                  int name_num,
+                                  int width)
+{
+    int i, j;
+    int loop_num = name_num / 4; /* compute the number of times to loop */
+    int4 add_value;
+
+    for (j = 0; j &lt; loop_num; j++)
+    {
+        /* Compute sum for the first &quot;width&quot; elements for 4 stocks */
+        add_value = (int4)0;
+        for (i = 0; i &lt; width; i++)
+        {
+            add_value += values[i * loop_num + j];
+        }
+        average[(width - 1) * loop_num + j] = convert_float4(add_value);
+
+        /* Compute sum for the (width)th ~ (length-1)th elements for 4 stocks */
+        for (i = width; i &lt; length; i++)
+        {
+            add_value = add_value - values[(i - width) * loop_num + j] + values[i * loop_num + j];
+            average[i * loop_num + j] = convert_float4(add_value);
+        }
+
+        /* Insert zeros to 0th ～ (width-2)th element for 4 stocks*/
+        for (i = 0; i &lt; width - 1; i++)
+        {
+            average[i * loop_num + j] = (float4)(0.0f);
+        }
+
+        /* Compute average of (width-1) ~ (length-1) elements for 4 stocks */
+        for (i = width - 1; i &lt; length; i++)
+        {
+            average[i * loop_num + j] /= (float4)width;
+        }
+    }
+}
+</code></pre></div><p>The host code is shown in <strong>List 5.32</strong>.</p> <p><strong>List 5.32: Host code for calling the kernel in List 5.31</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdlib.h&gt;
+#ifdef __APPLE__
+#include &lt;OpenCL/opencl.h&gt;
+#else
+#include &lt;CL/cl.h&gt;
+#endif
+#include &lt;stdio.h&gt;
+
+#define NAME_NUM (8)  /* Number of stocks */
+#define DATA_NUM (21) /* Number of data to process for each stock */
+
+/* Read Stock data */
+int stock_array_many[NAME_NUM * DATA_NUM] = {
+#include &quot;stock_array_many.txt&quot;
+};
+
+/* Moving average width */
+#define WINDOW_SIZE (13)
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main(void)
+{
+    cl_platform_id platform_id = NULL;
+    cl_uint ret_num_platforms;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_mem memobj_in = NULL;
+    cl_mem memobj_out = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel = NULL;
+    size_t kernel_code_size;
+    char *kernel_src_str;
+    float *result;
+    cl_int ret;
+    FILE *fp;
+
+    int window_num = (int)WINDOW_SIZE;
+    int point_num = NAME_NUM * DATA_NUM;
+    int data_num = (int)DATA_NUM;
+    int name_num = (int)NAME_NUM;
+
+    int i, j;
+
+    /* Allocate space to read in kernel code */
+    kernel_src_str = (char *)malloc(MAX_SOURCE_SIZE);
+
+    /* Allocate space for the result on the host side */
+    result = (float *)malloc(point_num * sizeof(float));
+
+    /* Get Platform*/
+    ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+
+    /* Get Device */
+    ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,
+                         &amp;ret_num_devices);
+
+    /* Create Context */
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    /* Create Command Queue */
+    command_queue = clCreateCommandQueue(context, device_id, 0, &amp;ret);
+
+    /* Read kernel source code */
+    fp = fopen(&quot;moving_average_many.cl&quot;, &quot;r&quot;);
+    kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Create Program Object */
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,
+                                        (const size_t *)&amp;kernel_code_size, &amp;ret);
+
+    /* Compile kernel */
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    /* Create kernel */
+    kernel = clCreateKernel(program, &quot;moving_average_many&quot;, &amp;ret);
+
+    /* Create buffer for the input data on the device */
+    memobj_in = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                               point_num * sizeof(int), NULL, &amp;ret);
+
+    /* Create buffer for the result on the device */
+    memobj_out = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                                point_num * sizeof(float), NULL, &amp;ret);
+
+    /* Copy input data to the global memory on the device*/
+    ret = clEnqueueWriteBuffer(command_queue, memobj_in, CL_TRUE, 0,
+                               point_num * sizeof(int),
+                               stock_array_many, 0, NULL, NULL);
+
+    /* Set Kernel Arguments */
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&amp;memobj_in);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&amp;memobj_out);
+    ret = clSetKernelArg(kernel, 2, sizeof(int), (void *)&amp;data_num);
+    ret = clSetKernelArg(kernel, 3, sizeof(int), (void *)&amp;name_num);
+    ret = clSetKernelArg(kernel, 4, sizeof(int), (void *)&amp;window_num);
+
+    /* Execute kernel */
+    ret = clEnqueueTask(command_queue, kernel, 0, NULL, NULL);
+
+    /* Copy result from device to host */
+    ret = clEnqueueReadBuffer(command_queue, memobj_out, CL_TRUE, 0,
+                              point_num * sizeof(float),
+                              result, 0, NULL, NULL);
+
+    /* OpenCL Object Finalization */
+    ret = clReleaseKernel(kernel);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(memobj_in);
+    ret = clReleaseMemObject(memobj_out);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+
+    /* Print results */
+    for (i = 0; i &lt; data_num; i++)
+    {
+        printf(&quot;result[%d]:&quot;, i);
+        for (j = 0; j &lt; name_num; j++)
+        {
+            printf(&quot;%f, &quot;, result[i * NAME_NUM + j]);
+        }
+        printf(&quot;¥n&quot;);
+    }
+
+    /* Deallocate memory on the host */
+    free(result);
+    free(kernel_src_str);
+
+    return 0;
+}
+</code></pre></div><p>The only difference from List 5.30 is that the number of stocks to process has been increased to 8, which get passed in as an argument to the kernel (line 98). In addition, the kernel code that gets read is changed to moving_average_many.cl (line 67), and the kernel name is changed to moving_average_many (line 79).</p> <p>This section concentrated on using SIMD units to perform the same process on multiple data sets in parallel. This is the most basic method of parallelization, which is done simply by replacing scalar-types with vector-types. The next step is expanding this to use multiple compute units capable of performing SIMD operations.</p> <h2 id="data-parallel-processing"><a href="#data-parallel-processing" class="header-anchor">#</a> <em>Data Parallel Processing</em></h2> <p>This section will focus on using multiple compute units to perform moving average for multiple stocks. Up until this point, only one instance of the kernel was executed, which processed all the data. To use multiple compute units simultaneously, multiple kernel instances must be executed in parallel. They can either be the same kernel running in parallel (data parallel), or different kernels in parallel (task parallel). We will use the data parallel model, as this method is more suited for this process.</p> <p>We will use the kernel in <strong>List 5.31</strong> as the basis to perform the averaging on 8 stocks. Since this code operates on 4 data sets at once, we can use 2 compute units to perform operations on 8 data sets at once. This is achieved by setting the work group size to 2 when submitting the task.</p> <p>In order to use the data parallel mode, each instance of the kernel must know where it is being executed within the index space. If this is not done, the same kernel will run on the same data sets. The get_global_id() function can be used to get the kernel instance's global ID, which happens to be the same value as the value of the iterator &quot;j&quot;. Therefore, the code in <strong>List 5.31</strong> can be rewritten to the following code in <strong>List 5.33</strong>.</p> <p><strong>List 5.33: Moving average kernel for 4 stocks (moving_average_vec4_para.cl)</strong></p> <div class="language- extra-class"><pre class="language-text"><code>__kernel void moving_average_vec4_para(__global int4 *values,
+                                       __global float4 *average,
+                                       int length,
+                                       int name_num,
+                                       int width)
+{
+    int i, j;
+    int loop_num = name_num / 4;
+    int4 add_value;
+
+    j = get_global_id(0); /* Used to select different data set for each instance */
+
+    /* Compute sum for the first &quot;width&quot; elements for 4 stocks */
+    add_value = (int4)0;
+    for (i = 0; i &lt; width; i++)
+    {
+        add_value += values[i * loop_num + j]; /* &quot;j&quot; decides on the data subset to process for the kernel instance*/
+    }
+    average[(width - 1) * loop_num + j] = convert_float4(add_value);
+
+    /* Compute sum for the (width)th ~ (length-1)th elements for 4 stocks */
+    for (i = width; i &lt; length; i++)
+    {
+        add_value = add_value - values[(i - width) * loop_num + j] + values[i * loop_num + j];
+        average[i * loop_num + j] = convert_float4(add_value);
+    }
+
+    /* Insert zeros to 0th ～ (width-2)th element for 4 stocks*/
+    for (i = 0; i &lt; width - 1; i++)
+    {
+        average[i * loop_num + j] = (float4)(0.0f);
+    }
+
+    /* Compute average of (width-1) ~ (length-1) elements for 4 stocks */
+    for (i = width - 1; i &lt; length; i++)
+    {
+        average[i * loop_num + j] /= (float4)width;
+    }
+}
+</code></pre></div><p>Since each compute unit is executing an instance of the kernel, which performs operations on 4 data sets, 8 data sets are processed over 2 compute units. In line 11, the value of &quot;j&quot; is either 0 or 1, which specifies the instance of the kernel as well as the data set to process. To take the change in the kernel into account, the host code must be changed as shown below in <strong>List 5.34</strong>.</p> <p><strong>List 5.34: Host code for calling the kernel in List 5.33</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdlib.h&gt;
+#ifdef __APPLE__
+#include &lt;OpenCL/opencl.h&gt;
+#else
+#include &lt;CL/cl.h&gt;
+#endif
+#include &lt;stdio.h&gt;
+
+#define NAME_NUM (8)  /* Number of stocks */
+#define DATA_NUM (21) /* Number of data to process for each stock */
+
+/* Read Stock data */
+int stock_array_many[NAME_NUM * DATA_NUM] = {
+#include &quot;stock_array_many.txt&quot;
+};
+
+/* Moving average width */
+#define WINDOW_SIZE (13)
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main(void)
+{
+    cl_platform_id platform_id = NULL;
+    cl_uint ret_num_platforms;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_mem memobj_in = NULL;
+    cl_mem memobj_out = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel = NULL;
+    size_t kernel_code_size;
+    char *kernel_src_str;
+    float *result;
+    cl_int ret;
+    FILE *fp;
+
+    int window_num = (int)WINDOW_SIZE;
+    int point_num = NAME_NUM * DATA_NUM;
+    int data_num = (int)DATA_NUM;
+    int name_num = (int)NAME_NUM;
+
+    int i, j;
+
+    /* Allocate space to read in kernel code */
+    kernel_src_str = (char *)malloc(MAX_SOURCE_SIZE);
+
+    /* Allocate space for the result on the host side */
+    result = (float *)malloc(point_num * sizeof(float));
+
+    /* Get Platform*/
+    ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+
+    /* Get Device */
+    ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,
+                         &amp;ret_num_devices);
+
+    /* Create Context */
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    /* Create Command Queue */
+    command_queue = clCreateCommandQueue(context, device_id, 0, &amp;ret);
+
+    /* Read kernel source code */
+    fp = fopen(&quot;moving_average_vec4_para.cl&quot;, &quot;r&quot;);
+    kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Create Program Object */
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,
+                                        (const size_t *)&amp;kernel_code_size, &amp;ret);
+
+    /* Compile kernel */
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    /* Create kernel */
+    kernel = clCreateKernel(program, &quot;moving_average_vec4_para&quot;, &amp;ret);
+
+    /* Create buffer for the input data on the device */
+    memobj_in = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                               point_num * sizeof(int), NULL, &amp;ret);
+
+    /* Create buffer for the result on the device */
+    memobj_out = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                                point_num * sizeof(float), NULL, &amp;ret);
+
+    /* Copy input data to the global memory on the device*/
+    ret = clEnqueueWriteBuffer(command_queue, memobj_in, CL_TRUE, 0,
+                               point_num * sizeof(int),
+                               stock_array_many, 0, NULL, NULL);
+
+    /* Set Kernel Arguments */
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&amp;memobj_in);
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&amp;memobj_out);
+    ret = clSetKernelArg(kernel, 2, sizeof(int), (void *)&amp;data_num);
+    ret = clSetKernelArg(kernel, 3, sizeof(int), (void *)&amp;name_num);
+    ret = clSetKernelArg(kernel, 4, sizeof(int), (void *)&amp;window_num);
+
+    /* Set parameters for data parallel processing (work item) */
+    cl_uint work_dim = 1;
+    size_t global_item_size[3];
+    size_t local_item_size[3];
+
+    global_item_size[0] = 2; /* Global number of work items */
+    local_item_size[0] = 1;  /* Number of work items per work group */
+    /* --&gt; global_item_size[0] / local_item_size[0] becomes 2, which indirectly sets the number of workgroups to 2*/
+
+    /* Execute Data Parallel Kernel */
+    ret = clEnqueueNDRangeKernel(command_queue, kernel, work_dim, NULL,
+                                 global_item_size, local_item_size,
+                                 0, NULL, NULL);
+
+    /* Copy result from device to host */
+    ret = clEnqueueReadBuffer(command_queue, memobj_out, CL_TRUE, 0,
+                              point_num * sizeof(float),
+                              result, 0, NULL, NULL);
+
+    /* OpenCL Object Finalization */
+    ret = clReleaseKernel(kernel);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(memobj_in);
+    ret = clReleaseMemObject(memobj_out);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+
+    /* Deallocate memory on the host */
+    for (i = 0; i &lt; data_num; i++)
+    {
+        printf(&quot;result[%d]: &quot;, i);
+        for (j = 0; j &lt; name_num; j++)
+        {
+            printf(&quot;%f, &quot;, result[i * NAME_NUM + j]);
+        }
+        printf(&quot;¥n&quot;);
+    }
+
+    /* Deallocate memory on the host */
+    free(result);
+    free(kernel_src_str);
+
+    return 0;
+}
+</code></pre></div><p>The data parallel processing is performed in lines 112 - 114, but notice the number of work groups are not explicitly specified. This is implied from the number of global work items (line 107) and the number of work items to process using one compute unite (line 108). It is also possible to execute multiple work items on 1 compute unit. This number should be equal to the number of processing elements within the compute unit for efficient data parallel execution.</p> <h2 id="task-parallel-processing"><a href="#task-parallel-processing" class="header-anchor">#</a> <em>Task Parallel Processing</em></h2> <p>We will now look at a different processing commonly performed in stock price analysis, known as the Golden Cross. The Golden Cross is a threshold point between a short-term moving average and a long-term moving average over time, which indicates a bull market on the horizon. This will be implemented in a task parallel manner.</p> <p>Unlike data parallel programming, OpenCL does not have an API to explicitly specify the index space for batch processing. Each process need to be queued explicitly using the API function clEnqueueTask().</p> <p>As mentioned in Chapter 4, the command queue only allows one task to be executed at a time unless explicitly specified to do otherwise. The host side must do one of the following:</p> <p>• Allow out-of-order execution of the queued commands</p> <p>• Create multiple command queues</p> <p>Creating multiple command queues will allow for explicit scheduling of the tasks by the programmer. In this section, we will use the out-of-order method and allow the API to take care of the scheduling.</p> <p>Allowing out-of-order execution in the command queue sends the next element in queue to an available compute unit. The out-of-order mode can be set as follows.</p> <blockquote><p>Command_queue = clCreateCommandQueue(context, device_id,</p> <p>CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &amp;ret);</p></blockquote> <p>The 3rd argument CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE allows the command queue to send the next queued task to an available compute unit. This ends up in a scheduling of task parallel processing.</p> <p>We will now perform task parallel processing to find the Golden Cross between a moving average over 13 weeks, and a moving average over 26 weeks. The two moving averages will be performed in a task parallel manner. We will use the code in <strong>List 5.29</strong> (moving_average_vec4.cl), varying the 4th argument to 13 and 26 for each of the moving average to be performed. The host code becomes as shown in <strong>List 5.35</strong>.</p> <p><strong>List 5.35: Host code for task parallel processing of 2 moving averages</strong></p> <div class="language- extra-class"><pre class="language-text"><code>#include &lt;stdlib.h&gt;
+#ifdef __APPLE__
+#include &lt;OpenCL/opencl.h&gt;
+#else
+#include &lt;CL/cl.h&gt;
+#endif
+#include &lt;stdio.h&gt;
+
+#define NAME_NUM (4)   /* Number of stocks */
+#define DATA_NUM (100) /* Number of data to process for each stock */
+
+/* Read Stock data */
+int stock_array_4[NAME_NUM * DATA_NUM] = {
+#include &quot;stock_array_4.txt&quot;
+};
+
+/* Moving average width */
+#define WINDOW_SIZE_13 (13)
+#define WINDOW_SIZE_26 (26)
+
+#define MAX_SOURCE_SIZE (0x100000)
+
+int main(void)
+{
+    cl_platform_id platform_id = NULL;
+    cl_uint ret_num_platforms;
+    cl_device_id device_id = NULL;
+    cl_uint ret_num_devices;
+    cl_context context = NULL;
+    cl_command_queue command_queue = NULL;
+    cl_mem memobj_in = NULL;
+    cl_mem memobj_out13 = NULL;
+    cl_mem memobj_out26 = NULL;
+    cl_program program = NULL;
+    cl_kernel kernel13 = NULL;
+    cl_kernel kernel26 = NULL;
+    cl_event event13, event26;
+    size_t kernel_code_size;
+    char *kernel_src_str;
+    float *result13;
+    float *result26;
+    cl_int ret;
+    FILE *fp;
+
+    int window_num_13 = (int)WINDOW_SIZE_13;
+    int window_num_26 = (int)WINDOW_SIZE_26;
+    int point_num = NAME_NUM * DATA_NUM;
+    int data_num = (int)DATA_NUM;
+    int name_num = (int)NAME_NUM;
+
+    int i, j;
+
+    /* Allocate space to read in kernel code */
+    kernel_src_str = (char *)malloc(MAX_SOURCE_SIZE);
+
+    /* Allocate space for the result on the host side */
+    result13 = (float *)malloc(point_num * sizeof(float)); /* average over 13 weeks */
+    result26 = (float *)malloc(point_num * sizeof(float)); /* average over 26 weeks */
+
+    /* Get Platform */
+    ret = clGetPlatformIDs(1, &amp;platform_id, &amp;ret_num_platforms);
+
+    /* Get Device */
+    ret = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &amp;device_id,
+                         &amp;ret_num_devices);
+
+    /* Create Context */
+    context = clCreateContext(NULL, 1, &amp;device_id, NULL, NULL, &amp;ret);
+
+    /* Create Command Queue */
+    command_queue = clCreateCommandQueue(context, device_id,
+                                         CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &amp;ret);
+
+    /* Read kernel source code */
+    fp = fopen(&quot;moving_average_vec4.cl&quot;, &quot;r&quot;);
+    kernel_code_size = fread(kernel_src_str, 1, MAX_SOURCE_SIZE, fp);
+    fclose(fp);
+
+    /* Create Program Object */
+    program = clCreateProgramWithSource(context, 1, (const char **)&amp;kernel_src_str,
+                                        (const size_t *)&amp;kernel_code_size, &amp;ret);
+
+    /* Compile kernel */
+    ret = clBuildProgram(program, 1, &amp;device_id, NULL, NULL, NULL);
+
+    /* Create kernel */
+    kernel13 = clCreateKernel(program, &quot;moving_average_vec4&quot;, &amp;ret); /* 13 weeks */
+    kernel26 = clCreateKernel(program, &quot;moving_average_vec4&quot;, &amp;ret); /* 26 weeks */
+
+    /* Create buffer for the input data on the device */
+    memobj_in = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                               point_num * sizeof(int), NULL, &amp;ret);
+
+    /* Create buffer for the result on the device */
+    memobj_out13 = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                                  point_num * sizeof(float), NULL, &amp;ret); /* 13 weeks */
+    memobj_out26 = clCreateBuffer(context, CL_MEM_READ_WRITE,
+                                  point_num * sizeof(float), NULL, &amp;ret); /* 26 weeks */
+
+    /* Copy input data to the global memory on the device*/
+    ret = clEnqueueWriteBuffer(command_queue, memobj_in, CL_TRUE, 0,
+                               point_num * sizeof(int),
+                               stock_array_4, 0, NULL, NULL);
+
+    /* Set Kernel Arguments (13 weeks) */
+    ret = clSetKernelArg(kernel13, 0, sizeof(cl_mem), (void *)&amp;memobj_in);
+    ret = clSetKernelArg(kernel13, 1, sizeof(cl_mem), (void *)&amp;memobj_out13);
+    ret = clSetKernelArg(kernel13, 2, sizeof(int), (void *)&amp;data_num);
+    ret = clSetKernelArg(kernel13, 3, sizeof(int), (void *)&amp;window_num_13);
+
+    /* Submit task to compute the moving average over 13 weeks */
+    ret = clEnqueueTask(command_queue, kernel13, 0, NULL, &amp;event13);
+
+    /* Set Kernel Arguments (26 weeks) */
+    ret = clSetKernelArg(kernel26, 0, sizeof(cl_mem), (void *)&amp;memobj_in);
+    ret = clSetKernelArg(kernel26, 1, sizeof(cl_mem), (void *)&amp;memobj_out26);
+    ret = clSetKernelArg(kernel26, 2, sizeof(int), (void *)&amp;data_num);
+    ret = clSetKernelArg(kernel26, 3, sizeof(int), (void *)&amp;window_num_26);
+
+    /* Submit task to compute the moving average over 26 weeks */
+    ret = clEnqueueTask(command_queue, kernel26, 0, NULL, &amp;event26);
+
+    /* Copy result for the 13 weeks moving average from device to host */
+    ret = clEnqueueReadBuffer(command_queue, memobj_out13, CL_TRUE, 0,
+                              point_num * sizeof(float),
+                              result13, 1, &amp;event13, NULL);
+
+    /* Copy result for the 26 weeks moving average from device to host */
+    ret = clEnqueueReadBuffer(command_queue, memobj_out26, CL_TRUE, 0,
+                              point_num * sizeof(float),
+                              result26, 1, &amp;event26, NULL);
+
+    /* OpenCL Object Finalization */
+    ret = clReleaseKernel(kernel13);
+    ret = clReleaseKernel(kernel26);
+    ret = clReleaseProgram(program);
+    ret = clReleaseMemObject(memobj_in);
+    ret = clReleaseMemObject(memobj_out13);
+    ret = clReleaseMemObject(memobj_out26);
+    ret = clReleaseCommandQueue(command_queue);
+    ret = clReleaseContext(context);
+
+    /* Display results */
+    for (i = window_num_26 - 1; i &lt; data_num; i++)
+    {
+        printf(&quot;result[%d]:&quot;, i);
+        for (j = 0; j &lt; name_num; j++)
+        {
+            /* Display whether the 13 week average is greater */
+            printf(&quot;[%d] &quot;, (result13[i * NAME_NUM + j] &gt; result26[i * NAME_NUM + j]));
+        }
+        printf(&quot;¥n&quot;);
+    }
+
+    /* Deallocate memory on the host */
+    free(result13);
+    free(result26);
+    free(kernel_src_str);
+
+    return 0;
+}
+</code></pre></div><p>The Golden Cross Point can be determined by seeing where the displayed result changes from 0 to 1.</p> <p>One thing to note in this example code is that the copying of the result from device to host should not occur until the processing is finished. Otherwise, the memory copy (clEnqueueReadBuffer) can occur during the processing, which would contain garbage.</p> <p>Note in line 114 that &quot;&amp;event13&quot; is passed back from the clEnqueueTask() command. This is known as an event object, which specifies whether this task has finished or not. This event object is seen again in line 128 to the clEnqueueReadBuffer() command, which specifies that the read command does not start execution until the computation of the moving average over 13 weeks is finished. This is done similarly for the moving average over 26 weeks, which is submitted in line 123 and written back in line 131.</p> <p>In summary, the Enqueue API functions in general:</p> <p>• Inputs event object(s) that specify what it must wait for until it can be executed</p> <p>• Ouputs an event object that can be used to tell another task in queue to wait</p> <p>The above two should be used to schedule the tasks in an efficient manner.</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/opencl-book/opencl-book/advanced-opencl/opencl-c.html" class="prev">
+        OpenCL C
+      </a></span> <span class="next"><a href="/opencl-book/opencl-book/changes-made-in-opencl-specification-1.2/changes-made-in-update-from-1.0-to-1.1.html">
+        Changes made in update from 1.0 to 1.1
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/opencl-book/assets/js/app.044fec5c.js" defer></script><script src="/opencl-book/assets/js/2.e23f9d0e.js" defer></script><script src="/opencl-book/assets/js/28.ad339dbd.js" defer></script>
+  </body>
+</html>
