@@ -1,8 +1,8 @@
 ---
 home: true
-heroImage: https://us.fixstars.com/images/demo/openclprogrammingbook.jpg
-tagline: 
+heroImage: https://fixstarssolutions-website.s3.us-west-2.amazonaws.com/opencl-book.jpg
+tagline:
 actionText: Explore →
 actionLink: /opencl-book/
-footer: Copyright © Fixstars Solutions 2022
+footer: Copyright © Fixstars Solutions 2023
 ---
